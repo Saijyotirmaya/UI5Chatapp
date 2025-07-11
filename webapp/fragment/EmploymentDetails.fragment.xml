@@ -1,0 +1,45 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+	<Table class="sapUiTinyMargin" busyIndicatorDelay="0" id="EmpF_id_EmpTable" growingScrollToLoad="true" width="auto"  items="{path:'sEmploymentModel>/'}"  growing="true"  growingThreshold="50"  alternateRowColors="true" mode="SingleSelectLeft" selectionChange="EmpF_onSelectionChange">
+		<headerToolbar>
+			<OverflowToolbar >
+				<Title text="{i18n>employmentDetails} ({= ${sEmploymentModel>/}.length})"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://customer-and-contacts" id="EmpF_id_RefButton" visible="true" tooltip="{i18n>referenceDetails}" press="EmpF_onReferenceDetails" type="Transparent" />
+				<Button icon="sap-icon://attachment"  press="EdF_EmpAttachment" tooltip="{i18n>toolUploadEmp}" />
+				<Button icon="sap-icon://add"  text="{i18n>add}" press="EmpF_onAddEmployment" type="Accept" tooltip="{i18n>toolAddEmp}" />
+				<Button icon="sap-icon://edit"   text="{i18n>edit}" press="EmpF_onEditEmployment" type="Neutral" tooltip="{i18n>toolEditEmp}" id="EmpF_id_EmpEdit" />
+				<Button icon="sap-icon://delete"   text="{i18n>delete}" press="EmpF_onDeletEmployment" type="Negative" tooltip="{i18n>toolDelEmp}" id="EmpF_id_EmpDelete" />
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column demandPopin="true">
+				<Text text="{i18n>companyName}"/>
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>designation}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>startDate}" />
+			</Column>
+			<Column demandPopin="true">
+				<Text text="{i18n>endDate}" />
+			</Column>
+			<Column minScreenWidth="Desktop" demandPopin="true">
+				<Text text="{i18n>officeAddress}" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="{sEmploymentModel>CompanyName}"/>
+					<Text text="{sEmploymentModel>Designation}"/>
+					<Text text="{path:'sEmploymentModel>StartDate',formatter:'.Formatter.formatDate'}"/>
+					<Text text="{path:'sEmploymentModel>EndDate',formatter:'.Formatter.formatDate'}"/>
+					<Text text="{sEmploymentModel>OfficeAddress}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</c:FragmentDefinition>

@@ -1,0 +1,69 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+>
+    <Dialog title="{i18n>awardDetails}">
+        <f:SimpleForm
+            editable="false"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false"
+        >
+            <f:content>
+                <Label
+                    text="{i18n>nominatedBy}"
+                    required="true"
+                />
+                <Input
+                    id="FSA_id_nominatedName"
+                    valueStateText="Enter Name"
+                    liveChange="FSA_onNomineNameLiveChange"
+                    maxLength="25"
+                />
+
+                <Label
+                    text="{i18n>date}"
+                    required="true"
+                />
+                <DatePicker
+                    id="FSA_id_Date"
+                    change="FAA_onDateChange"
+                    valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                />
+            </f:content>
+        </f:SimpleForm>
+
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="{i18n>submit}"
+                    type="Accept"
+                    press="FSA_onPressSubmit"
+                    class="sendMail"
+                    visible="{IdCardModel>/Submit}"
+                />
+                <Button
+                    text="{i18n>close}"
+                    class="sendMail"
+                    press="FSA_onPressClose"
+                    type="Reject"
+                />
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

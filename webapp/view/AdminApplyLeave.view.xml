@@ -1,0 +1,65 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.AdminApplyLeave"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:filterbar="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<Page id="AL_id_LeavePage">
+		<headerContent>
+        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+		<content>
+			<filterbar:FilterBar
+                id="AL_id_leavefilterbar"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                clear="AL_onClear"
+                showClearOnFB="true"
+                search="AL_onSearch"
+                filterChange=".onFilterChange"
+                showFilterConfiguration="false">
+				<filterbar:filterGroupItems>
+					 <filterbar:FilterGroupItem
+                    name="dateRange"
+                    label="{i18n>dateRange}"
+                    groupName="LeaveGroup"
+                    visibleInFilterBar="true">
+                    <filterbar:control>
+                        <DateRangeSelection
+                            id="AL_id_DateRangeSelection"
+                            dateValue="{LeaveFilterModel>/fromDate}"
+                            secondDateValue="{LeaveFilterModel>/toDate}"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="dd/MM/yyyy"/>
+                    </filterbar:control>
+                </filterbar:FilterGroupItem>
+					<filterbar:FilterGroupItem
+            name="typeOfLeave"
+            label="{i18n>typeOfLeave}"
+            groupName="LeaveGroup"
+            visibleInFilterBar="true">
+						<filterbar:control>
+							<ComboBox
+                id="AL_id_TypeOfLeavecombo"
+                value="{LeaveFilterModel>/typeOfLeave}"
+				showClearIcon="true"
+				valueStateText="{i18n>selectTypeOfLeave}"
+                items="{leaveTypeModel>/}"
+                busyIndicatorDelay="0">
+								<core:Item key="{leaveTypeModel>id}" text="{leaveTypeModel>name}"/>
+							</ComboBox>
+						</filterbar:control>
+					</filterbar:FilterGroupItem>
+				</filterbar:filterGroupItems>
+			</filterbar:FilterBar>
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.LeaveSmartTable" type="XML" />
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.LeaveBarChart" type="XML"/>
+		</content>
+		<footer>
+            <Bar>
+                <contentLeft>
+                  <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML"/>
+                </contentLeft>
+            </Bar>
+        </footer>
+	</Page>
+</mvc:View>

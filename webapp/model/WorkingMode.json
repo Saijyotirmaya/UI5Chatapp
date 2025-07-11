@@ -1,0 +1,17 @@
+{
+    "location": [
+      {
+        "ID": 1,
+        "Location": "HYBRID"
+      },
+      {
+        "ID": 2,
+        "Location": "ON-SITE"
+      },
+      {
+        "ID": 3,
+        "Location": "REMOTE"
+      }
+    ]
+  }
+  

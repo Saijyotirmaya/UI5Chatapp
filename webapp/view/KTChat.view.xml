@@ -1,0 +1,84 @@
+<mvc:View
+  controllerName="sap.kt.com.minihrsolution.controller.KTChat"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:suite="sap.suite.ui.commons"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+  
+  <!-- <SplitApp id="splitApp"> -->
+    <!-- Master Page (Groups List) -->
+    <!-- <masterPages>
+  <Page id="masterPage" title="KT Chat App">
+    <content>
+      <Input
+        placeholder="Enter your name and Press ↵ to submit."
+        submit="changeName"
+        width="100%"
+        class="Groupclass"/>
+        
+      <List   
+        id="groupsList"
+        items="{chat>/filteredEmployees}">
+        <StandardListItem
+         title="{chat>EmployeeName}" 
+         icon="{path:'chat>ProfilePhoto',formatter: '.Formatter.getImageSrc'}" 
+         type="Navigation" 
+         press=".onPressGoToMaster"/>
+      </List>
+    </content>
+  </Page>
+</masterPages> -->
+
+    <!-- Detail Page (Chat Timeline) -->
+    <!-- <detailPages>
+      <Page id="detailPage" >
+      <headerContent>
+            <Title id="headerTitle" text="Chat App" level="H2"/>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <content>
+          <ScrollContainer
+            width="100%"
+            height="90%"
+            id="chatScrollContainer"
+            horizontal="false"
+            vertical="true">
+           <List
+ id="chatList"
+ items="{chat>/messages}"
+ showSeparators="None"
+ width="100%">
+ 
+ <CustomListItem>
+ <HBox justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}">
+ <VBox class="chatBubble"
+ alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+ width="auto">
+ <Text text="{chat>text}" />
+ <Text text="{chat>time}" class="sapUiTinyMarginTop" />
+ </VBox>
+ </HBox>
+ </CustomListItem>
+ </List>
+           
+          </ScrollContainer>
+          
+          <Input
+            id="messageInput1"
+            placeholder="Enter your message and Press ↵ to submit."
+            submit="sendMessage"
+           enabled="{= !!${chat>/current_room}}"
+             width="100%" class="Groupclass"/>
+            <HBox alignItems="Center" justifyContent="SpaceBetween">
+         </HBox>
+ 
+        </content>
+      </Page>
+    </detailPages>
+  </SplitApp> -->
+
+</mvc:View>

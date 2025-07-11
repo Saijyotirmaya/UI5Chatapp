@@ -1,0 +1,1128 @@
+/* captcha text style */
+.sapMInputBaseError {
+  border: 1px solid red !important;
+  background-color: #fff0f0;
+}
+
+.onClassTarineStatus {
+  background-color: red;
+  border-color: greenyellow;
+  color: deeppink;
+}
+.sapMGT {
+  background-position: center;
+  background-image: url("../image/footer.jpg");
+}
+.Groupclass {
+  margin: 8px 0;
+}
+
+.chatBubble {
+  padding: 10px;
+  background-color: #e0f7fa; /* Light cyan background */
+  border-radius: 10px;
+  max-width: 60%;
+  margin: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chatBubbleMe {
+  background-color: #bcedea; /* Light green background */
+}
+
+.chatBubbleOther {
+  background-color: #f8bbd0; /* Light pink background */
+}
+
+.customRow .formBox {
+  width: 32%;
+  min-width: 200px;
+  box-sizing: border-box;
+  padding-right: 0.5rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .customRow .formBox {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.TextColor {
+  color: darksalmon;
+}
+
+.chatAreaContainer {
+  height: 100%;
+  width: 100%;
+  background-image: url("../image/Chatbackground.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+/* background image style */
+.myBackgroundStyle {
+  height: 100%;
+  width: 100%;
+  background-image: url("../image/back.jpg");
+  background-repeat: round;
+  background-size: cover;
+  background-position: center;
+}
+
+/* table style */
+.customTable .sapMListTblHeader .sapMListTblHeaderCell {
+  background-color: rgba(255, 166, 0, 0.707) !important;
+}
+
+.customTable .sapMLIB:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.customTable .sapMLIB:nth-child(even) {
+  background-color: #ddf5ff;
+}
+
+/* text style*/
+.boldBlueText {
+  font-weight: bold;
+  color: blue;
+}
+
+.sapMObjStatusText {
+  width: 70px;
+}
+
+.hBoxfrag {
+  margin: 10px;
+}
+
+.but2productfrag {
+  margin-right: 1rem;
+}
+
+.sendMail {
+  margin-right: 1vw;
+}
+
+.submit {
+  margin-right: 10px;
+}
+.sapMMsgStrip {
+  display: flex;
+  align-items: center;
+}
+.sapUiSmallMargin {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.TextColor {
+  color: #0070f2 !important;
+  line-height: 1.5rem !important;
+}
+
+.OTP {
+  margin-left: 1rem;
+}
+
+.timer {
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: monospace;
+  margin-left: 1.5rem;
+}
+
+.Expense {
+  margin-left: 83%;
+}
+
+.spaceBetween {
+  margin-left: 20px;
+}
+
+/* homebackground */
+.myBackgroundStylehome {
+  height: 100%;
+  width: 100%;
+  background-image: url("../image/homeback.jpg");
+  background-repeat: round;
+  background-size: cover;
+  background-position: center;
+}
+
+.centerText .sapMObjStatusText {
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.custom-text2 {
+  max-width: 600px;
+  line-height: 1.7;
+  color: #ffffff;
+  font-size: medium;
+  font-size: 18px;
+  font-weight: bold;
+}
+.custom-text {
+  color: rgb(5, 5, 5) !important;
+  font-size: 18px;
+  line-height: 1.7;
+  font-family: League spartan !important;
+  font-weight: bolder !important;
+}
+.custom-welcome {
+  line-height: 1;
+  color: #161515;
+  font-size: 48px;
+  font-weight: bold;
+  font-family: League spartan !important;
+}
+
+.position-welcome {
+  position: absolute;
+  top: 27%;
+}
+
+.custom-tagline {
+  font-size: 18px;
+  font-family: League spartan !important;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.custom-welcome-desc {
+  font-size: 24px;
+  font-family: fangsong;
+  color: #ffffff;
+  font-weight: bold;
+  max-width: 700px;
+  line-height: 1.8;
+}
+.Aboutus {
+  border-radius: 10px !important;
+}
+.custom-aboutus {
+  font-size: 21px;
+  font-family: sans-serif;
+  color: #060303;
+  font-weight: 500;
+  line-height: 1.8;
+}
+.custom-background {
+  background-image: url("../image/costumeback.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.carrer-Des {
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+.sapUiBlockLayoutBackgroundDashboard:not(.sapUiBlockLayoutSizeS)
+  .sapUiBlockLayoutRow:first-of-type
+  .sapUiBlockCellContent {
+  margin-top: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.sapUiBlockLayoutBackgroundDashboard:not(.sapUiBlockLayoutSizeS)
+  .sapUiBlockLayoutRow:last-of-type
+  .sapUiBlockCellContent {
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  line-height: 1.5;
+}
+.sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellTitle {
+  font-size: 1.5rem;
+  color: #000103;
+}
+.formBorder {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  color: #ddf5ff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  background-color: transparent;
+  font-weight: bold;
+  align-items: center;
+}
+
+.career-background {
+  background-image: url("../image/career1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0.6rem;
+  border-radius: 8px;
+}
+
+.service-background {
+  background-image: url("../image/custom-software-banner.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sapUxAPObjectPageWrapper {
+  background-color: #eff1f2 !important;
+  opacity: 95%;
+}
+
+.home-background {
+  background-image: url("../image/Home.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0.6rem;
+}
+.Servicetab {
+  border-radius: 0.6rem;
+}
+.Products_list {
+  border-radius: 0.6rem;
+}
+.allvideo {
+  border-radius: 0.8rem !important;
+}
+
+.demo-form {
+  background-image: url("../image/Newdemo.png");
+  background-size: cover;
+  border-radius: 0.6rem;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.commonclass {
+  margin-top: 7rem !important;
+}
+.btnrequest {
+  margin-right: 6rem;
+}
+.login-background {
+  background-image: url("../image/new.back.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.responsiveCenterFlex {
+  box-sizing: border-box;
+}
+
+/* For mobile devices: center both vertically and horizontally */
+@media only screen and (max-width: 600px) {
+  .responsiveCenterFlex {
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100vh;
+  }
+}
+.contact-touch {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.expert-background {
+  background-image: url("../image/61933fc323a04-7-apa-itu-sap-btp-perbandingan-dengan-scp.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+}
+
+.products-background {
+  background-image: url("../image/home.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.contact-background {
+  background-image: url("../image/contactPage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0.6rem;
+}
+
+.Training-background {
+  background-color: #eafdf9;
+  background-image: url("../image/Home.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0.6rem;
+}
+.button-container {
+  margin-top: 20px; /* Adds space above the button */
+  width: 100%; /* Ensures it spans the entire width */
+}
+.highlight-text {
+  font-size: 16px;
+  font-family: sans-serif;
+  color: #2964d9;
+  margin-bottom: 10px;
+  line-height: 1.5rem !important;
+}
+.product-des {
+  margin-left: 18px;
+  font-family: sans-serif;
+  font-size: 16px !important;
+  color: #2964d9;
+}
+
+.products-title {
+  font-size: 20px;
+  /* font-weight: bold; */
+  color: #2964d9;
+  margin-bottom: 10px;
+  line-height: 1.5rem !important;
+}
+.checkmark-text {
+  display: block;
+  margin-bottom: 12px;
+  font-family: sans-serif;
+}
+.training-text {
+  margin-left: 0.5rem;
+  font-family: sans-serif;
+  margin-bottom: 12px;
+}
+.description-text {
+  font-size: 16px;
+  font-family: sans-serif;
+  line-height: 1.5rem !important;
+  color: #555;
+  margin-bottom: 10px;
+}
+.big-apply-button {
+  font-size: 2rem;
+  padding: 0.75rem 2rem;
+  height: 3rem;
+  width: fit-content !important;
+}
+.content-box {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 1);
+  text-align: left;
+}
+
+.custom-trainee-title {
+  font-size: 30px;
+  font-family: Helvetica, sans-serif;
+  color: black;
+  line-height: 1.9;
+  /* font-weight: bold; */
+  max-width: 700px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #222;
+  margin-bottom: 12px;
+}
+.custom-input-height .sapMInputInner,
+.custom-input-height .sapMTextAreaInner {
+  height: 2rem;
+  width: 200px;
+}
+
+.location-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.apply-button {
+  margin-top: 20px;
+  color: white;
+  font-weight: bold;
+  width: 350px;
+  height: 150px;
+  font-size: 18px;
+  border-radius: 8px;
+}
+/* .btnclass{
+  height: 100px !important;
+} */
+
+.career-background {
+  position: relative;
+  height: 100%;
+}
+
+/*  */
+.HomeSlider {
+  transition: transform 0.9s ease, box-shadow 0.9s ease;
+  border-radius: 1rem;
+}
+
+.HomeSlider:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.bold {
+  color: black;
+  font-size: medium;
+  font-weight: bold;
+  background-color: aliceblue;
+}
+
+.MessageStrip {
+  transition: 0.5s all ease-in-out;
+}
+
+.MessageStrip:hover {
+  transform: scale(0.9);
+}
+
+.QuickViewCard {
+  background-color: gray !important;
+}
+
+.service-section-text {
+  line-height: 1.8;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+h2.sapUxAPObjectPageHeaderIdentifierTitle,
+h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
+  font-size: 1.5rem !important;
+}
+.sapUiSizeCompact
+  .sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMSB.sapMSBTransparent
+  .sapMBtnContent,
+.sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMSB.sapMSBTransparent
+  .sapMBtnContent,
+.sapUiSizeCompact
+  .sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMBtnInner
+  .sapMBtnContent,
+.sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMBtnInner
+  .sapMBtnContent,
+.sapUiSizeCompact
+  .sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMSB.sapMSBTransparent
+  .sapMBtnIcon,
+.sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMSB.sapMSBTransparent
+  .sapMBtnIcon,
+.sapUiSizeCompact
+  .sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMBtnInner
+  .sapMBtnIcon,
+.sapUxAPAnchorBar
+  .sapMBarChild.sapUxAPAnchorBarButton
+  .sapMBtnInner
+  .sapMBtnIcon {
+  color: black !important;
+  font-size: 16px !important;
+}
+
+.custom-contact-title {
+  font-size: 36px;
+  font-family: Helvetica, sans-serif;
+  color: black;
+  max-width: 700px;
+  line-height: 1.8;
+}
+
+.highlightRow {
+  background-color: yellow;
+}
+
+.squareVideo {
+  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.passport-size-canvas {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #000;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: 0 auto;
+  /* Horizontally center the canvas */
+}
+
+#canvasContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.salUploadBtn {
+  width: fit-content !important;
+}
+
+.center-content {
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+}
+
+.centeredTable .sapMListTblCell {
+  text-align: center !important;
+}
+
+.centeredTable .sapMColumnHeader {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.custom-flexbox {
+  margin: 10px 0;
+  margin-right: 10px;
+}
+
+.custom-vbox {
+  align-items: flex-end;
+  width: 100%;
+}
+.rich-vbox {
+  align-items: flex-start;
+  width: 100%;
+}
+
+.rightAlignLabel {
+  text-align: right;
+  margin-right: 5px;
+}
+
+.amountText {
+  text-align: end;
+  min-width: 100px;
+  margin-right: 20px;
+}
+
+.customFormSpacing {
+  margin-bottom: 20px;
+}
+
+.emerContClass {
+  margin-left: 50% !important;
+}
+
+.sapMObjStatusInverted .sapMObjStatusText {
+  padding: 0.1875rem 0.25rem;
+  width: max-content;
+}
+
+.sapMOHR .sapMOHRAttr .sapMObjectAttributeTitle {
+  color: rgb(9, 12, 17);
+}
+
+.sapMOHR .sapMOHRAttr .sapMObjectAttributeDiv > span:only-of-type {
+  color: rgb(250, 144, 106);
+}
+
+.sapMObjStatus > .sapMObjStatusTitle {
+  padding-right: 0.25rem;
+  color: rgb(9, 12, 17);
+}
+
+.centerTable {
+  width: 100% !important;
+  justify-content: center !important;
+}
+
+.centerRow .sapMListTblCell {
+  text-align: center !important;
+}
+
+.boldInput .sapMInputBaseInner {
+  font-weight: bold;
+}
+
+.loginForm {
+  width: 20rem !important;
+  max-width: 20rem !important;
+  color: #000 !important;
+}
+.Login {
+  width: fit-content !important;
+  margin-left: 1.9rem !important;
+}
+.otpclass {
+  margin-left: 0.7rem !important;
+}
+.taskNameColor .sapMObjectAttributeText {
+  color: blue !important;
+}
+
+.customEarningBox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+}
+
+.customDeductionBox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+}
+
+.customNetPayBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+.customEarning {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 0px;
+  background: transparent;
+  border: none;
+  margin-left: 35px;
+}
+
+.customDeduction {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  margin-left: 20px;
+}
+
+.summaryBox {
+  width: 240px;
+  margin: 8px;
+}
+.summaryBox {
+  margin: 0.5rem;
+}
+.boldBlackText {
+  font-weight: bold;
+  color: #000;
+}
+.customPopoverContent {
+  padding: 1rem;
+  background-color: lightskyblue !important;
+  border-radius: 8px;
+}
+.salaryPanelMargin {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 1175px) {
+  .salaryBox,
+  .deductionBox {
+    width: 48% !important;
+  }
+}
+
+@media (max-width: 1174px) {
+  .salaryBox,
+  .deductionBox {
+    width: 100% !important;
+  }
+}
+
+.PayByDateClass {
+  white-space: nowrap !important;
+}
+.sapUiCompFilterBarNonPhone {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(170, 212, 237),
+    rgb(173, 166, 249)
+  );
+  /* background-image: url("../image/Filter.jpg") !important; 
+     background-size: cover; 
+     background-position: center;
+     background-repeat: no-repeat; */
+}
+.sapFDynamicPageTitle {
+  z-index: 4;
+  position: relative;
+  min-height: 3rem;
+  padding: 0.5rem 2rem 0.5rem 3rem;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  box-sizing: border-box;
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(170, 212, 237),
+    rgb(173, 166, 249)
+  ) !important;
+}
+.sapMGHLI {
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(170, 212, 237),
+    rgb(173, 166, 249)
+  ) !important;
+  font-weight: bold;
+  color: #006064;
+}
+
+.rightMarginCustom {
+  margin-right: 40px;
+}
+
+/* .sapMPopover .sapMPopoverScroll {
+  background-image: url("../image/career1.jpg") !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+} */
+.floatingButton {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 50%;
+  height: 80px;
+  width: 110px;
+  padding: 0;
+}
+.responsiveCard {
+  max-width: 700px;  /* upper limit */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* For screens below 768px (mobile/tablet) */
+@media screen and (max-width: 768px) {
+  .responsiveCarousel {
+    width: 20.5rem !important;
+    height: 18.5rem !important;
+  }
+
+  .responsiveCard {
+    width: 90% !important;
+    height: 90% !important;
+  }
+}
+
+/* For desktop: apply fixed sizes */
+@media screen and (min-width: 769px) {
+  .responsiveCarousel {
+    width: 45rem;
+    height: 17.5rem;
+  }
+
+  .responsiveCard {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.myCustomButton {
+  height: 60px !important;
+  width: 345px !important;
+  font-size: 20px !important; 
+  padding: 0 !important;
+}
+
+.myCustomButton .sapMBtnInner {
+  background-color: #141f7d !important; 
+  height: 100% !important;
+  line-height: normal !important;
+  padding: 16px !important;
+  font-size: 24px !important;
+  border-radius: 8px;
+}
+
+.myCustomButton .sapMBtnContent {
+  color: white !important;
+  font-size: 18px;
+}
+
+.myCustomIconBtn {
+  height: 60px !important;
+  width: 60px !important;
+  padding: 0 !important;
+}
+
+.myCustomIconBtn .sapMBtnInner {
+  background-color: white !important;
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 8px;
+  border: 3px solid white !important;
+  border-color: #141f7d !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.myCustomIconBtn .sapMBtnIcon {
+  color: #141f7d !important;
+  font-size: 30px !important;
+  margin-left: -12px !important;
+  margin-top: 4px !important;
+}
+
+.myFormattedText {
+  width: 60%;
+  max-width: 100%;
+  min-width: 280px;
+  font-size: 1rem;
+  line-height: 1.5 !important;
+  font-family: "Helvetica Neue", Arial, sans-serif !important;
+  text-align: justify;
+  margin: 0 auto; /* centers it horizontally */
+  padding: 0;
+  color: #222 !important;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 100% width on mobile */
+@media screen and (max-width: 600px) {
+  .myFormattedText {
+    width: 100% !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+
+/* Paragraphs and lists */
+.myFormattedText p,
+.myFormattedText li {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  color: inherit !important;
+  text-align: justify;
+}
+
+/* Unordered & ordered list */
+.myFormattedText ul,
+.myFormattedText ol {
+  padding-left: 1.5rem !important;
+  margin: 0 0 1rem 0;
+}
+
+/* List items */
+.myFormattedText li {
+  list-style-position: outside;
+}
+
+/* Headings */
+.myFormattedText h1,
+.myFormattedText h2,
+.myFormattedText h3,
+.myFormattedText h4,
+.myFormattedText h5,
+.myFormattedText h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: bold;
+  color: inherit !important;
+}
+
+/* Emphasis */
+.myFormattedText em,
+.myFormattedText i {
+  font-style: italic;
+}
+
+.myFormattedText strong,
+.myFormattedText b {
+  font-weight: bold !important;
+  color: inherit !important;
+}
+
+/* Underline and strike */
+.myFormattedText u {
+  text-decoration: underline;
+}
+
+.myFormattedText s,
+.myFormattedText strike {
+  text-decoration: line-through;
+}
+
+/* Highlight (mark) */
+.myFormattedText mark {
+  background-color: yellow;
+  color: black;
+}
+
+/* Span general styling */
+.myFormattedText span {
+  color: inherit;
+  font-family: inherit;
+}
+
+/* Superscript and subscript */
+.myFormattedText sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.myFormattedText sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+
+/* Code and preformatted */
+.myFormattedText code {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.myFormattedText pre {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  overflow: auto;
+  font-family: monospace;
+}
+
+/* Blockquote */
+.myFormattedText blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid #ccc;
+  color: #555;
+  font-style: italic;
+}
+
+/* Images */
+.myFormattedText img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem 0;
+}
+
+/* Links */
+.myFormattedText a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.myFormattedText a:hover {
+  color: #0056b3;
+}
+
+/* Horizontal Rule */
+.myFormattedText hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}
+
+.myFormattedText .highlight {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}
+
+.blockInputTyping .sapMInputBaseInner {
+  pointer-events: none;
+}
+
+/* Common box */
+.shareItemBox {
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.shareItemBox:hover {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+/* Last item without bottom border */
+.shareItemBoxLast {
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.shareItemBoxLast:hover {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.shareText {
+  margin-left: 0.5rem;
+}
+
+.myAppBackground {
+  background-image: url('../image/background.jpg') !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-attachment: fixed !important; /* Optional: Fixed or scroll */
+  opacity: 1 !important; /* Optional: Adjust if needed for readability */
+}
+
+/* Ensures content is readable over the background */
+.sapMShellContent {
+  background-color: transparent !important;
+}
+
+.myAppBackground::before {
+  content: "" !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1 !important;
+}
+
+.myCustomFilterBar.sapUiCompFilterBarNonPhone {
+  background-image: none !important;
+  background-color: white !important;
+}
+
+.myCustomFilterBar.sapUiCompFilterBarNonPhone .sapMInputBaseInner {
+  background-color: transparent !important; 
+  border: none !important; 
+  box-shadow: none !important; 
+}

@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog title="{i18n>cameraCapture}" >
+        <VBox class="sapUiSmallMargin">
+            <HBox class="sapUiTinyMarginTop">
+                <core:HTML content="&lt;video id='video' autoplay class='squareVideo'&gt;&lt;/video&gt;"/>
+            </HBox>
+             <FlexBox class="sapUiTinyMarginTop" justifyContent="SpaceAround">
+                <Button text="{i18n>Capture}" press="IC_onCapturePress"  type="Accept" width="8rem"/>
+                 <Button text="{i18n>Close}" press="IC_onPressCloseCameraDialog" type="Reject" width="8rem"/>
+            </FlexBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

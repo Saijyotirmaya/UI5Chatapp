@@ -1,0 +1,249 @@
+<core:FragmentDefinition
+    xmlns:uxap="sap.uxap"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog title="{i18n>formCompanyAssest}">
+        <f:SimpleForm
+            id="FCIA_id_SimpleFormChange354wide"
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="4"
+            labelSpanL="3"
+            labelSpanM="4"
+            labelSpanS="12"
+            columnsXL="2"
+            columnsL="2"
+            columnsM="1"
+            singleContainerFullSize="false"
+        >
+            <f:content>
+                <Label text="{i18n>type}" required="true" />
+                <Select id="FCIA_id_type"
+                selectedKey="{CreateIncomeAssetModel>/Type}"
+                 items="{oAssetTypeModel>/}">
+                   <core:Item
+                        key="{oAssetTypeModel>Type}"
+                        text="{oAssetTypeModel>Type}"
+                    />
+                </Select>
+                <Label text="{i18n>pickedBy}" required="true" />
+                <Select
+                    id="FCIA_id_pickedby"
+                    selectedKey="{CreateIncomeAssetModel>/PickedEmployeeName}"
+                    showSecondaryValues="true"
+                    items="{AdminModel>/}"
+                >
+                    <core:ListItem
+                        text="{AdminModel>EmployeeName}"
+                        key="{AdminModel>EmployeeName}"
+                        additionalText="{AdminModel>EmployeeID}"
+                    />
+                </Select>
+                <Label text="{i18n>branch}" required="true" />
+                <ComboBox
+                    id="FCIA_id_branch"
+                    placeholder="Select Branch"
+                    change="FCIA_onbranchchange"
+                    selectionChange="FCIA_onselectionchange"
+                    valueStateText="Select Branch"
+                    value="{CreateIncomeAssetModel>/PickedBranch}"
+                    selectedKey="{CreateIncomeAssetModel>/PickedBranch}"
+                    showSecondaryValues="true"
+                    items="{BaseLocationModel>/}"
+                >
+                    <core:ListItem
+                        key="{BaseLocationModel>city}" 
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+                </ComboBox>
+                <Label text="{i18n>vehicleModel}" required="true" />
+                <Input
+                    id="FCIA_id_model"
+                    value="{CreateIncomeAssetModel>/Model}"
+                    placeholder="Enter Model Name"
+                    valueStateText="Enter Model Name"
+                    liveChange="FCIA_onInputLiveChange"
+                    maxLength="30"
+                />
+               
+                 	<Label text="{i18n>description}" required="true" />
+		          <TextArea id="FCIA_ID_DescriptionTextArea" 
+                  valueStateText="Write A Model Description"
+                  liveChange="FCIA_onDescriptionTextAreaChange"
+                  value="{CreateIncomeAssetModel>/Description}"
+                  placeholder="Enter Description" 
+                  maxLength="250" width="100%" />
+                    <Label text="{i18n>slNo}" required="true" />
+                <Input
+                    id="FCIA_id_slno"
+                    value="{CreateIncomeAssetModel>/SerialNumber}"
+                    valueStateText="Enter Serial Number"
+                    placeholder="Enter Serial Number"
+                    maxLength="25"
+                    liveChange="FCIA_onslnoInputLiveChange"
+           />
+
+                <Label text="{i18n>eqNo}" required="true" />
+                <Input
+                    id="FCIA_id_eqno"
+                    value="{CreateIncomeAssetModel>/EquipmentNumber}"
+                    placeholder="Enter Equipment Number"
+                    valueStateText="Enter Equipment Number"
+                    maxLength="25"
+                    liveChange="FCIA_oneqnolivechange"
+                />
+                     <Label text="{i18n>AssetDate}" required="true" />
+                <DatePicker
+                    id="FCIA_id_Date" 
+                    maxDate="{VisiableModel>/maxDate}"
+                    minDate="{VisiableModel>/minDate}"
+                    value="{CreateIncomeAssetModel>/AssetCreationDate}"
+                    change="FCIA_ondatechange"
+                     valueStateText="Select date"
+                    valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                />
+                <Label text="{i18n>pickedbranch}" required="true" />
+                <ComboBox
+                    id="FCIA_id_pickbranch"
+                    placeholder="Select branch"
+                    change="FCIA_onbranchchange"
+                    selectionChange="FCIA_onselectionchange"
+                    valueStateText="Select Branch"
+                    selectedKey="{CreateIncomeAssetModel>/PickedBranch}"
+                    showSecondaryValues="true"
+                    items="{BaseLocationModel>/}"
+                >
+                    <core:ListItem
+                        key="{BaseLocationModel>city}" 
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+                </ComboBox>
+
+                <Label text="{i18n>assetvalue}" required="true"/>
+                <Input
+                    id="FCIA_id_assetvalue"
+                    value="{CreateIncomeAssetModel>/AssetValue}"
+                    valueStateText="Enter Asset Value"
+                    placeholder="Enter Asset Value"
+                    maxLength="15"
+                    liveChange="FCIA_assetammountlivechange"
+                />
+
+                <Label text="{i18n>currency}" required="true" />
+                <Select
+                    id="FCIA_id_currency"
+                    selectedKey="{CreateIncomeAssetModel>/Currency}"
+                    items="{CurrencyModel>/}"
+                >
+                    <core:Item
+                        text="{CurrencyModel>currency}"
+                        key="{CurrencyModel>currency}"
+                    />
+                </Select>
+                <Label text="{i18n>transferby}"/>
+                <Select
+                    id="FCIA_id_transferBy"
+					required="true"
+                    selectedKey="{CreateIncomeAssetModel>/TransferByName}"
+                    showSecondaryValues="true"
+                    items="{AdminModel>/}"
+                >
+                    <core:ListItem
+                        text="{AdminModel>EmployeeName}"
+                        key="{AdminModel>EmployeeName}"
+                        additionalText="{AdminModel>EmployeeID}"
+                    />
+               </Select>
+                <Label text="{i18n>transferDate}"/>
+                <DatePicker
+                id="FCIA_id_transferdate"
+                required="true"
+                value="{CreateIncomeAssetModel>/TransferDate}"
+                    valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                    valueStateText="Select date"
+                    change="FCIA_ondatechange"
+                />
+                 <Label text="{i18n>transferBranch}"/>
+             <ComboBox
+                    id="FCIA_id_transferbranch"
+                    required="true"
+                    placeholder="Select Branch"
+                    change="FCIA_onbranchchange"
+                    selectionChange="FCIA_onselectionchange"
+                    valueStateText="Select Branch"
+                    value="{CreateIncomeAssetModel>/TransferBranch}"
+                    selectedKey="{CreateIncomeAssetModel>/TransferBranch}"
+                    showSecondaryValues="true"
+                    items="{BaseLocationModel>/}"
+                >
+                    <core:ListItem
+                        key="{BaseLocationModel>city}" 
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+                </ComboBox>
+                 <Label text="{i18n>refrenceNo}" required="true" />
+                <Input
+                    id="FCIA_id_refrenceNo"
+                    value="{CreateIncomeAssetModel>/ReferenceNumber}"
+                    placeholder="Enter Reference Number"
+                    valueStateText="Enter Reference Number"
+                    liveChange="FCIA_onInputLiveChange"
+                    maxLength="30"
+                />
+                
+            </f:content>
+        </f:SimpleForm>
+
+
+            <footer>
+			<Toolbar>
+				<ToolbarSpacer />
+
+            <Button text="Save" 
+             press="FCIA_onsavebuttonpress"
+             type="Accept"
+             id="FCIA_id_saveButton"
+             class="marginRight"
+             />
+               <Button text="Submit" 
+             press="FCIA_onsavebuttonpress"
+             type="Accept"
+             id="FCIA_id_submitButton"
+             class="marginRight"
+             />
+            <Button
+                text="{i18n>Transfer}"
+                press="FCIA_onTransferbuttonpress"
+                type="Accept"
+                id="FCIA_id_transferButton"
+
+
+            />
+
+         <Button
+                text="Picked"
+                press="FCIA_onpickButtonPress"
+                type="Accept"
+                id="FCIA_id_pickButton"
+                visible="false"
+            />
+            <Button
+                text="{i18n>btnCancel}"
+                press="FCIA_onCancelButtonPress"
+                type="Reject"
+                id="FCIA_id_CancelButton"
+             class="marginRight"
+
+            />
+            
+			</Toolbar>
+</footer>
+    </Dialog>
+</core:FragmentDefinition>

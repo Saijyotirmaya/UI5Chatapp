@@ -1,0 +1,466 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.QuotationDashboard"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:filterBar="sap.ui.comp.filterbar"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:g="sap.f"
+    xmlns:com="sap.suite.ui.commons"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:layout="sap.ui.layout"
+>
+    <Page>
+        <headerContent>
+            <Button
+                press="QD_onPressBack"
+                type="Transparent"
+                icon="sap-icon://nav-back"
+            />
+            <Title
+                text="{i18n>qDashboard}"
+                class="boldBlackText"
+            />
+            <ToolbarSpacer />
+        </headerContent>
+        <content>
+            <fb:FilterBar
+                showFilterConfiguration="false"
+                id="QD_id_FilterBar"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                showClearOnFB="false"
+                search=".QD_onSearch"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        name="QuotationDate"
+                        label="{i18n>qDate}"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <DateRangeSelection
+                                id="QD_id_DateRange"
+                                name="QuotationDate"
+                                delimiter="to"
+                                displayFormat="yyyy-MM-dd"
+                                valueFormat="yyyy-MM-dd"
+                            />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </content>
+        <VBox>
+            <g:GridContainer>
+                <g:layout>
+                    <g:GridContainerSettings
+                        columnSize="49.5%"
+                        gap="10px"
+                    />
+                </g:layout>
+                <g:layoutXS>
+                    <g:GridContainerSettings
+                        columnSize="100%"
+                        gap="10px"
+                    />
+                </g:layoutXS>
+                <g:layoutS>
+                    <g:GridContainerSettings
+                        columnSize="100%"
+                        gap="10px"
+                    />
+                </g:layoutS>
+                <g:layoutM>
+                    <g:GridContainerSettings
+                        columnSize="100%"
+                        gap="10px"
+                    />
+                </g:layoutM>
+                <!-- First Chart -->
+                <VBox
+                    height="25rem"
+                    class="sapUiResponsiveMargin"
+                    width="auto"
+                >
+                    <com:ChartContainer
+                        showFullScreen="true"
+                        showPersonalization="false"
+                        autoAdjustHeight="false"
+                    >
+                        <com:dimensionSelectors>
+                            <FlexBox
+                                justifyContent="End"
+                                alignItems="Center"
+                            >
+                                <Button
+                                    icon="sap-icon://pie-chart"
+                                    press="QD_onPressPie"
+                                />
+                                <ToolbarSeparator />
+                                <Button
+                                    icon="sap-icon://bar-chart"
+                                    press="QD_onPressColumn"
+                                />
+                            </FlexBox>
+                            <ToolbarSeparator />
+                            <ToolbarSpacer />
+                            <ToolbarSpacer />
+                        </com:dimensionSelectors>
+                        <com:content>
+                            <com:ChartContainerContent>
+                                <com:content>
+                                    <viz:VizFrame
+                                        height="21rem"
+                                        width="50rem"
+                                        id="QD_id_VizFrame1"
+                                        busyIndicatorDelay="0"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        vizType="{FirstChart>/type}"
+                                    >
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset
+                                                data="{DateRangePieChartModel>/items}"
+                                            >
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition
+                                                        name="Status"
+                                                        value="{DateRangePieChartModel>Status}"
+                                                    />
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition
+                                                        name="No of Quotations"
+                                                        value="{DateRangePieChartModel>Count}"
+                                                    />
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="No of Quotations"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                uid="categoryAxis"
+                                                type="Dimension"
+                                                values="Status"
+                                            />
+                                        </viz:feeds>
+                                        <viz:dependents>
+                                            <viz:Popover
+                                                id="QD_id_Popover1"
+                                                busyIndicatorDelay="0"
+                                            />
+                                        </viz:dependents>
+                                    </viz:VizFrame>
+                                </com:content>
+                            </com:ChartContainerContent>
+                        </com:content>
+                    </com:ChartContainer>
+                </VBox>
+                <!-- Second chart -->
+                <VBox
+                    height="25rem"
+                    class="sapUiResponsiveMargin"
+                    width="auto"
+                >
+                    <com:ChartContainer
+                        showFullScreen="true"
+                        showPersonalization="false"
+                        autoAdjustHeight="false"
+                    >
+                        <com:dimensionSelectors>
+                            <FlexBox
+                                justifyContent="End"
+                                alignItems="Center"
+                            >
+                                <Button
+                                    icon="sap-icon://line-chart"
+                                    press="QD_onPressLine"
+                                />
+                                <ToolbarSeparator />
+                                <Button
+                                    icon="sap-icon://donut-chart"
+                                    press="QD_onPressDonut"
+                                />
+                            </FlexBox>
+                            <ToolbarSeparator />
+                            <ToolbarSpacer />
+                            <ToolbarSpacer />
+                        </com:dimensionSelectors>
+                        <com:content>
+                            <com:ChartContainerContent>
+                                <com:content>
+                                    <viz:VizFrame
+                                        height="21rem"
+                                        width="50rem"
+                                        id="QD_id_VizFrameAll"
+                                        busyIndicatorDelay="0"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        vizType="{FirstChart>/type1}"
+                                    >
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset
+                                                data="{DateRangeBarChartModel>/items}"
+                                            >
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition
+                                                        name="Branch's"
+                                                        value="{DateRangeBarChartModel>Branch}"
+                                                    />
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition
+                                                        name="No of Quotations"
+                                                        value="{LeaveAllStatus>Count}"
+                                                    />
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="No of Quotations"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                uid="categoryAxis"
+                                                type="Dimension"
+                                                values="Branch's"
+                                            />
+                                        </viz:feeds>
+                                        <viz:dependents>
+                                            <viz:Popover
+                                                id="QD_id_PieChartAll"
+                                                busyIndicatorDelay="0"
+                                            />
+                                        </viz:dependents>
+                                    </viz:VizFrame>
+                                </com:content>
+                            </com:ChartContainerContent>
+                        </com:content>
+                    </com:ChartContainer>
+                </VBox>
+                <!-- thried Chart -->
+                <VBox
+                    height="25rem"
+                    class="sapUiResponsiveMargin"
+                    width="auto"
+                >
+                    <com:ChartContainer
+                        showFullScreen="true"
+                        showPersonalization="false"
+                        autoAdjustHeight="false"
+                    >
+                        <com:dimensionSelectors>
+                            <FlexBox
+                                justifyContent="End"
+                                alignItems="Center"
+                            >
+                                <!-- <VBox > -->
+                                <Label text="{i18n>qIssuedBy} " />
+                                <Text
+                                    text=" "
+                                    width="8px"
+                                />
+                                <ComboBox
+                                    id="QD_id_SecondQuoIssuedBy"
+                                    class="marginRigth"
+                                    change="QD_onChangeCurrentMonthIssuedByFirst"
+                                    editable="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'CEO' ? true : false }"
+                                    name="Company"
+                                    items="{
+										path: 'EmpModel>/',
+										sorter: {
+											path: 'Branch',
+											descending: false,
+											group: true
+										},
+										length: 1000
+									}"
+                                    showSecondaryValues="true"
+                                >
+                                    <core:ListItem
+                                        key="{EmpModel>EmployeeID}"
+                                        text="{EmpModel>EmployeeName}"
+                                        additionalText="{EmpModel>EmployeeID}"
+                                    />
+                                </ComboBox>
+                                <!-- </VBox> -->
+                            </FlexBox>
+                        </com:dimensionSelectors>
+                        <com:content>
+                            <com:ChartContainerContent>
+                                <com:content>
+                                    <viz:VizFrame
+                                        height="21rem"
+                                        width="50rem"
+                                        id="QD_id_VizFrame"
+                                        busyIndicatorDelay="0"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        vizType="bar"
+                                    >
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset
+                                                data="{GetPieChartCurrentMonth>/items}"
+                                            >
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition
+                                                        name="Status"
+                                                        value="{GetPieChartCurrentMonth>Status}"
+                                                    />
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition
+                                                        name="No of Quotations"
+                                                        value="{GetPieChartCurrentMonth>Count}"
+                                                    />
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="No of Quotations"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                uid="categoryAxis"
+                                                type="Dimension"
+                                                values="Status"
+                                            />
+                                        </viz:feeds>
+                                        <viz:dependents>
+                                            <viz:Popover
+                                                id="QD_id_Popover3"
+                                                busyIndicatorDelay="0"
+                                            />
+                                        </viz:dependents>
+                                    </viz:VizFrame>
+                                </com:content>
+                            </com:ChartContainerContent>
+                        </com:content>
+                    </com:ChartContainer>
+                </VBox>
+
+                <VBox
+                    height="25rem"
+                    class="sapUiResponsiveMargin"
+                    width="auto"
+                >
+                    <com:ChartContainer
+                        showFullScreen="true"
+                        showPersonalization="false"
+                        autoAdjustHeight="false"
+                    >
+                        <com:dimensionSelectors>
+                            <FlexBox
+                                justifyContent="End"
+                                alignItems="Center"
+                            >
+                                <!-- <VBox > -->
+                                <Label text="{i18n>qIssuedBy}" />
+                                <Text
+                                    text=" "
+                                    width="8px"
+                                />
+                                <ComboBox
+                                    id="QD_id_QuoIssuedByFirst"
+                                    change="QD_onChangeCurrentMonthIssuedBy"
+                                    name="Company"
+                                    editable="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'CEO' ? true : false }"
+                                    items="{
+										path: 'EmpModel>/',
+										sorter: {
+											path: 'Branch',
+											descending: false,
+											group: true
+										},
+										length: 1000
+									}"
+                                    showSecondaryValues="true"
+                                >
+                                    <core:ListItem
+                                        key="{EmpModel>EmployeeID}"
+                                        text="{EmpModel>EmployeeName}"
+                                        additionalText="{EmpModel>EmployeeID}"
+                                    />
+                                </ComboBox>
+                                <!-- </VBox> -->
+                            </FlexBox>
+                        </com:dimensionSelectors>
+                        <com:content>
+                            <com:ChartContainerContent>
+                                <com:content>
+                                    <viz:VizFrame
+                                        height="21rem"
+                                        width="50rem"
+                                        id="QD_id_VizFrame2"
+                                        busyIndicatorDelay="0"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        vizType="{MonthlyBar>/Name}"
+                                    >
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset
+                                                data="{GetBarChatCurrentMonth>/items}"
+                                            >
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition
+                                                        name="Day's"
+                                                        value="{GetBarChatCurrentMonth>Date}"
+                                                    />
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition
+                                                        name="No of Quotations"
+                                                        value="{GetBarChatCurrentMonth>Count}"
+                                                    />
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="No of Quotations"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                uid="categoryAxis"
+                                                type="Dimension"
+                                                values="Day's"
+                                            />
+                                        </viz:feeds>
+                                        <viz:dependents>
+                                            <viz:Popover
+                                                id="QD_id_Popover2"
+                                                busyIndicatorDelay="0"
+                                            />
+                                        </viz:dependents>
+                                    </viz:VizFrame>
+                                </com:content>
+                            </com:ChartContainerContent>
+                        </com:content>
+                    </com:ChartContainer>
+                </VBox>
+            </g:GridContainer>
+        </VBox>
+
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

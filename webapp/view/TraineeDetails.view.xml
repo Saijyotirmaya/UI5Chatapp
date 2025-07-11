@@ -1,0 +1,181 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.TraineeDetails"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page id="TD_id_PageCreate" title="{i18n>headerTrainee}" navButtonPress="TD_onPressback" showNavButton="true">
+	<headerContent>
+	<Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</headerContent>
+		<content>
+			<Wizard id="TD_id_Wizard" showNextButton="true" busyIndicatorDelay="0" >
+				<WizardStep id="TD_id_StepOne" title="{i18n>traineeEdit}" validated="true" complete="TD_StepTwo">
+					<f:SimpleForm 
+            layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			editable="true"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false">
+						<f:content >
+							<Label text="{i18n>traineeName}" required="true" />
+							<HBox width="100%" justifyContent="Start" alignItems="Center">
+								<VBox width="23%">
+									<Select change="TD_CreateSalutationChange"
+                                               id="TD_id_NameSalutation"
+                                               selectedKey="{oTraineeDetails>/NameSalutation}"
+                                               items="{Salutation>/salutation}"
+                                               width="100%">
+										<core:Item key="{Salutation>text}" text="{Salutation>text}"/>
+									</Select>
+								</VBox>
+								<VBox width="76%">
+									<Input value="{oTraineeDetails>/TraineeName}" maxLength="50" placeholder="{i18n>placeTraineeName}" id="TD_id_Name" liveChange="TD_validateName" class="sapUiTinyMarginBegin" valueStateText="{i18n>placeTraineeName}"/>
+								</VBox>
+							</HBox>
+								<Label text="{i18n>gender}" required="true"/>
+											<Select items="{GenderModel>/}" id="TD_id_Gender" enabled="false" selectedKey="{oTraineeDetails>/Gender}" >
+												<core:Item key="{GenderModel>Value}" text="{GenderModel>Value}" />
+											</Select>
+							<Label text="{i18n>reportingManager}" required="true" />
+							<ComboBox showSecondaryValues="true"  change="TD_validateCombo"  selectionChange="onManagerSelectionChange"  selectedKey="1" value="{oTraineeDetails>/ReportingManager}" items="{empModel>/}" id="TD_id_ReportingManager"  valueStateText="{i18n>reportingManagerVs}" placeholder="{i18n>reportingManagerVs}">
+							<core:ListItem key="{empModel>EmployeeID}" text="{empModel>EmployeeName}" additionalText="{empModel>EmployeeID}" />
+							</ComboBox>
+							<Label text="{i18n>emailId}" required="true" />
+							<Input value="{oTraineeDetails>/TraineeEmail}" maxLength="50" id="TD_id_EmailID" placeholder="{i18n>placeEmailId}" liveChange="TD_validateEmail" valueStateText="{i18n>emailValueState}"/>
+							<Label text="{i18n>trainingType}" required="true" />
+							<ComboBox  id="TD_id_TrainingType" placeholder="{i18n>selectTType}"  value="{oTraineeDetails>/Type}"   change="onTrainingTypeChange"  width="100%" items="{TypeModel>/}" valueStateText="{i18n>selectTType}">
+								<core:ListItem key="{TypeModel>ID}" text="{TypeModel>Type}" />
+							</ComboBox>
+							<Label ></Label>
+							<Label id="TD_id_TrainingAmountLabel" text="{i18n>placeAmount}" visible="false"  required="true"/>
+							<HBox id="TD_id_TrainingDetailsBox" width="100%" justifyContent="Start" alignItems="Center" visible="false">
+								<VBox width="70%">
+									<Input 
+											id="TD_id_TrainingAmount" 
+											value="{oTraineeDetails>/Amount}" 
+											placeholder="{i18n>placeAmount}" 
+											maxLength="15" 
+											liveChange="TD_validateAmount" 
+											valueStateText="{i18n>ammountValuState}" 
+											width="100%" />
+								</VBox>
+								<VBox width="30%" class="sapUiTinyMarginBegin">
+									<Select 
+											id="TD_id_Currency" 
+											items="{CurrencyModel>/}" 
+											selectedKey="{oTraineeDetails>/Currency}" 
+											width="100%">
+										<core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+									</Select>
+								</VBox>
+							</HBox>
+							<Label text="{i18n>traineeDuration}" required="true" />
+							<Select  selectedKey="{oTraineeDetails>/TrainingDuration}" items="{DurationTraining>/duration}" id="TD_id_TDuration" >
+								<core:Item key="{DurationTraining>Code}" text="{DurationTraining>Code}" />
+							</Select>
+							<Label text="{i18n>releaseDateT}"   required="true" />
+							<DatePicker  value="{oTraineeDetails>/ReleaseDate}" id="TD_id_ReleaseDate"  change="TD_validateDate"  displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" valueStateText="{i18n>dateValueState}"/>
+							<Label text="{i18n>joiningDate}"   required="true" />
+							<DatePicker value="{oTraineeDetails>/JoiningDate}" id="TD_id_JoiningDate"  change="TD_validateDate"  displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" valueStateText="{i18n>dateValueState}"/>
+							<Label text="{i18n>expCountry}" required="true"/>
+				            <ComboBox change="TD_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="TD_Id_Country" items="{path:'CountryModel>/',length:1000}" value="{oTraineeDetails>/Country}" showSecondaryValues="true" selectedKey="1"  >
+					        <core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+				            </ComboBox>
+							<Label text="{i18n>baseLocation}" required="true" />
+							<ComboBox items="{BaseLocationModel>/}"  showSecondaryValues="true" value="{oTraineeDetails>/BaseLocation}" id="TD_id_Location" valueStateText="{i18n>selectBase}" change="TD_validateCombo" selectedKey="{employeeModel>/BaseLocation}">
+							<items>
+						    <core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+							</items>
+				            </ComboBox>
+										<!-- <Input id="TD_id_BranchCode" value="{oTraineeDetails>BranchCode}"  editable="false" />  -->
+                          <Label text="{i18n>mobileNo}" required="true" />
+							<HBox width="100%" justifyContent="Start" alignItems="Center">
+								<VBox width="23%">
+									<ComboBox value="{oTraineeDetails>/STDCode}" showSecondaryValues= "true" id="TD_id_STDCode" items="{codeModel>/}" filterSecondaryValues="true" change="TD_validateCombo" valueStateText="{i18n>combovalueState}">
+					<core:ListItem key="{codeModel>country}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}"/>
+				    </ComboBox>
+								</VBox>
+								<VBox width="76%">
+				<Input value="{oTraineeDetails>/MobileNumber}" placeholder="{i18n>mobileNo}" liveChange="TD_validateMobile" maxLength="10" id="TD_id_Mobile" valueStateText="{i18n>mobileNoValueState}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+							</HBox>
+						</f:content>
+					</f:SimpleForm>
+				</WizardStep>
+				<WizardStep id="TD_id_StepTwo"
+                            title="{i18n>review}"
+                            validated="true">
+					<f:SimpleForm                    
+                                editable="true"
+                                layout="ColumnLayout"
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="0"  
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="2"    
+                                columnsM="1">
+						<f:content>
+							<Label text="{i18n>traineeName}"/>
+							<Text text="{= ${oTraineeDetails>/NameSalutation} + ' ' + ${oTraineeDetails>/TraineeName}}"/>
+							<Label text="{i18n>gender}"/>
+							<Text text="{oTraineeDetails>/Gender}"/>
+							<Label text="{i18n>reportingManager}" />
+							<Text text="{oTraineeDetails>/ReportingManager}"/>
+							<Label text="{i18n>emailId}" />
+							<Text  text="{oTraineeDetails>/TraineeEmail}"/>
+							<Label text="{i18n>trainingType}" />
+							<Text  text="{oTraineeDetails>/Type}"/>
+							<!-- Stipend Amount -->
+                            <Label text="{i18n>amount}" />
+                            <Text text="{oTraineeDetails>/Currency} {path:'oTraineeDetails>/Amount', formatter: '.Formatter.CurrencyInINR'}"/>	 
+							<Label text="{i18n>releaseDateT}" />
+							<Text text="{oTraineeDetails>/ReleaseDate}"/>
+							<Label text="{i18n>joiningDate}" />
+							<Text text="{oTraineeDetails>/JoiningDate}"/>
+							<Label text="{i18n>traineeDuration}" />
+							<Text text="{oTraineeDetails>/TrainingDuration}"/>
+							<Label text="{i18n>expCountry}" />
+							<Text text="{oTraineeDetails>/Country}"/>
+							<Label text="{i18n>baseLocation}" />
+							<Text text="{oTraineeDetails>/BaseLocation}"/>
+							<Label text="{i18n>mobileNo}" />
+							<Text text="{oTraineeDetails>/STDCode} {oTraineeDetails>/MobileNumber}"/>
+						</f:content>
+					</f:SimpleForm>
+				</WizardStep>
+			</Wizard>
+		</content>
+		<footer>
+			<Bar>
+				<contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</contentLeft>
+				<contentRight>
+					<Button text="{i18n>submit}" press="TD_onSubmitData" id="TD_id_Submit" type="Accept"  enabled="false"/>
+				</contentRight>
+			</Bar>
+		</footer>
+	</Page>
+	<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.TraineeUpdate" type="XML" />
+</mvc:View>

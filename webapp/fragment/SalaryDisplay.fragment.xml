@@ -1,0 +1,117 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	
+	<l:VerticalLayout width="100%">
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow>
+			
+				<l:BlockLayoutCell  width="2">
+					<f:SimpleForm
+						editable="false"
+						title="{i18n>monthlyComponents}"
+						layout="ResponsiveGridLayout"
+						labelSpanL="4"
+						labelSpanM="4"
+						columnsL="1"
+						columnsM="1">
+						
+						<f:content>
+							<!-- <core:Title text="{i18n>monthlyComponents}" /> -->
+							
+							<Label text="{i18n>basicSalary}" />
+							<Text text="{path:'salaryData>/BasicSalary', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>hra}" />
+							<Text text="{path:'salaryData>/HRA', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>eplyrPF}" />
+							<Text text="{path:'salaryData>/EmployerPF', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>medicalInsurance}" />
+							<Text text="{path:'salaryData>/MedicalInsurance', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>gratuity}" />
+							<Text text="{path:'salaryData>/Gratuity', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>SpecailAllowance}" />
+							<Text text="{path:'salaryData>/SpecailAllowance', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>Total}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/Total', formatter: '.Formatter.fromatNumber'}" />
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+
+				<!-- Deduction Block -->
+				<l:BlockLayoutCell  width="2">
+					<f:SimpleForm
+					title="{i18n>deduction}"
+						editable="false"
+						layout="ResponsiveGridLayout"
+						labelSpanL="4"
+						labelSpanM="4"
+						columnsL="1"
+						columnsM="1">
+						
+						<f:content>
+							<!-- <core:Title text="{i18n>deduction}" /> -->
+							
+							<Label text="{i18n>providentFund}" />
+							<Text text="{path:'salaryData>/EmployeePF', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>performanceTax}" />
+							<Text text="{path:'salaryData>/PT', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>incomeTax}" />
+							<Text text="{path:'salaryData>/IncomeTax', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>totalDeductionAmount}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/TotalDeduction', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>variablePayTotal}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/VariablePay', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>grossPayTotal}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/GrossPay', formatter: '.Formatter.fromatNumber'}" />
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+
+				<!-- Summary Block -->
+				<l:BlockLayoutCell  width="2">
+					<f:SimpleForm
+						editable="false"
+						layout="ResponsiveGridLayout"
+						labelSpanL="4"
+						title="{i18n>summary}"
+						labelSpanM="4"
+						columnsL="1"
+						columnsM="1">
+						
+						<f:content>
+							<Label text="{i18n>yearlyGrossPay}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/GrossPay', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>yearlyDeduction}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/TotalDeduction', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>EmpOfferVariablePay}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/VariablePay', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>joiningBonus}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/JoiningBonus', formatter: '.Formatter.fromatNumber'}" />
+							
+							<Label text="{i18n>costOfCompany}" class="boldBlackText" />
+							<Text text="{path:'salaryData>/CostofCompany', formatter: '.Formatter.fromatNumber'}" />
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</l:VerticalLayout>
+</c:FragmentDefinition>

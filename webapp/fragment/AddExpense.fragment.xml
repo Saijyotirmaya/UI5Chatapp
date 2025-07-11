@@ -1,0 +1,81 @@
+	
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:rich="sap.ui.richtexteditor"
+	xmlns:core="sap.ui.core">
+	<Dialog
+        title="{i18n>expCreateTitle}">
+		<f:SimpleForm id="Exp_id_SimpleFrom"
+            editable="true"
+                                    layout="ColumnLayout"
+                                    labelSpanXL="12"
+                                    labelSpanL="12"
+                                    labelSpanM="12"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="0"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="2"
+                                    columnsL="2"
+                                    columnsM="1">
+			<f:content>
+				<!-- Employee ID -->
+				<Label text="{i18n>employeeID}"/>
+				<Input  value="{CreateExpenseModel>/EmployeeID}" editable="false"/>
+				<!-- EmployeeName ID -->
+				<Label text="{i18n>employeeName}"/>
+				<Input  value="{CreateExpenseModel>/EmployeeName}" editable="false"/>
+				<!-- Expense Name -->
+				<Label text="{i18n>expExpenseName}" required="true"/>
+				<Input value="{CreateExpenseModel>/ExpenseName}" valueStateText="{i18n>expenseNamePlaceholder}" id="exp-Id-ExpenseName" liveChange="Exp_onLiveExpenseName" placeholder="{i18n>expenseNamePlaceholder}" change="onInputChange" maxLength="50" />
+				<!-- Start Date -->
+				<Label text="{i18n>startDate}" required="true" />
+				<DatePicker id="exp-Id-StartDate" minDate="{viewModel>/finacialStart}" maxDate="{viewModel>/minDate}" valueStateText="{i18n>dateValueState}" value="{CreateExpenseModel>/ExpStartDate}" valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" change="Exp_onDatePickerChange"/>
+				<!-- End Date -->
+				<Label text="{i18n>endDate}" required="true" />
+				<DatePicker id="exp-Id-EndDate" maxDate="{viewModel>/finacialEnd}" valueStateText="{i18n>dateValueState}" value="{CreateExpenseModel>/ExpEndDate}" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" change="Exp_onEndDateChange" />
+				<!-- Travel Allowance -->
+				<Label text="{i18n>expTravelAllowance}" required="true"></Label>
+				<Select id="exp-Id-TravelAllowance" showSecondaryValues="true"  selectedKey="{CreateExpenseModel>/TravelAllowance}">
+					<core:Item key="{i18n>no}" text="{i18n>no}" />
+					<core:Item key="{i18n>yes}" text="{i18n>yes}" />
+				</Select>
+				<!-- Country -->
+				<Label text="{i18n>expCountry}" required="true"/>
+				<ComboBox change="Exp_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="exp-Id-Country" items="{path:'CountryModel>/',length:1000}" selectedKey="{CreateExpenseModel>/Country}" showSecondaryValues="true">
+					<core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+				</ComboBox>
+				<!-- Source -->
+				<Label text="{i18n>expSource}"  required="true"/>
+				<ComboBox change="Exp_onChangeSource" valueStateText="{i18n>expValStaSource}" id="exp-Id-Source" items="{BaseLocationModel>/}"  value="{CreateExpenseModel>/Source}" >
+					<core:ListItem key="{BaseLocationModel>CountryCode}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+				</ComboBox>
+				<!-- Destination -->
+				<Label text="{i18n>expDestination}" required="{viewModel>/required}"/>
+				<ComboBox change="Exp_onChangeDestination" valueStateText="{i18n>expValStaDestination}" id="exp-Id-Destination" items="{BaseLocationModel>/}"  value="{CreateExpenseModel>/Destination}"  >
+					<core:ListItem key="{BaseLocationModel>CountryCode}" text="{BaseLocationModel>city}" additionalText="{CreateExpenseModel>branchCode}"/>
+				</ComboBox>
+				<!-- Cost Center -->
+				<Label text="{i18n>expCostCenter}" required="true"/>
+				<Select items="{Costcenter>/Costcenter}" id="exp-id-CostCenter" selectedKey="{CreateExpenseModel>/CostCenter}" >
+					<core:Item key="{Costcenter>Value}" text="{Costcenter>Value}" />
+				</Select>
+				<!-- Trip Type -->
+				<Label text="{i18n>expExpenseType}" required="true"/>
+				<Select items="{TripType>/}" id="exp-Id-ExpenseType" selectedKey="{CreateExpenseModel>/TripType}" change="Exp_onChangeExpenseType">
+					<core:Item key="{TripType>Name}" text="{TripType>Name}" />
+				</Select>
+				<Label text="{i18n>expEmployeeRemark}" required="true"/>
+				<TextArea liveChange="Exp_onChangeEmployeeRemark" valueStateText="{i18n>expValStaEmployeeRemark}" id="exp-Id-EmployeeRemark" rows="2" value="{CreateExpenseModel>/Comments}" placeholder="{i18n>expValStaEmployeeRemark}" maxLength="1000" />
+			</f:content>
+		</f:SimpleForm>
+		<!-- Buttons for Submit and Close actions -->
+		<FlexBox justifyContent="End" width="100%">
+			<Button text="{i18n>expCreateBtn}" type="Accept" press="Exp_Frg_onPressSubmit" class="sendMail" />
+			<Button text="{i18n>close}" type="Reject" class="sendMail" press="Exp_Frg_onPressClose" />
+		</FlexBox>
+	</Dialog>
+</core:FragmentDefinition>

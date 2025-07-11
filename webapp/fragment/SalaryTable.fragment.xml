@@ -1,0 +1,536 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:filterbar="sap.ui.comp.filterbar"
+    xmlns:u="sap.ui.unified"
+>
+    <filterbar:FilterBar
+        useToolbar="false"
+        showClearOnFB="false"
+        showGoOnFB="false"
+        showFilterConfiguration="false"
+        class="sapUiTinyMargin"
+    >
+        <filterbar:filterGroupItems>
+            <filterbar:FilterGroupItem
+                name="Branch"
+                label="{i18n>branch} "
+                groupName="Group1"
+                visibleInFilterBar="true"
+            >
+                <filterbar:control>
+                    <ComboBox
+                        busyIndicatorDelay="0"
+                        showClearIcon="true"
+                        id="FST_id_FilterBranch"
+                        name="Branch"
+                        items="{
+                                path: 'Payroll>/BaseLocationData',
+                                length: 1000
+                            }"
+                        change=".FST_onEnableImport"
+                        showSecondaryValues="true"
+                    >
+                        <core:ListItem
+                            key="{Payroll>branchCode}"
+                            text="{Payroll>city}"
+                            additionalText="{Payroll>branchCode}"
+                        />
+                    </ComboBox>
+                </filterbar:control>
+            </filterbar:FilterGroupItem>
+            <filterbar:FilterGroupItem
+                name="monthYearPicker"
+                label="{i18n>monthAndYear} "
+                groupName="Group1"
+                visibleInFilterBar="true"
+            >
+                <filterbar:control>
+                    <DatePicker
+                        id="FST_id_MonthYearPicker"
+                        value="{
+                                path: '',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {
+                                    pattern: 'MM-yyyy'
+                                }
+                            }"
+                        displayFormat="MM-yyyy"
+                        placeholder="MM-yyyy"
+                        change=".FST_onEnableImport"
+                    />
+                </filterbar:control>
+            </filterbar:FilterGroupItem>
+            <filterbar:FilterGroupItem
+                name="uploadBtn"
+                label=""
+                groupName="Group1"
+                visibleInFilterBar="{Payroll>/ShowOnGenerate}"
+            >
+                <filterbar:control>
+                    <u:FileUploader
+                        class="salUploadBtn"
+                        id="FST_id_ImportBtn"
+                        buttonText="{i18n>import}"
+                        sameFilenameAllowed="true"
+                        buttonOnly="true"
+                        fileType="XLSX,xlsx,XLS,xls"
+                        style="Emphasized"
+                        icon="sap-icon://sys-next-page"
+                        change="FST_onUpload"
+                    />
+                </filterbar:control>
+            </filterbar:FilterGroupItem>
+            <filterbar:FilterGroupItem
+                name="goBtn"
+                label=""
+                groupName="Group1"
+                visibleInFilterBar="{Payroll>/ShowOnPayroll}"
+            >
+                <filterbar:control>
+                    <Button
+                        id="MP_id_GoBtn"
+                        class="salUploadBtn"
+                        type="Emphasized"
+                        text="Go"
+                        press="MP_onPressGo"
+                    />
+                </filterbar:control>
+            </filterbar:FilterGroupItem>
+        </filterbar:filterGroupItems>
+    </filterbar:FilterBar>
+    <ScrollContainer
+        height="100%"
+        width="100%"
+        vertical="true"
+        focusable="true"
+    >
+        <Table
+            class="sapUiTinyMargin"
+            alternateRowColors="true"
+            busyIndicatorDelay="0"
+            width="300em"
+            id="id_Table"
+            items="{Payroll>/TableData}"
+            growing="true"
+            growingThreshold="50"
+        >
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title
+                        text="{i18n>salTableTitle} ({Payroll>/TableRowCount})"
+                        level="H2"
+                    />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column width="10%">
+                    <Text text="{i18n>employeeID}" />
+                </Column>
+                <Column width="25%">
+                    <Text text="{i18n>employeeName}" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay1" text="1" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay2" text="2" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay3" text="3" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay4" text="4" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay5" text="5" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay6" text="6" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay7" text="7" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay8" text="8" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay9" text="9" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay10" text="10" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay11" text="11" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay12" text="12" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay13" text="13" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay14" text="14" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay15" text="15" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay16" text="16" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay17" text="17" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay18" text="18" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay19" text="19" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay20" text="20" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay21" text="21" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay22" text="22" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay23" text="23" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay24" text="24" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay25" text="25" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay26" text="26" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay27" text="27" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay28" text="28" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay29" text="29" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay30" text="30" />
+                </Column>
+                <Column
+                    hAlign="Center"
+                    width="5%"
+                >
+                    <Text id="idDay31" text="31" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>totalPresent}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>totalAbsent}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>actualAbsent}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>totalLate}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>totalHalfDay}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>totalSunday}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>presentOnSunday}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>payDays}" />
+                </Column>
+                <Column
+                    width="12%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>basic}" />
+                </Column>
+                <Column
+                    width="12%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>hra}" />
+                </Column>
+                <Column
+                    width="12%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>eplyrPF}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>eplyrESI}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>medicalInsurance}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>specialAllowence}" />
+                </Column>
+                <Column
+                    width="9%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>advance}" />
+                </Column>
+                <Column
+                    width="9%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>tds}" />
+                </Column>
+                <Column
+                    width="9%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>gratuity}" />
+                </Column>
+                <Column
+                    width="12%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>eplyePF}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>eplyeESI}" />
+                </Column>
+                <Column
+                    width="8%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>pt}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>advanceDeduction}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>variablePay}" />
+                </Column>
+                <Column
+                    width="10%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>sd}" />
+                </Column>
+                <Column
+                    width="9%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>other}" />
+                </Column>
+                <Column
+                    width="12%"
+                    hAlign="End"
+                >
+                    <Text text="{i18n>grossPay}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text text="{Payroll>EmployeeID}" />
+                        <Text text="{Payroll>EmployeeName}" />
+                        <Text text="{Payroll>Day1}" />
+                        <Text text="{Payroll>Day2}" />
+                        <Text text="{Payroll>Day3}" />
+                        <Text text="{Payroll>Day4}" />
+                        <Text text="{Payroll>Day5}" />
+                        <Text text="{Payroll>Day6}" />
+                        <Text text="{Payroll>Day7}" />
+                        <Text text="{Payroll>Day8}" />
+                        <Text text="{Payroll>Day9}" />
+                        <Text text="{Payroll>Day10}" />
+                        <Text text="{Payroll>Day11}" />
+                        <Text text="{Payroll>Day12}" />
+                        <Text text="{Payroll>Day13}" />
+                        <Text text="{Payroll>Day14}" />
+                        <Text text="{Payroll>Day15}" />
+                        <Text text="{Payroll>Day16}" />
+                        <Text text="{Payroll>Day17}" />
+                        <Text text="{Payroll>Day18}" />
+                        <Text text="{Payroll>Day19}" />
+                        <Text text="{Payroll>Day20}" />
+                        <Text text="{Payroll>Day21}" />
+                        <Text text="{Payroll>Day22}" />
+                        <Text text="{Payroll>Day23}" />
+                        <Text text="{Payroll>Day24}" />
+                        <Text text="{Payroll>Day25}" />
+                        <Text text="{Payroll>Day26}" />
+                        <Text text="{Payroll>Day27}" />
+                        <Text text="{Payroll>Day28}" />
+                        <Text text="{Payroll>Day29}" />
+                        <Text text="{Payroll>Day30}" />
+                        <Text text="{Payroll>Day31}" />
+                        <Text text="{Payroll>TotalPresent}" />
+                        <Text text="{Payroll>TotalAbsent}" />
+                        <Text text="{Payroll>ActualAbsent}" />
+                        <Text text="{Payroll>TotalLate}" />
+                        <Text text="{Payroll>TotalHalf}" />
+                        <Text text="{Payroll>TotalSun}" />
+                        <Text text="{Payroll>TotalSunP}" />
+                        <Text text="{Payroll>PayDays}" />
+                        <Text text="{Payroll>Basic}" />
+                        <Text text="{Payroll>HRA}" />
+                        <Text text="{Payroll>EplyrPF}" />
+                        <Text text="{Payroll>EplyrESI}" />
+                        <Text text="{Payroll>MedInsurance}" />
+                        <Text text="{Payroll>SpecAllowance}" />
+                        <Text text="{Payroll>Advance}" />
+                        <Text text="{Payroll>TDS}" />
+                        <Text text="{Payroll>Gratuity}" />
+                        <Text text="{Payroll>EplyePF}" />
+                        <Text text="{Payroll>EplyeESI}" />
+                        <Text text="{Payroll>PT}" />
+                        <Text text="{Payroll>AdvanceDeduction}" />
+                        <Text text="{Payroll>VariablePay}" />
+                        <Text text="{Payroll>SD}" />
+                        <Text text="{Payroll>Other}" />
+                        <Text text="{Payroll>GrossPay}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </ScrollContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,105 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.MyInbox"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar">
+	<Page id="MI_id_MyInboxPage">
+		<headerContent>
+	    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<fb:FilterBar  class="sapUiTinyMargin" clear="MI_onClearEmployeeDetails" id="MI_id_FilterBar" persistencyKey="myPersKey" useToolbar="false" showClearOnFB="true" search="MI_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="EmpID" label="{i18n>employeeID}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox  showSecondaryValues= "true"  items="{oModelEmp>/}" change="" id="MI_id_EmpIDFilter" showClearIcon="true">
+								<core:ListItem key="{oModelEmp>EmpID}" text="{oModelEmp>EmpID}" additionalText="{oModelEmp>EmpName}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="Type" label="{i18n>type}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<MultiComboBox
+							id="MI_id_TypeFilter"
+							selectionChange="MI_onSelectionChangeType"
+							items="{oTypeModel>/}">
+								<core:Item key="{oTypeModel>type}" text="{oTypeModel>type}"/>
+							</MultiComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="SubmittedDate" label="{i18n>submittedDate}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="MI_id_SubmittedDateFilter" valueFormat="MM/dd/yyyy"  displayFormat="MM/dd/yyyy" change="MI_onDateChangeFilter" />
+						</fb:control>
+					</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="Status" label="{i18n>status}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox  showSecondaryValues= "true"  items="{MyInbox>/}" id="MI_id_StatusFilter" showClearIcon="true">
+								<core:ListItem key="{MyInbox>ID}" text="{MyInbox>StatusName}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="MI_id_MyInboxTable" class="sapUiTinyMargin"  items="{path: 'MyInboxModelData>/', sorter: {path: 'EmpID',descending: false,group: true}}"  busyIndicatorDelay="0"  width="auto"
+                inset="false"  mode="SingleSelectLeft" selectionChange="onSelectionChangeStatus"   growingScrollToLoad="true" growing="true"  growingThreshold="50"  alternateRowColors="true">
+				<headerToolbar>
+					<OverflowToolbar >
+						<Title id="MI_id_TitleTable" text="{i18n>headerEmpDetails}"/>
+						<ToolbarSpacer />
+						<Button icon="sap-icon://detail-view" id="MI_id_LOPDetBut" press="MI_onPressLOPData" tooltip="LOP Leave Details" />
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns >
+					<Column demandPopin="true">
+						<Text text="{i18n>employeeName}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>startDate}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>endDate}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>type}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>subType}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true" >
+						<Text text="{i18n>submittedDate}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true" >
+						<Text text="{i18n>status}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="MI_onPressColNavigation">
+						<cells>
+							<Text text="{MyInboxModelData>EmpName}"/>
+							<Text text="{path:'MyInboxModelData>StartDate',formatter:'.Formatter.formatDate'}"/>
+							<Text text="{path:'MyInboxModelData>EndDate',formatter:'.Formatter.formatDate'}"/>
+							<Text text="{MyInboxModelData>Type}"/>
+							<Text text="{MyInboxModelData>SubType}"/>
+							<Text text="{path:'MyInboxModelData>SubmittedDate',formatter:'.Formatter.formatDate'}"/>
+							<ObjectStatus text="{MyInboxModelData>Status}" inverted="true" state="{path: 'MyInboxModelData>Status', formatter: '.Formatter.formatObjectStatus'}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar id="MI_id_FooterBar">
+			    <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+				<contentRight>
+					<Button id="MI_id_ButApprove" text="{i18n>approve}" press="MI_onPressButtons" type="Accept" visible="false"/>
+					<Button id="MI_id_ButReject" text="{i18n>reject}" press="MI_onPressButtons" type="Reject" visible="false"/>
+					<Button id="MI_id_ButReSend" text="{i18n>resend}" press="MI_onPressButtons" type="Emphasized" visible="false"/>
+					<Button id="MI_id_ButPaid" text="{i18n>paid}" press="MI_onPressButtons" type="Accept" visible="false"/>
+				</contentRight>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

@@ -1,0 +1,121 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="sap.kt.com.minihrsolution.controller.Timesheet"
+    xmlns:fb="sap.ui.comp.filterbar"    
+    displayBlock="true"
+    xmlns:u="sap.ui.unified">
+    <Page id="TS_id_Page" >
+        <headerContent>
+            <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+        <content>
+            <u:CalendarDateInterval
+ id="TS_id_calendarTimesheet"
+ width="100%"
+ legend="calendarLegend"
+ startDate="{viewModel>/calendarStartDate}" 
+ select="TS_onCalendarDateSelect" 
+ startDateChange="filterTimesheetForCurrentWeek"
+ days="7" 
+ showDayNamesLine="true" 
+ intervalSelection="false" />
+            <fb:FilterBar  class="sapUiTinyMargin"  id="TS_id_FilterBar" persistencyKey="myPersKey" useToolbar="false" clear="TS_onClear" showClearOnFB="true" search="T_onSearch" filterChange=".onFilterChange" showFilterConfiguration="false" afterVariantLoad=".onAfterVariantLoad" >
+               <fb:filterGroupItems>
+    <fb:FilterGroupItem name="Month" label="{i18n>month}" groupName="Group1" visibleInFilterBar="true">
+        <fb:control>
+            <ComboBox id="TS_monthComboBox"
+              showClearIcon="true"
+              change="onMonthSelectionChange"
+              items="{Months>/month}">
+                <core:Item key="{Months>ID}" text="{Months>Month}" />
+            </ComboBox>
+        </fb:control>
+    </fb:FilterGroupItem>    
+    <fb:FilterGroupItem name="Year" label="{i18n>year}" groupName="Group1" visibleInFilterBar="true">
+    <fb:control>
+        <DatePicker 
+            id="TS_id_Year"
+            displayFormat="yyyy"
+            valueFormat="yyyy"
+            placeholder="{i18n>year}" />
+    </fb:control>
+</fb:FilterGroupItem>
+</fb:filterGroupItems>
+            </fb:FilterBar>
+            <MessageStrip
+                text="{i18n>notification}"
+                type="Information"
+                showIcon="true"
+                class="sapUiResponsiveLayout"/>
+                <Table
+                class="sapUiTinyMargin"
+                growing="true"
+                growingScrollToLoad="true"
+                width="auto"
+                id="TD_id_Table"
+                mode="MultiSelect"
+                selectionChange="T_TableSelectionChange"
+                alternateRowColors="true"
+                items="{path: 'FilteredTimesheetModel>/', sorter: {path: 'Status',descending: false,group: true}}" 
+                growingThreshold="50"
+                noDataText="{i18n>noData}">
+            
+                <headerToolbar>
+                  <OverflowToolbar>
+                    <Title text="{i18n>tileTimesheetFooter}" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>fillTimesheet}" press="TS_onFillDetails" type="Accept" tooltip="{i18n>fillTimesheet}" />
+                     <Button
+                            text="{i18n>export}"
+                            type="Ghost"
+                            tooltip="{i18n>exportTooltip}"
+                            press="TS_onExport"
+                            class="sapUiSmallMarginEnd"
+                        />
+                  </OverflowToolbar>
+                </headerToolbar>
+              
+                <columns>
+                  <Column demandPopin="true"><Text text="{i18n>assignmentName}" /></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>date}" /></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>day}" /></Column>
+                  <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>hoursWorked}" /></Column>
+                  <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>manager}" /></Column>
+                  <Column  demandPopin="true"><Text text="{i18n>status}" /></Column>
+                  <Column  demandPopin="true"><Text text="{i18n>comments}" /></Column>
+                </columns>
+              
+                <items>
+                    <ColumnListItem type="Navigation" press="TS_onPressData" >
+                      <cells>
+                        <Text text="{FilteredTimesheetModel>TaskName}" />
+                        <Text text="{path:'FilteredTimesheetModel>Date',formatter:'.Formatter.formatDate'}" />
+                        <Text text="{FilteredTimesheetModel>Day}" />
+                        <Text text="{FilteredTimesheetModel>HoursWorked}" />
+                        <Text text="{FilteredTimesheetModel>ManagerName}" />
+                            <ObjectStatus text="{FilteredTimesheetModel>Status}" inverted="false"
+                                state="{path:'FilteredTimesheetModel>Status', formatter: '.Formatter.formatObjectStatus'}" />
+                        <Button icon="sap-icon://display-more" text="{i18n>View}" press="TS_onShowComments" />
+
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                
+            </Table>
+              
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+                <contentRight>
+                    <Button text="{i18n>submit}" press="TS_onSubmitTimesheet" type="Accept"  id="TS_id_Submited" enabled="{viewModel>/canSubmit}"/>
+                    <Button text="{i18n>delete}" press="TS_onDeleteTimesheet" type="Reject"  id="TS_id_Delete" enabled="{viewModel>/canDelete}"/>
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

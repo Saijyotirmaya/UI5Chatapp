@@ -1,0 +1,53 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="sap.kt.com.minihrsolution.controller.ManagePayroll"
+    displayBlock="true"
+    xmlns:u="sap.ui.unified"
+>
+    <Page id="MP_id_Page">
+        <headerContent>
+        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.SalaryTable" type="XML" />
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+                <contentRight>
+                    <u:FileUploader
+                        id="MP_id_UpdateSalBtn"
+                        buttonText="{i18n>updateSal}"
+                        sameFilenameAllowed="true"
+                        buttonOnly="true"
+                        fileType="XLSX,xlsx,XLS,xls"
+                        style="Attention"
+                        change=".MP_onPressSalUpdate"
+                        visible="{Payroll>/isSELVisible}"
+                    />
+                    <Button
+                        id="MP_id_DeleteBtn"
+                        type="Reject"
+                        text="{i18n>delete}"
+                        press=".MP_onPressDelete"
+                        visible="{Payroll>/isSELVisible}"
+                    />
+                    <Button
+                        type="Emphasized"
+                        text="{i18n>export}"
+                        press=".MP_onPressExport"
+                        visible="{Payroll>/isSELVisible}"
+                    />
+                    <Button
+                        type="Neutral"
+                        text="{i18n>legend}"
+                        press=".MP_onOpenMessagePopover"
+                        visible="{Payroll>/isSELVisible}"
+                    />
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,176 @@
+<core:FragmentDefinition id="jobFormFrag"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<Dialog id="jobFormDialog"
+		title="Job Application — {SelectedCandidate>JobTitle}"
+		draggable="true"
+		resizable="true"
+		stretch="true"
+		contentWidth="auto"
+		contentHeight="100%"
+		verticalScrolling="true">
+		<l:Grid defaultSpan="L6 M12 S12" hSpacing="2" class="sapUiSmallMargin">
+			<l:content>
+				<!-- Left Column -->
+				<VBox class="sapUiSmallMargin" width="100%">
+					<Title text="Personal Information" level="H3"/>
+					<Label text="Full Name" required="true"/>
+					<Input id="fullNameInput" liveChange=".onNameChange" maxLength="50" required="true" placeholder="Enter your Full Name"/>
+
+					<Label class="sapUiSmallMarginTop" text="Gender" required="true"/>
+					<ComboBox id="genderCombo" width="100%" required="true" change="onGenderChange" placeholder="Male / Female ?">
+						<core:Item key="Male" text="Male"/>
+						<core:Item key="Female" text="Female"/>
+					</ComboBox>
+
+					<Label class="sapUiSmallMarginTop" text="Email Address" required="true"/>
+					<Input id="emailInput" type="Email" liveChange="onEmailChange" maxLength="50" required="true" placeholder="Enter email"/>
+
+					<Label class="sapUiSmallMarginTop" text="Country of Residence" required="true"/>
+					<ComboBox id="countryCombo" width="100%" required="true" placeholder="Select Country" showSecondaryValues="true" change="onCountryChange"
+						items="{ path: 'countries>/CountryList', sorter: { path: 'text', descending: false } }">
+						<core:ListItem key="{countries>key}" text="{countries>text}" additionalText="{countries>key}" />
+					</ComboBox>
+
+					<Label class="sapUiSmallMarginTop" text="City" required="true"/>
+					<ComboBox id="cityCombo" width="100%" required="true" editable="true" placeholder="Enter City" change="onCityChange"/>
+
+					<Label class="sapUiSmallMarginTop" text="Address" required="true"/>
+					<TextArea id="addressInput" placeholder="Enter your detailed address here" required="true" maxLength="300" liveChange=".onAddressChange" rows="2" width="100%" />
+
+					<HBox alignItems="Center" renderType="Bare">
+						<VBox width="25%">
+							<Label text="ISD Code" required="true"/>
+						</VBox>
+						<Label text="Mobile Number" required="true" class="sapUiMediumMarginBegin"/>
+					</HBox>
+
+					<HBox alignItems="Center" renderType="Bare">
+						<VBox width="25%">
+							<ComboBox id="isd_code" width="100%" required="true" change="onISDChange" selectionChange=".onISDChange"
+								items="{ path: 'isd>/ISDCodes', sorter: { path: 'text' } }" placeholder="ISD Code">
+								<core:Item key="{isd>key}" text="{isd>text}" />
+							</ComboBox>
+						</VBox>
+						<VBox width="75%">
+							<Input id="mobileInput" width="92%" maxLength="10" class="sapUiMediumMarginBegin" liveChange=".onMobileChange" required="true" placeholder="Enter Mobile Number"/>
+						</VBox>
+					</HBox>
+
+					<Label class="sapUiSmallMarginTop" text="Date of Birth" required="true"/>
+					<DatePicker id="dobPicker" required="true" change=".onDOBChange" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"/>
+
+					<Title text="Education" class="sapUiSmallMarginTop" level="H3"/>
+					<Label class="sapUiSmallMarginTop" text="Highest Qualification" required="true"/>
+					<ComboBox id="qualificationCombo" width="100%" required="true" change="onQalificationChange"
+						items="{qualifications>/qualfication}" placeholder="Select Qualification">
+						<core:Item key="{qualifications>}" text="{qualifications>}" />
+					</ComboBox>
+
+					<Label class="sapUiSmallMarginTop" text="Select University" required="true"/>
+					<ComboBox id="universityCombo" width="100%" required="true" change="onUniversityChange" items="{universities>/universities}" placeholder="Select University">
+						<core:Item key="{universities>}" text="{universities>}" />
+					</ComboBox>
+
+					<Label class="sapUiSmallMarginTop" text="Year of Passing" required="true"/>
+					<DatePicker id="PassingYear" valueFormat="yyyy" displayFormat="yyyy" placeholder="Select Year of Passing" change="onPassingYearChange" required="true"/>
+				</VBox>
+
+				<!-- Right Column -->
+				<VBox class="sapUiSmallMargin" width="100%">
+					<Title text="Technology &amp; Skills" level="H3"/>
+					<Label text="Programming Languages &amp; Other Skills" required="true"/>
+					<TextArea id="skillsInput" width="100%" required="true" rows="2" maxLength="300" placeholder="Example: SAP UI5, CAPM, JavaScript" liveChange="onSkillsChange"/>
+
+					<HBox class="sapUiMediumMarginTop" alignItems="Center">
+						<Label design="Bold" text="Are you an experienced professional?"/>
+						<Switch id="experienceSwitch" state="true" change=".onExperienceToggle" customTextOn="Yes" customTextOff="No"/>
+					</HBox>
+
+					<VBox id="experienceSection">
+						<Title text="Work Experience" level="H3" class="sapUiTinyMarginTop"/>
+						<Label text="Total Experience (Years/Months)" required="true"/>
+						<Input id="experienceInput" required="true" maxLength="5" placeholder="2.2" liveChange="onExperienceChange"/>
+
+						<Label text="Previous Company Name" required="true"/>
+						<Input id="companyInput" required="true" maxLength="50" placeholder="Previous Employer" liveChange="onCompanyChange"/>
+
+						<Label text="Current Designation / Role" required="true"/>
+						<ComboBox id="previousJobTitleCombo" width="100%" required="true" placeholder="Select / Enter title"
+							items="{ path: 'DesignationModel>/', sorter: { path: 'department', descending: false, group: true } }"
+							value="{DesignationModel>/PreviousJobTitle}" change="onDesignationChange" showSecondaryValues="true">
+							<core:ListItem key="{DesignationModel>id}" text="{DesignationModel>designationName}" additionalText="{DesignationModel>department}" />
+						</ComboBox>
+
+						<Label text="Current Annual Salary (INR)" required="true"/>
+						<Input id="salaryInput" maxLength="12" required="true" placeholder="500000" liveChange="onSalaryChange"/>
+
+						<Label text="Work Duration" required="true"/>
+						<DateRangeSelection id="experienceRange" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" required="true" change=".onExperienceDateChange"/>
+
+						<Label text="Previous Roles &amp; Responsibilities" required="true"/>
+						<TextArea id="rolesInput" width="100%" rows="3" required="true" maxLength="300" liveChange="onRolesChange" placeholder="Describe previous roles..."/>
+
+						<Label text="Employment Type" required="true"/>
+						<ComboBox id="employmentTypeCombo" width="100%" required="true" change="onEmpTypeChange" placeholder="Select Type">
+							<core:Item key="full" text="Full-Time"/>
+							<core:Item key="contract" text="Contractual"/>
+						</ComboBox>
+
+						<Label text="Notice Period (in days)" required="true"/>
+						<ComboBox id="noticePeriodCombo" width="100%" required="true" change="onNoticePeriodChange" placeholder="Select Notice Period" items="{noticePeriod>/}">
+							<core:Item key="{noticePeriod>key}" text="{noticePeriod>text}" />
+						</ComboBox>
+
+						<Label text="Expected Salary (Annual INR)" required="true"/>
+						<Input id="expectedSalaryInput" maxLength="12" required="true" placeholder="950000" liveChange=".onSalaryChange"/>
+					</VBox>
+
+					<VBox id="fresherSection" visible="false">
+						<Title text="For Freshers" level="H3" class="sapUiTinyMarginTop"/>
+						<Label text="Expertise in your field" required="true"/>
+						<TextArea id="fresherExpertiseInput" width="100%" rows="6" required="true" maxLength="300" liveChange="onExpertiseChange" placeholder="{i18n>fresherExpert}"/>
+
+						<Title text="Learning Journey"/>
+						<Label text="(Internships / Academic Projects / Courses / Events)" required="true" wrapping="true"/>
+						<TextArea id="fresherSelfDesc" width="100%" rows="6" required="true" maxLength="300" liveChange="onLearningChange" placeholder="{i18n>fresherJourney}"/>
+					</VBox>
+				</VBox>
+
+			</l:content>
+		</l:Grid>
+
+		<!-- Attachment Upload -->
+		<VBox class="sapUiLargeMarginBegin sapUiLargeMarginEnd sapUiResponsivePadding">
+			<Title text="Attachment" level="H3"/>
+			<Label text="Upload Resume" required="true"/>
+		</VBox>
+
+		<VBox class="sapUiLargeMarginBegin sapUiLargeMarginEnd sapUiSmallMarginBottom sapUiResponsivePadding" width="90%">
+			<HBox width="100%" alignItems="Center" justifyContent="Start" renderType="Bare" class="sapUiTinyMarginTop">
+				<u:FileUploader id="jobFileUploader" fileSizeExceed="onFileSizeExceeds" maximumFileSize="5MB"
+					typeMissmatch="onFileTypeMissmatch" fileType="pdf,md,doc,docx" change="onFileChange"
+					buttonOnly="true" sameFilenameAllowed="true" iconFirst="true" buttonText="Upload Resume"
+					icon="sap-icon://attachment"/>
+				<l:VerticalLayout id="fileErrorLayout" visible="false" width="78%">
+					<MessageStrip id="fileErrorText" visible="false" text="" type="Error" enableFormattedText="true" showIcon="true"
+						class="sapUiTinyMargin sapUiMediumMarginBegin"/>
+				</l:VerticalLayout>
+				<Tokenizer id="id_tokenizer" width="100%" tokenDelete="onTokenDelete" tokens="{tokenModel>/tokens}">
+					<Token key="{tokenModel>key}" text="{tokenModel>text}" class="sapUiTinyMargin sapUiMediumMarginBegin sapThemeTextColorError"/>
+				</Tokenizer>
+			</HBox>
+		</VBox>
+
+		<beginButton>
+			<Button text="Submit" type="Accept" press=".onSubmit"/>
+		</beginButton>
+		<endButton>
+			<Button text="Close" type="Reject" press="onClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

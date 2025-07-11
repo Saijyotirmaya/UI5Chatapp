@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified">
+	<Dialog title="Set Profile Photo">
+		<f:SimpleForm
+		    editable="true"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false">
+			<f:content>				
+				<!-- File Uploader -->
+				<VBox width="100%" alignItems="Start" class="sapUiSmallMarginTop">
+    
+    <!-- File Uploader Section -->
+    <HBox width="50%" alignItems="Center" justifyContent="SpaceBetween">
+        <Label text="{i18n>fileUploader}" required="true" showColon="true" class="sapUiTinyMarginEnd" />
+        <u:FileUploader                       
+            name="myFileUpload"
+            uploadUrl="upload/"
+            tooltip="{i18n>fileUploadId}"
+            change="IC_onHandleUploadPress"
+            maximumFileSize="5MB"
+            fileType="jpg,jpeg,png"
+            buttonOnly="true"  
+            id="IC_id_file"  
+            fileSizeExceed="onFileSizeExceeds"						 
+            valueStateText="{i18n>fileUploaderValueState}"               
+            uploadComplete="handleUploadComplete"/>
+    </HBox>
+
+    <!-- Camera Button Section -->
+    <HBox width="50%" alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginTop">
+        <Label text="{i18n>picture}" showColon="true" class="sapUiTinyMarginEnd"/>
+        <Button 
+            text="{i18n>openCamera}" 
+            icon="sap-icon://camera" 
+            press="IC_onPressOpenCamera" />
+    </HBox>
+
+</VBox>
+				<Label/>
+				<HBox id="canvasContainer" visible="true" class="canvas">
+					<core:HTML content="&lt;canvas id='canvas' class='passport-size-canvas'&gt;&lt;/canvas&gt;" />
+				</HBox>
+			</f:content>
+		</f:SimpleForm>
+		
+        <footer> 
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>save}" type="Accept" press="IC_onPressSave" class="submit" visible="{viewModel>/PhotoSave}"/>
+                <Button text="{i18n>close}" type="Reject" class="submit" press="IC_onPressClose" />
+            </Toolbar>
+        </footer>
+		<!-- <FlexBox justifyContent="End">			
+		</FlexBox> -->
+	</Dialog>
+</core:FragmentDefinition>

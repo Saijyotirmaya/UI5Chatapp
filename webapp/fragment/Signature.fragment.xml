@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+    <Dialog title="{i18n>addSignature}" draggable="true" resizable="true">
+        <VBox class="sapUiSmallMargin">
+            <!-- File Uploader Section -->
+            <Label text="{i18n>fileUploader}" required="true"/>
+            <HBox width="100%" justifyContent="Start" alignItems="Center">
+                <VBox width="30%">
+                    <u:FileUploader
+                        name="myFileUpload"
+                        uploadUrl="upload/"
+                        tooltip="Upload your file to the local server"
+                        change="onHandleUploadPress"
+                        buttonOnly="true"
+                        uploadComplete="handleUploadComplete"/>
+                </VBox>
+                <VBox width="70%">
+                    <Text text="{TextDisplay>/name}" wrapping="true"/>
+                </VBox>
+            </HBox>
+
+            <!-- Signature Canvas Section -->
+            <VBox width="100%" class="sapUiMediumMarginTop">
+                <Label text="{i18n>drawSignature}" required="true"/>
+                <core:HTML id="signaturePadCanvas" content="&lt;canvas id='signatureCanvas' style='border: 1px solid #000; width: 100%; height: 200px;'&gt;&lt;/canvas&gt;&lt;style&gt;#signatureCanvas {touch-action: none;}&lt;/style&gt;"/>
+            </VBox>
+
+            <!-- Submit, Clear and Close Buttons -->
+            <FlexBox class="sapUiTinyMarginTop" justifyContent="SpaceAround">
+                <Button text="{i18n>Submit}" press="onPressSubmitSignature" type="Success" width="8rem"/>
+                <Button text="{i18n>Clear}" press="onPressClearSignature" type="Critical" width="8rem"/>
+                <Button text="{i18n>Close}" press="onPressCloseSignature" type="Emphasized" width="8rem"/>
+            </FlexBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

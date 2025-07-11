@@ -1,0 +1,147 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.HrQuotation"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page id="HQ_id_QuotationPage">
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <content>
+         <fb:FilterBar
+    id="HQ_id_QuotationFilterBar"
+    persistencyKey="myPersKey"
+    filterChange="HQ_onFilterChange"
+    afterVariantLoad=".onAfterVariantLoad"
+    clear="HQ_onClearFilters"
+    showClearOnFB="true"
+    showFilterConfiguration="false"
+    useToolbar="false"
+    search="HQ_onSearch">
+    <fb:filterGroupItems>
+        <fb:FilterGroupItem
+            name="QuotationNo"
+            label="{i18n>quotationNo}"
+            groupName="Group1"
+            visibleInFilterBar="true">
+            <fb:control>
+                <ComboBox
+                    showSecondaryValues="true"
+                    items="{path: 'AllQuotationsModel>/'}"
+                    showClearIcon="true"
+                    id="HQ_id_quotationNo"
+                    selectedKey="{/filters/QuotationNo}">
+                    <core:ListItem
+                        key="{AllQuotationsModel>QuotationNo}"
+                        text="{AllQuotationsModel>QuotationNo}"
+                        additionalText="{AllQuotationsModel>CompanyName}"/>
+                </ComboBox>
+            </fb:control>
+        </fb:FilterGroupItem>
+        <fb:FilterGroupItem
+            name="CustomerName"
+            label="{i18n>customerName}"
+            groupName="Group1"
+            visibleInFilterBar="true">
+            <fb:control>
+                <ComboBox
+                    showSecondaryValues="true"
+                    items="{path: 'AllQuotationsModel>/'}"
+                    showClearIcon="true"
+                    id="HQ_id_CustomerName"
+                    selectedKey="{/filters/CustomerName}">
+                    <core:ListItem
+                        key="{AllQuotationsModel>CustomerName}"
+                        text="{AllQuotationsModel>CustomerName}"
+                        additionalText="{AllQuotationsModel>QuotationNo}"/>
+                </ComboBox>
+            </fb:control>
+        </fb:FilterGroupItem>
+        <fb:FilterGroupItem name="Date" label="{i18n>quotaiodate}" groupName="Group1" visibleInFilterBar="true">
+            <fb:control>
+                <DateRangeSelection 
+                    id="HQ_id_Quotaiondate" 
+                    valueFormat="yyyy-MM-dd" 
+                    displayFormat="dd/MM/yyyy" 
+                    change="onDateRangeChange"
+                    dateValue="{/filters/DateFrom}"
+                    secondDateValue="{/filters/DateTo}"/>
+            </fb:control>
+        </fb:FilterGroupItem>
+    </fb:filterGroupItems>
+</fb:FilterBar>
+                <Table
+                items="{path: 'CompanyQuotationModel>/'}"
+                alternateRowColors="true"
+                busyIndicatorDelay="0"
+                id="HQ_id_QuotationItemTable"
+                class="sapUiResponsiveMargin"
+                width="auto"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{i18n>quotaionDetails} ({= ${CompanyQuotationModel>/}.length })" />
+                        <ToolbarSpacer />
+                        <Button
+                            text="{i18n>headerQuotation}"
+                            tooltip="{i18n>addQuotation}"
+                            press="HQ_onPressAddQuotation"
+                            type="Accept"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column hAlign="Left" demandPopin="true">
+                        <Text text="{i18n>quotationNo}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>quotaiodate}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="{i18n>customerName}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="{i18n>customerGSTNO}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>email}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>mobileNo}" />
+                    </Column>
+                    <Column hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>pdfTotal}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="HQ_onPressQuotation">
+                        <cells>
+                            <Text text="{CompanyQuotationModel>QuotationNo}" />
+                            <Text text="{path:'CompanyQuotationModel>Date',formatter:'.Formatter.formatDate'}"/>
+                            <Text text="{CompanyQuotationModel>CustomerName}" />
+                            <Text text="{CompanyQuotationModel>CustomerGSTNO}" />
+                            <Text text="{CompanyQuotationModel>CustomerEmailID}" />
+                            <Text text="{CompanyQuotationModel>CustomerSTDCode} {CompanyQuotationModel>CustomerMobileNo}" />
+                            <Text text="{CompanyQuotationModel>Currency} {path:'CompanyQuotationModel>TotalSum',formatter: '.Formatter.fromatNumber'}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

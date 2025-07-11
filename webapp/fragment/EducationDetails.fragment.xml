@@ -1,0 +1,45 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+	<Table class="sapUiTinyMargin" growingScrollToLoad="true" busyIndicatorDelay="0" width="auto"  items="{path:'sEducationModel>/'}" id="EdF_id_EduTable"  growing="true"  growingThreshold="50"  alternateRowColors="true" mode="SingleSelectLeft" selectionChange="EDF_onSelectionChange">
+		<headerToolbar>
+			<OverflowToolbar >
+				<Title text="{i18n>educationalDetails} ({= ${sEducationModel>/}.length})"/>
+				<!-- <ToolbarSeparator/> -->
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://attachment" id="EdF_id_EduAttach" press="EdF_EduAttachment" tooltip="{i18n>toolUploadEdu}" />
+				<Button text="{i18n>add}" icon="sap-icon://add" id="EdF_id_EduAdd" tooltip="{i18n>toolEAddEdu}" press="EdF_AddEdu"  type="Accept"/>
+				<Button text="{i18n>edit}" icon="sap-icon://edit" id="EdF_id_EduEdit"  tooltip="{i18n>toolEEditEdu}" press="EDF_EditEducation" type="Neutral" />
+				<Button text="{i18n>delete}" icon="sap-icon://delete" id="EdF_id_EduDelete" tooltip="{i18n>toolDeleteEdu}" press="EdF_DeletEdu" type="Negative"/>
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column demandPopin="true">
+				<Text text="{i18n>collegeName}"/>
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>degree}" />
+			</Column>
+			<Column minScreenWidth="Tablet" demandPopin="true">
+				<Text text="{i18n>grade}" />
+			</Column>
+			<Column demandPopin="true">
+				<Text text="{i18n>startDate}" />
+			</Column>
+			<Column minScreenWidth="Desktop" demandPopin="true">
+				<Text text="{i18n>endDate}" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem >
+				<cells>
+					<Text text="{sEducationModel>CollegeName}"/>
+					<Text text="{sEducationModel>DegreeName}"/>
+					<Text text="{parts: [ { path: 'sEducationModel>Grade' }, { path: 'sEducationModel>GradeType' }],formatter: '.Formatter.formatGradeWithType' }"/>
+					 <Text text="{path:'sEducationModel>EducationStartDate' ,formatter:'.Formatter.formatDate'}"/>
+					<Text text="{path:'sEducationModel>EducationEndDate', formatter:'.Formatter.formatDate'}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</c:FragmentDefinition>

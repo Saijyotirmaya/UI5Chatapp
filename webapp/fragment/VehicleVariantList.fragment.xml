@@ -1,0 +1,100 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        title="Select Variant"
+        contentWidth="85%"
+        contentHeight="70%"
+    >
+        <VBox class="sapUiTinyMargin">
+            <FlexBox
+                direction="Row"
+                justifyContent="Center"
+            >
+                <SearchField
+                    id="VVF_id_SearchField"
+                    liveChange="onSearch"
+                    placeholder="Search"
+                    showSearchButton="true"
+                    maxLength="25"
+                    width="auto"
+                    class="sapUiResponsiveMargin"
+                />
+            </FlexBox>
+
+            <Table
+                id="VVF_id_Table"
+                growing="true"
+                growingThreshold="50"
+                growingScrollToLoad="true"
+                alternateRowColors="true"
+                backgroundDesign="Translucent"
+                items="{
+                    path: 'Quotation>/VariantList',
+                    sorter: {
+                        path: 'Model',
+                        descending: false,
+                        group: true
+                    }
+                }"
+            >
+                <columns>
+                    <Column width="25%">
+                        <Text text="Variant" />
+                    </Column>
+                    <Column
+                        vAlign="Middle"
+                        demandPopin="true"
+                        minScreenWidth="Tablet"
+                    >
+                        <Text text="Transmission" />
+                    </Column>
+                    <Column
+                        vAlign="Middle"
+                        demandPopin="true"
+                        minScreenWidth="Desktop"
+                    >
+                        <Text text="Fuel" />
+                    </Column>
+                    <Column
+                        vAlign="Middle"
+                    >
+                        <Text text="Color" />
+                    </Column>
+                    <Column
+                        vAlign="Middle"
+                        demandPopin="true"
+                        minScreenWidth="Desktop"
+                    >
+                        <Text text="Board Plate" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem
+                        type="Active"
+                        press="VVF_onVariantSelect"
+                        highlight="Information"
+                    >
+                        <cells>
+                            <Text text="{Quotation>Variant}" />
+                            <Text text="{Quotation>Transmission}" />
+                            <Text text="{Quotation>Fuel}" />
+                            <Text text="{Quotation>Color}" />
+                            <Text text="{Quotation>BoardPlate}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+
+        <endButton>
+            <Button
+                text="Close"
+                type="Reject"
+                press="VVF_onCloseDialog"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

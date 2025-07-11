@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.MyAsset"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:c="sap.ui.core"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
+>
+    <Page>
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <Table
+            class="sapUiResponsiveMargin"
+            alternateRowColors="true"
+            width="auto"
+         items="{incomeModel>/}">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title
+                        id="IA_TitleID"
+                        text="My Asset"
+                        level="H1"
+                    />
+                    <ToolbarSpacer />
+                    <!-- <Button
+                        text="{i18n>return}"
+                        type="Accept"
+                        tooltip="{i18n>return}"
+                    /> -->
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+            <Column>
+                    <Text text="Type" />
+                </Column>
+                <Column>
+                    <Text text="Model" />
+                </Column>
+                <Column>
+                    <Text text="Description" />
+                </Column>
+                <Column>
+                    <Text text="Serial Number" />
+                </Column>
+                <Column>
+                    <Text text="Equipment Number" />
+                </Column>
+                 <Column>
+                    <Text text="Assigned Date" />
+                </Column>
+                <Column>
+                    <Text text="Asset Value" />
+                </Column>
+                <Column>
+                    <Text text="Status" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{incomeModel>Type}" />
+                        <Text text="{incomeModel>Model}" />
+                        <Text text="{incomeModel>Description}" />
+
+                        <Text text="{incomeModel>SerialNumber}" />
+
+                        <Text text="{incomeModel>EquipmentNumber}" />
+                       
+                         <Text
+                            text="{path: 'incomeModel>AssignedDate',
+                             formatter: '.Formatter.formatDate'
+                             }"
+                        />
+                        <Text
+                            text="{incomeModel>Currency} {
+                            path: 'incomeModel>AssetValue',
+                            formatter: '.Formatter.formatCurrency'
+                        }"
+                        />
+                      
+                        <ObjectStatus
+                            inverted="false"
+                            text="{incomeModel>Status}"
+                            state="{
+                                    path: 'incomeModel>Status',
+                                    formatter: '.Formatter.formatObjectStatus'
+                                }"
+                            class="sapUiTinyMarginBottom"
+                        />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <footer>
+            <Bar id="IA_id_FooterBar">
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

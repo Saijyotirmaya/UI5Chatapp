@@ -1,0 +1,772 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.PurchaseOrderObject"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:suite="sap.suite.ui.commons"
+    xmlns="sap.uxap"
+    xmlns:uxap="sap.uxap"
+    xmlns:richtexteditor="sap.ui.richtexteditor"
+    xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:c="sap.ui.core"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
+>
+    <m:Page
+        navButtonPress="PO_onButtonPress"
+        showNavButton="true"
+        title="Purchase Order Details"
+    >
+        <m:headerContent>
+            <m:Button
+                press="onLogout"
+                icon="sap-icon://log"
+                tooltip="{i18n>logoutTooltip}"
+                type="Transparent"
+            />
+        </m:headerContent>
+        <ObjectPageLayout id="ObjectPageLayout">
+            <!-- <headerTitle>
+                <ObjectPageDynamicHeaderTitle>
+                    <expandedHeading>
+                        <m:Title text="{objectModel>/0/PurchaseOrder/0/CustomerName}" wrapping="true" />
+                    </expandedHeading>
+                    <snappedHeading />
+
+                </ObjectPageDynamicHeaderTitle>
+            </headerTitle>
+            <headerContent>
+                <m:FlexBox wrap="Wrap" fitContainer="true">
+                    <m:Avatar class="sapUiSmallMarginEnd" src="../image/logo.jpg" displaySize="L" />
+                    <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                        <m:ObjectIdentifier title="Customer Address" text="{objectModel>/0/PurchaseOrder/0/Address}" tooltip="Customer Address" />
+                    </layout:VerticalLayout>
+                    <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                        <m:ObjectIdentifier title="PAN Number" text="{objectModel>/0/PurchaseOrder/0/PAN}" tooltip="PAN Number" />
+                    </layout:VerticalLayout>
+                    <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                        <m:ObjectIdentifier title="Type" text="{objectModel>/0/PurchaseOrder/0/Type}" tooltip="Type" />
+
+                    </layout:VerticalLayout>
+
+                </m:FlexBox>
+            </headerContent> -->
+            <sections>
+                <ObjectPageSection
+                    titleUppercase="false"
+                    id="purchaseOrderHeaderSection1"
+                    title="{i18n>from}"
+                >
+                    <subSections>
+                        <ObjectPageSubSection id="dsd1">
+                            <blocks>
+                                <f:SimpleForm
+                                    id="idsimpleCompanyDetails"
+                                    busyIndicatorDelay="0"
+                                    editable="true"
+                                    layout="ColumnLayout"
+                                    labelSpanXL="2"
+                                    labelSpanL="3"
+                                    labelSpanM="2"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="0"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="3"
+                                    columnsL="2"
+                                    columnsM="2"
+                                    singleContainerFullSize="false"
+                                >
+                                    <f:content>
+                                        <m:Label
+                                            text="{i18n>branchCode}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:ComboBox
+                                            id="FPO_id_BranchCode"
+                                            change="PO_onComboBoxBranchChange"
+                                            placeholder="Select Branch Code"
+                                            valueStateText="Please Select a Branch"
+                                            selectedKey="{PurchaseOrderModel>/BranchCode}"
+                                            filterSecondaryValues="true"
+                                            showSecondaryValues="true"
+                                            items="{BaseLocationModel>/}"
+                                        >
+                                            <c:ListItem
+                                                key="{BaseLocationModel>branchCode}"
+                                                text="{BaseLocationModel>branchCode}"
+                                                additionalText="{BaseLocationModel>city}"
+                                            />
+                                        </m:ComboBox>
+                                        <m:Label
+                                            text="{i18n>companyName}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{PurchaseOrderModel>/CompanyName}"
+                                            id="FPO_id_Companyname"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>address}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{PurchaseOrderModel>/CompanyAddress}"
+                                            id="FPO_id_CompanyAddress"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>email}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{PurchaseOrderModel>/CompanyEmail}"
+                                            id="FPO_id_CCompanyEmail"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>gstNo}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{PurchaseOrderModel>/CompanyGSTNo}"
+                                            id="FPO_id_CompanyGSTNo"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>popan}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_CompanyPANNo"
+                                            value="{PurchaseOrderModel>/CompanyPANNo}"
+                                            editable="false"
+                                        />
+                                    </f:content>
+                                </f:SimpleForm>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+
+                <ObjectPageSection
+                    titleUppercase="false"
+                    id="purchaseOrderHeaderSection"
+                    title="Purchase Order Header"
+                >
+                    <subSections>
+                        <ObjectPageSubSection id="dsd">
+                            <blocks>
+                                <f:SimpleForm
+                                    id="idsimplePO"
+                                    busyIndicatorDelay="0"
+                                    editable="true"
+                                    layout="ColumnLayout"
+                                    labelSpanXL="2"
+                                    labelSpanL="3"
+                                    labelSpanM="2"
+                                    labelSpanS="12"
+                                    adjustLabelSpan="false"
+                                    emptySpanXL="0"
+                                    emptySpanL="0"
+                                    emptySpanM="0"
+                                    emptySpanS="0"
+                                    columnsXL="3"
+                                    columnsL="2"
+                                    columnsM="2"
+                                    singleContainerFullSize="false"
+                                >
+                                    <f:content>
+                                        <m:Label
+                                            text="{i18n>ponumber}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_PoNumber"
+                                            value="{PurchaseOrderModel>/PoNumber}"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>companyName}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:ComboBox
+                                            id="FPO_id_CustomerName"
+                                            change="PO_onComboBoxChange"
+                                            placeholder="Select Company Name"
+                                            valueStateText="Please Enter a Valid Company Name"
+                                            selectedKey="{PurchaseOrderModel>/CustomerName}"
+                                            filterSecondaryValues="true"
+                                            showSecondaryValues="true"
+                                            items="{ManageCustomerModel>/}"
+                                        >
+                                            <c:ListItem
+                                                key="{ManageCustomerModel>companyName}"
+                                                text="{ManageCustomerModel>companyName}"
+                                                additionalText="{ManageCustomerModel>name}"
+                                            />
+                                        </m:ComboBox>
+                                        <m:Label
+                                            text="{i18n>designation}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_designation"
+                                            value="{PurchaseOrderModel>/CustomerDesignation}"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>customername}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_CustName"
+                                            value="{PurchaseOrderModel>/CustomerHeadName}"
+                                            editable="false"
+                                        />
+                                          <m:Label
+                                            text="{i18n>country}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_country"
+                                            value="{PurchaseOrderModel>/Country}"
+                                            editable="false"
+                                        />
+                                         <m:Label
+                                            text="{i18n>city}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_city"
+                                            value="{PurchaseOrderModel>/City}"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>mobileNo}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Select
+                                            id="FPO_idSTD"
+                                            editable="false"
+                                        >
+                                            <c:Item
+                                                key="{PurchaseOrderModel>/STDCode}"
+                                                text="{= ${PurchaseOrderModel>/STDCode} === 0 ? '' : ${PurchaseOrderModel>/STDCode}}"
+                                            />
+                                        </m:Select>
+
+                                        <m:Input
+                                            id="FPO_id_MobileNo"
+                                            value="{= ${PurchaseOrderModel>/mobileNo} === 0 ? '' : ${PurchaseOrderModel>/mobileNo}}"
+                                            maxLength="10"
+                                            editable="false"
+                                            placeholder="Phone Number"
+                                        />
+                                        <m:Label
+                                            text="{i18n>email}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_Email"
+                                            value="{PurchaseOrderModel>/customerEmail}"
+                                            editable="false"
+                                        />
+                                       
+                                        <m:Label
+                                            text="{i18n>gstNo}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_GSTIN"
+                                            value="{= ${PurchaseOrderModel>/GSTIN} === 0 ? '' : ${PurchaseOrderModel>/GSTIN}}"
+                                            maxLength="150"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>pdftax}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_type"
+                                            value="{PurchaseOrderModel>/GSTType}"
+                                            editable="false"
+                                        />
+                                        <m:Input
+                                            id="FPO_id_tax"
+                                            value="{= ${PurchaseOrderModel>/Tax} === 0 ? '' : ${PurchaseOrderModel>/Tax}}"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>address}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:TextArea
+                                            id="FPO_id_Address"
+                                            value="{PurchaseOrderModel>/Address}"
+                                            maxLength="250"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>popan}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{= ${PurchaseOrderModel>/PAN} === 0 ? '' : ${PurchaseOrderModel>/PAN}}"
+                                            id="FPO_id_PanNo"
+                                            maxLength="15"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>custLutVa}"
+                                            class="oSowFragLabel"
+                                        />
+                                        <m:Input
+                                            value="{PurchaseOrderModel>/LUT}"
+                                            id="FPO_id_LUT"
+                                            editable="false"
+                                        />
+                                        <m:Label
+                                            text="{i18n>type}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:Select
+                                            id="PO_id_Type"
+                                            selectedKey="{PurchaseOrderModel>/Type}"
+                                        >
+                                            <c:Item
+                                                key="Internal"
+                                                text="Internal"
+                                            />
+                                            <c:Item
+                                                key="Fixed"
+                                                text="Fixed"
+                                            />
+                                            <c:Item
+                                                key="Service"
+                                                text="Service"
+                                            />
+                                        </m:Select>
+
+                                        <m:Label
+                                            text="{i18n>paymantterms}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:Select
+                                            id="PO_id_PaymantTerms"
+                                            selectedKey="{PurchaseOrderModel>/PaymentTerms}"
+                                            width="100%"
+                                            items="{ContractpaymentModel>/}"
+                                        >
+                                            <c:Item
+                                                key="{ContractpaymentModel>days}"
+                                                text="{ContractpaymentModel>days}"
+                                            />
+                                        </m:Select>
+                                        <m:Label
+                                            text="{i18n>podate}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:DatePicker
+                                            id="FPO_id_Date"
+                                            change="FPO_onDateChange"
+                                            valueStateText="Select Creation Date"
+                                            value="{PurchaseOrderModel>/CurrentDate}"
+                                            valueFormat="dd/MM/yyyy"
+                                            displayFormat="dd/MM/yyyy"
+                                        />
+                                        <m:Label
+                                            text="{i18n>sdate}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:DatePicker
+                                            id="FPO_id_StartDate"
+                                            change="FPO_onDateChange"
+                                            valueStateText="Select Start Date"
+                                            value="{PurchaseOrderModel>/StartDate}"
+                                            valueFormat="dd/MM/yyyy"
+                                            displayFormat="dd/MM/yyyy"
+                                        />
+                                        <m:Label
+                                            text="{i18n>edate}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:DatePicker
+                                            id="FPO_id_EndDate"
+                                            change="FPO_onDateChange"
+                                            valueStateText="Select End Date"
+                                            value="{PurchaseOrderModel>/EndDate}"
+                                            valueFormat="dd/MM/yyyy"
+                                            displayFormat="dd/MM/yyyy"
+                                        />
+
+                                        <m:Label
+                                            text="{i18n>currency}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:Select
+                                            id="FPO_id_Currency"
+                                            change="onSelectCurrencyChange"
+                                            selectedKey="{PurchaseOrderModel>/Currency}"
+                                            items="{CurrencyModel>/}"
+                                            width="100%"
+                                        >
+                                            <c:Item
+                                                key="{CurrencyModel>currency}"
+                                                text="{CurrencyModel>currency}"
+                                            />
+                                        </m:Select>
+                                        <m:Label
+                                            text="{i18n>description}"
+                                            class="oSowFragLabel"
+                                            required="true"
+                                        />
+                                        <m:TextArea
+                                            id="FPO_id_CustDescription"
+                                            placeholder="Enter Description"
+                                            valueStateText="Enter Description"
+                                            liveChange="POO_onCustDescriptionLiveChange"
+                                            value="{PurchaseOrderModel>/CustDescription}"
+                                            maxLength="120"
+                                            
+                                        />
+                                    </f:content>
+                                </f:SimpleForm>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+
+                <ObjectPageSection
+                    titleUppercase="false"
+                    id="purchaseOrderSection"
+                    title="{i18n>Purchaseorderitems} {= ${PurchaseOrderModel>/PurchaseOrders}.length === 0 ? '' : '(' + ${PurchaseOrderModel>/PurchaseOrders}.length + ')'}"
+                >
+                    <subSections>
+                        <ObjectPageSubSection id="POO_Purchaseordersection">
+                            <blocks>
+                                <m:VBox class="sapUiSmallMargin">
+                                    <m:Table
+                                        id="idTable"
+                                        items="{PurchaseOrderModel>/PurchaseOrders}"
+                                        mode="{= ${PurchaseOrderModel>/Editable} === true ? 'Delete' : 'None'}"
+                                        delete="POO_onPOTableDelete"
+                                    >
+                                        <m:headerToolbar>
+                                            <m:Toolbar>
+                                                <m:ToolbarSpacer />
+                                                <m:Button
+                                                    id="POO_idAddItemButton"
+                                                    type="Accept"
+                                                    text="{i18n>createitem}"
+                                                    press="onAddItemButtonPress"
+                                                    
+                                                />
+                                            </m:Toolbar>
+                                        </m:headerToolbar>
+                                        <m:columns>
+                                            <m:Column
+                                                width="100px"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text text="Sl No" />
+                                            </m:Column>
+                                            <m:Column
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text
+                                                    text="{i18n>description}"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text
+                                                    text="{i18n>POConsultantname}"
+                                                />
+                                            </m:Column>
+                                            <m:Column
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text text="{i18n>unit}" />
+                                            </m:Column>
+                                            <m:Column
+                                                width="130px"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            />
+                                            <m:Column
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text text="{i18n>amount}" />
+                                            </m:Column>
+                                            <m:Column
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
+                                                <m:Text
+                                                    text="{i18n>totalAmount}"
+                                                />
+                                            </m:Column>
+                                        </m:columns>
+                                        <m:items>
+                                            <m:ColumnListItem>
+                                                <m:cells>
+                                                    <m:Input
+                                                        value="{PurchaseOrderModel>SerialNo}"
+                                                        maxLength="10"
+                                                        width="100%"
+                                                        editable="false"
+                                                    />
+
+                                                    <m:TextArea
+                                                        id="PO_id_Description"
+                                                        value="{PurchaseOrderModel>Description}"
+                                                        liveChange="onDescriptionInputLiveChange"
+                                                        valueStateText="Please enter a valid description"
+                                                        maxLength="120"
+                                                        editable="{PurchaseOrderModel>/Editable}"
+                                                        width="100%"
+                                                    />
+                                                    <m:Input
+                                                        id="PO_id_Consultantname"
+                                                        value="{PurchaseOrderModel>ConsultantName}"
+                                                        liveChange="PO_onConsultantnameLiveChange"
+                                                        valueStateText="Please Enter a Valid Name"
+                                                        maxLength="50"
+                                                        width="100%"
+                                                        editable="{PurchaseOrderModel>/Editable}"
+                                                    />
+                                                    <m:Input
+                                                        id="PO_id_Unit"
+                                                        liveChange="PO_onAmountInputChange"
+                                                        valueStateText="Please enter a valid unit"
+                                                        value="{PurchaseOrderModel>Unit}"
+                                                        maxLength="15"
+                                                        width="100%"
+                                                        editable="{PurchaseOrderModel>/Editable}"
+                                                        textAlign="End"
+                                                        
+                                                    />
+                                                    <m:Select
+                                                        id="PO_id_day"
+                                                        selectedKey="{PurchaseOrderModel>Period}"
+                                                        editable="{PurchaseOrderModel>/Editable}"
+                                                        items="{RateType>/}"
+                                                    >
+                                                        <c:Item
+                                                            key="{RateType>RateType}"
+                                                            text="{RateType>RateType}"
+                                                        />
+                                                    </m:Select>
+                                                    <m:Input
+                                                        id="PO_id_AmountInput"
+                                                        liveChange="PO_onAmountInputChange"
+                                                        valueStateText="Please enter a valid amount"
+                                                        value="{PurchaseOrderModel>Amount}"
+                                                        maxLength="15"
+                                                        width="100%"
+                                                        editable="{PurchaseOrderModel>/Editable}"
+                                                        textAlign="End"
+                                                        
+                                                    />
+
+                                                    <m:Input
+                                                        id="PO_id_TotalAmount"
+                                                        value="{PurchaseOrderModel>TotalAmount}"
+                                                        width="100%"
+                                                        editable="false"
+                                                    />
+                                                </m:cells>
+                                            </m:ColumnListItem>
+                                        </m:items>
+                                    </m:Table>
+                                    <m:VBox class="sapUiSmallMarginTop">
+                                        <m:HBox
+                                            justifyContent="End"
+                                            alignItems="Center"
+                                        >
+                                            <m:Label
+                                                text="Sub Total :"
+                                                class="boldBlackText sapUiLargeMarginEnd sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                            <m:Text
+                                                text="{=${PurchaseOrderModel>/SubTotal}===''? '' : ${PurchaseOrderModel>/Currency}} {
+                                                path:'PurchaseOrderModel>/SubTotal',
+                                                formatter: '.Formatter.formatCurrency'}"
+                                                class="sapUiSmallMarginBegin sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                        </m:HBox>
+                                        <m:HBox
+                                            justifyContent="End"
+                                            alignItems="Center"
+                                        >
+                                            <m:Label
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'IGST' &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                                text="IGST ({PurchaseOrderModel>/Tax}%) :"
+                                                class="boldBlackText sapUiLargeMarginEnd sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                            <m:Text
+                                                id="POO_idIGSTText"
+                                                text="{
+                                               path:'PurchaseOrderModel>/IGST',
+                                                formatter: '.Formatter.formatCurrency'}"
+                                                class="sapUiSmallMarginBegin sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'IGST' &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                            />
+                                        </m:HBox>
+                                        <m:HBox
+                                            justifyContent="End"
+                                            alignItems="Center"
+                                        >
+                                            <m:Label
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'CGST/SGST'  &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                                text="CGST ({PurchaseOrderModel>/Tax}%) :"
+                                                class="boldBlackText sapUiLargeMarginEnd sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                            <m:Text
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'CGST/SGST' &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                                text="{
+                                                path:'PurchaseOrderModel>/CGST',
+                                                 formatter: '.Formatter.formatCurrency'}"
+                                                class="sapUiSmallMarginBegin sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                        </m:HBox>
+                                        <m:HBox
+                                            justifyContent="End"
+                                            alignItems="Center"
+                                        >
+                                            <m:Label
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'CGST/SGST' &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                                text="SGST ({PurchaseOrderModel>/Tax}%) :"
+                                                class="boldBlackText sapUiLargeMarginEnd sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                            <m:Text
+                                                visible="{= ${PurchaseOrderModel>/GSTType} === 'CGST/SGST' &amp;&amp; ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                                text="{
+                                                path:'PurchaseOrderModel>/SGST',
+                                                 formatter: '.Formatter.formatCurrency'}"
+                                                class="sapUiSmallMarginBegin sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                            />
+                                        </m:HBox>
+                                        <m:HBox
+                                            justifyContent="End"
+                                            alignItems="Center"
+                                        >
+                                            <m:Label
+                                                text="Total :"
+                                                class="boldBlackText sapUiLargeMarginEnd  sapUiTinyMarginBottom"
+                                                wrapping="false"
+                                                visible="{= ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                            />
+                                            <m:Text
+                                                text="{=${PurchaseOrderModel>/GrantTotal}===''? '' : ${PurchaseOrderModel>/Currency}} {
+                                                path:'PurchaseOrderModel>/GrantTotal',
+                                                 formatter: '.Formatter.formatCurrency'}"
+                                                class="sapUiSmallMarginBegin"
+                                                wrapping="false"
+                                                visible="{= ${PurchaseOrderModel>/Currency} === 'INR'}"
+                                            />
+                                        </m:HBox>
+                                    </m:VBox>
+                                </m:VBox>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+
+                <ObjectPageSection
+                    titleUppercase="false"
+                    id="POO_idSectionNotes"
+                    title="{i18n>notes}"
+                    tooltip="{i18n>notes}"
+                >
+                    <subSections>
+                        <ObjectPageSubSection titleUppercase="false">
+                            <blocks>
+                                <m:VBox>
+                                    <m:Toolbar>
+                                        <m:ToolbarSpacer />
+                                        <m:Button
+                                            id="POO_idClearButton"
+                                            text="Clear"
+                                            press="onClearNotesPress"
+                                        />
+                                    </m:Toolbar>
+                                    <richtexteditor:RichTextEditor
+                                        id="FPO_idRichTextEditor"
+                                        value="{PurchaseOrderModel>/Notes}"
+                                        width="100%"
+                                        height="300px"
+                                    />
+                                </m:VBox>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+        <m:footer>
+            <m:Bar id="IA_id_FooterBar">
+                <m:contentRight>
+                    <m:Button
+                        id="POO_idSubmitButton"
+                        text="{i18n>submit}"
+                        type="Accept"
+                        press="POO_onSubmitButtonPress"
+                    />
+                    <m:Button
+                        id="POO_idmailButton"
+                        text="{i18n>tileFooter}"
+                        type="Ghost"
+                        press="POO_onmailButtonPress"
+                    />
+                    <m:Button
+                        id="POO_ideditButton"
+                        visible="{=${PurchaseOrderModel>/Editable}===false}"
+                        text="{i18n>edit}"
+                        type="Emphasized"
+                        press="POO_onEditButtonPress"
+                    />
+                    <m:Button
+                        id="POO_idSaveButton"
+                        text="{i18n>save}"
+                        type="Accept"
+                        press="POO_onSaveButtonPress"
+                    />
+                    <m:Button
+                        id="POO_idPDFButton"
+                        text="{i18n>genaratepdf}"
+                        type="Attention"
+                        press="POO_onPDFButtonPress"
+                    />
+                </m:contentRight>
+            </m:Bar>
+        </m:footer>
+    </m:Page>
+</mvc:View>

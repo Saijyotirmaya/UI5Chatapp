@@ -1,0 +1,124 @@
+<mvc:View
+	controllerName="sap.kt.com.minihrsolution.controller.ExpenseApplication"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	xmlns:core="sap.ui.core"
+	height="100%"
+	xmlns:fb="sap.ui.comp.filterbar"
+	busyIndicatorDelay="0">
+<Page >
+    <headerContent>
+	    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+
+    <content>
+        <fb:FilterBar id="Exp-id-FilterBar" showFilterConfiguration="false" persistencyKey="myPersKey" useToolbar="false" clear="Exp_onPressClear" showClearOnFB="true" search="Exp_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" class="sapUiResponsiveMargin" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="EmployeeID" label="{i18n>employeeID}" groupName="Group1" visibleInFilterBar="{= ${LoginModel>/Role} === 'Admin' ? true : false}">
+					<fb:control>
+						<ComboBox name="EmployeeID" change="onChangeEmployeeID" showSecondaryValues="true" showClearIcon="true" items="{ManagerModel>/}" id="Exp_id_EmployeeName">
+							<core:ListItem key="{EmpModel>EmployeeID}" text="{ManagerModel>EmployeeID}" additionalText="{ManagerModel>EmployeeName}" />
+						</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem name="ExpenseName" label="{i18n>expExpenseName}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox name="ExpenseName"  items="{FilterExpenseModel>/}" showClearIcon="true" id="Exp_id_ConsFilterBar">
+								<core:Item key="{FilterExpenseModel>ExpenseName}" text="{FilterExpenseModel>ExpenseName}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+				<fb:FilterGroupItem name="Source" label="{i18n>expSource}" groupName="Group1" visibleInFilterBar="true">
+					<fb:control>
+						<ComboBox name="Source" showClearIcon="true" showSecondaryValues="true" id="Exp_id_SourceFilter" items="{path: 'BaseLocationModel>/', sorter: {path: 'CountryCode',descending: false,group: true}}">
+							<core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+						</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem name="Destination" label="{i18n>expDestination}" groupName="Group1" visibleInFilterBar="true">
+					<fb:control>
+						<ComboBox name="Destination" id="Exp_id_DestinationFilter" showSecondaryValues="true" showClearIcon="true" items="{path: 'BaseLocationModel>/', sorter: {path: 'CountryCode',descending: false,group: true}}">
+							<core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+						</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem name="Status" label="{i18n>status}" groupName="Group1" visibleInFilterBar="true">
+					<fb:control>
+						<ComboBox name="Status" id="Exp_id_StatusFilter" showClearIcon="true" items="{MyInbox>/}">
+							<core:Item key="{MyInbox>StatusName}" text="{MyInbox>StatusName}"/>
+						</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+
+<Table id="exp_Id_ExpenseTable"
+       items="{path: 'ExpenseModel>/', sorter: {path: 'Status',descending: false,group: true}}"
+       class="sapUiResponsiveMargin"
+       growing="true"
+       growingThreshold="50"
+       alternateRowColors="true"
+       growingScrollToLoad="true"
+       width="auto"
+	   mode="SingleSelectLeft"
+	   selectionChange="onTableSelectionChange"
+       busyIndicatorDelay="0">			 <headerToolbar>
+                <OverflowToolbar >
+                    <Title id="title" text="{i18n>expDetails} ({= ${ExpenseModel>/}.length })"/>
+                    <!-- <ToolbarSeparator/> -->
+                    <ToolbarSpacer/>
+                    <ToolbarSpacer/>
+					<Button  type="Ghost" text="{i18n>download}" tooltip="{i18n>downloadPerdiem}" press="Exp_onPressExpenseDownload" />
+					<Button  type="Reject" tooltip="{i18n>deleteExpense}" enabled="false" id="Exp_id_DeleteBtn" text="{i18n>deleteExpense}" press="Exp_onPressDeleteExpense" />
+                   <Button  type="Accept" text="{i18n>expAddBtn}" tooltip="{i18n>expenseAddTooltip}" press="Exp_onPressAddExpense" />
+                </OverflowToolbar>
+            </headerToolbar>
+				<columns>
+					<Column demandPopin="true">
+						<Label text="{i18n>employeeName}" />
+					</Column>
+					<Column demandPopin="true">
+						<Label text="{i18n>expExpenseName}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Label text="{i18n>startDate}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Label text="{i18n>endDate}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Label text="{i18n>expDestination}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Label text="{i18n>totalAmount}" />
+					</Column>
+					<Column  minScreenWidth="Desktop" demandPopin="true">
+						<Label text="{i18n>expReimbursementAmountExp}"  tooltip="{i18n>expReimbursementAmount}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="Exp_onCheckExpenseDetails">
+						<cells>
+							<ObjectIdentifier title="{ExpenseModel>EmployeeID}" text="{ExpenseModel>EmployeeName}"/>
+							<Text text="{ExpenseModel>ExpenseName}" />
+							<Text text="{path:'ExpenseModel>ExpStartDate',formatter: '.Formatter.formatDate'}" />
+							<Text text="{path:'ExpenseModel>ExpEndDate',formatter: '.Formatter.formatDate'}" />
+							<Text text="{ExpenseModel>Destination}" />
+							<Text text="INR {path:'ExpenseModel>TotalAmount', formatter: '.Formatter.fromatNumber'}" />
+							<Text text="INR {path:'ExpenseModel>ReimbursementAmount',formatter: '.Formatter.fromatNumber'}" />						
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+    </content>
+	<footer>
+			<Bar>
+					    <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+			</Bar>
+		</footer>
+    
+</Page>
+</mvc:View>

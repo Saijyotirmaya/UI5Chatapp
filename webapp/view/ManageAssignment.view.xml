@@ -1,0 +1,91 @@
+<mvc:View 
+   controllerName="sap.kt.com.minihrsolution.controller.ManageAssignment"
+	xmlns:mvc="sap.ui.core.mvc" 
+    displayBlock="true"
+	xmlns:fb="sap.ui.comp.filterbar"	
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+ >
+	<Page>
+		<headerContent>
+			        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+				<fb:FilterBar  class="sapUiTinyMargin" id="MA_id_FilterBar" persistencyKey="myPersKey" useToolbar="false" clear="MA_onPressClear" showClearOnFB="true" search="MA_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" showFilterConfiguration="false" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="TaskName" label="{i18n>assignmentid}" groupName="Group1" visibleInFilterBar="true" >
+					<fb:control>
+						<ComboBox showClearIcon="true" items="{TaskListModel>/}" showSecondaryValues="true">
+    <core:ListItem key="{TaskListModel>TaskID}" text="{TaskListModel>TaskName}" />
+</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem name="StartDate" label="{i18n>startDate}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							 <DateRangeSelection id="MA_id_StartDate" valueFormat="MM/dd/yyyy"  displayFormat="MM/dd/yyyy"  />	
+						</fb:control>
+					</fb:FilterGroupItem>
+					<!-- <fb:FilterGroupItem name="EndDate" label="{i18n>endDate}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+                    <DateRangeSelection id="MA_id_EndDate" valueFormat="MM/dd/yyyy"  displayFormat="MM/dd/yyyy"  />						
+					</fb:control>
+						</fb:FilterGroupItem> -->
+	
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table class="sapUiTinyMargin" growingScrollToLoad="true" width="auto" id="MA_id_TaskTable"  items="{TaskModel>/}" mode="SingleSelectLeft" growing="true"  growingThreshold="50"  alternateRowColors="true">
+			 <headerToolbar>
+                <OverflowToolbar >
+                    <Title text="Assignment Details ({= ${TaskModel>/}.length })"/>
+                    <!-- <ToolbarSeparator/> -->
+                    <ToolbarSpacer/>
+
+					<!-- <Button   press="MA_onEmpTask"   id="MA_id_AssignB" visible="false"/> -->
+						<Button    type="Accept" press="MA_onCreateTask"  text="{i18n>createTask}" tooltip="{i18n>assignEmp}"/>
+						<Button    press="MA_onEditTask" tooltip="{i18n>editTaskTitle}" id="MA_id_EditTaskB" text="{i18n>edit}" visible="true" type="Emphasized" />
+				
+                   </OverflowToolbar>
+            </headerToolbar>
+				<columns>
+					<Column demandPopin="true">
+						<Text text="{i18n>assignmentName}"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>assignmentType}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>assignmentDes}" />
+					</Column>
+					<Column demandPopin="true">
+						<Text text="{i18n>startDate}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>endDate}" />
+					</Column>
+					
+				</columns>
+				<items>
+					<ColumnListItem
+					 press="MA_onItemPress"
+                        type="Navigation"
+					 >
+						<cells>
+							<Text text="{TaskModel>TaskName}"/>
+							<Text text="{TaskModel>TaskType}"/>
+							<Text text="{TaskModel>TaskTypeDescription}"/>
+							<Text text="{path:'TaskModel>StartDate' ,formatter:'.Formatter.formatDate'}"/>
+							<Text text="{path:'TaskModel>EndDate' ,formatter:'.Formatter.formatDate'}"/>
+							</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+				 <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

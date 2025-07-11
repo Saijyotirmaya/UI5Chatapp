@@ -1,0 +1,52 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Dialog class="sapUiSmallMarginBegin" id="idTaskDialog"  title="{i18n>taskName}">
+        <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+            adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+            columnsL="1" columnsM="1" singleContainerFullSize="false" >
+            <f:content>
+            
+                <Label text="{i18n>taskName}" required="true"/>
+                <Input value="{EditTaskModel>/TaskName}" id="FNA_id_TaskName" liveChange="AT_ValidateCommonFields" maxLength="99" valueStateText="{i18n>taskNameValueState}"/>
+
+                <Label text="{i18n>taskType}" required="true" visible="{= !${visiblePlay>/isAssignmentMode} }"/>
+                <Select id="FNA_id_Tasktype" items="{TaskType>/Task}" selectedKey="{EditTaskModel>/TaskType}" change="AT_onChangeTaskType" >
+                    <core:Item key="{TaskType>Task}" text="{TaskType>Task}"/>
+                </Select>
+                <Label text="{i18n>description}" required="true" id="FNA_id_Ldesc" visible="{= !${visiblePlay>/isAssignmentMode} }"/>
+                <Input value="{EditTaskModel>/TaskTypeDescription}" id="NAF_id_Description" liveChange="AT_ValidateCommonFields"  maxLength="120" valueStateText="{i18n>taskDescription}"/>
+                <Label text="{i18n>startDate}" required="true"/>
+                <DatePicker minDate="{newTaskModel>/minDate}"
+                    maxDate="{newTaskModel>/maxDate}"
+                    change="MA_onstartDatevalidateDate"
+                    value="{path:'EditTaskModel>/StartDate', formatter:'.Formatter.formatDate'}"
+                       valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                    id="NAF_id_StartDate"
+                    valueStateText="{i18n>dateValueState}"/>
+                <Label text="{i18n>endDate}" required="true"/>
+                <DatePicker
+                    minDate="{newTaskModel>/minDate}"
+                    maxDate="{newTaskModel>/maxDate}"
+                    change="AT_validateDate"
+                    value="{path:'EditTaskModel>/EndDate', formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    id="NAF_id_EndDate"
+                    valueStateText="{i18n>dateValueState}"/>
+               
+            </f:content>
+        </f:SimpleForm>
+
+        <footer>
+        <Toolbar>
+        <ToolbarSpacer />
+ <Button text="{i18n>save}" type="Accept" press="MA_onPressSave" class="submit" visible="{visiblePlay>/save}"/>
+                <Button text="{i18n>submit}" type="Accept" press="NAF_onSubmitTask" class="submit" visible="{visiblePlay>/submit}"/>
+                <Button text="{i18n>close}" press="NAF_onTaskClose" class="sendMail" type="Reject"/>
+        </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" >
+<l:Grid defaultSpan="XL6 L6 M12 S12">
+<VBox class="contact-touch sapUiSmallMarginTop">
+    <Text class="custom-contact-title sapUiTinyMargin " text="{i18n>contactDes}"/>
+    <Text class="sapUiTinyMargin service-section-text" text="{i18n>contactDes1}" />
+</VBox>
+    
+</l:Grid>
+    <l:Grid defaultSpan="XL3 L3 M12 S12" >
+<VBox class="sapUiSmallMarginTop service-section-text">
+    <QuickViewCard id="quickViewCard" pages="{/pages}"  >
+            <QuickViewPage
+                pageId="{pageId}"
+                header="{header}"
+                title="{title}"
+                titleUrl="{titleUrl}"
+                description="{description}"
+                groups="{path: 'groups'}">
+                <avatar>
+                    <Avatar src="{icon}" displayShape="{displayShape}"  />
+                </avatar>
+                <QuickViewGroup elements="{ path: 'elements' }">
+                    <QuickViewGroupElement
+                        label="{label}"
+                        value="{value}"
+                        url="{url}"
+                        type="{elementType}"
+                        pageLinkId="{pageLinkId}"
+                        emailSubject="{emailSubject}"
+                        target="{target}" />                        
+                </QuickViewGroup>
+            </QuickViewPage>
+        </QuickViewCard>
+</VBox>
+</l:Grid>
+</core:FragmentDefinition>

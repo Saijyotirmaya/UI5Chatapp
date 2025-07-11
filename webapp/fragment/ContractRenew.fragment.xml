@@ -1,0 +1,79 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+
+	<Dialog contentWidth="50%" title="{i18n>contractDetails}">
+		<f:SimpleForm id="CR_id_SimpleFormAddToolbar" editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+			emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0"
+			columnsXL="2" columnsL="1" columnsM="1"
+			width="100%" maxContainerCols="2">
+			
+			<f:content>
+				<!-- Contract No -->
+				<Label text="{i18n>contractNo}" visible="{ContractFormVisibleModel>/showContractFields}" />
+				<Text text="{ContractActiveModel>/ContractNo} / {ContractActiveModel>/AgreementNo}" visible="{ContractFormVisibleModel>/showContractFields}" />
+
+				<!-- Assignment Start Date -->
+				<Label text="{i18n>assignmentStartDate}" required="true" visible="{ContractFormVisibleModel>/showDateFields}"/>
+				<DatePicker value="{path:'ContractActiveModel>/AssignmentStartDate' ,formatter:'.Formatter.formatDate'}"
+					id="CR_id_AssignmentStartDate" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"
+					change="CD_validateDate" valueStateText="{i18n>dateValueState}" maxDate="{ContractActiveModel>/MaxFromDate}" 
+                    visible="{ContractFormVisibleModel>/showDateFields}"/>
+
+				<!-- Assignment End Date -->
+				<Label text="{i18n>assignmentEndDate}" visible="{ContractFormVisibleModel>/showDateFields}"/>
+				<DatePicker value="{path:'ContractActiveModel>/AssignmentEndDate' ,formatter:'.Formatter.formatDate'}" id="CR_id_AssignmentEndDate" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" change="CD_validateDate" valueStateText="{i18n>dateValueState}" minDate="{ContractActiveModel>/MinToDate}" visible="{ContractFormVisibleModel>/showDateFields}"/>
+
+                <!-- Rate Type -->
+			    <Label text="{i18n>rate}" required="true" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}"/>
+				<RadioButtonGroup id="CR_id_rbg3" columns="3" selectedIndex="{ContractActiveModel>/HrDaliyMonth}"  visible="{ContractFormVisibleModel>/showAmountCurrencyFields}" select="RadioButtonSelect"  >
+				<RadioButton id="CR_id_RB3-1" text="{i18n>rateHour}" />
+			    <RadioButton id="CR_id_RB3-2" text="{i18n>rateDaily}" />
+				<RadioButton id="CR_id_RB3-3" text="{i18n>rateMonthly}" />
+				</RadioButtonGroup>
+
+				<!-- Amount -->
+				<Label text="{i18n>amount}" required="true" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}"/>
+				<Input value="{ContractActiveModel>/Amount}" valueState="None" id="CR_id_EditAmountInput" placeholder="{i18n>placeAmount}" liveChange="CD_validateAmount" maxLength="10" valueStateText="{i18n>ammountValuState}" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}"/>
+
+				<!-- Currency -->
+				<Label text="{i18n>currency}" required="true" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}"/>
+				<Select id="CR_id_CurrencySelect" items="{CurrencyModel>/}" selectedKey="{ContractActiveModel>/Currency}" width="100%" class="marginLeft" required="true" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}">
+					<core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+				</Select>
+
+				<!-- Contract Period -->
+				<Label text="{i18n>warrantyDate}" visible="{ContractFormVisibleModel>/showAmountCurrencyFields}"/>
+				<Select id="CR_id_WarrantyDate" selectedKey="{ContractActiveModel>/ContractPeriod}" items="{ContractPeriod>/ContractPeriod}"
+                visible="{ContractFormVisibleModel>/showAmountCurrencyFields}">
+					<core:Item key="{ContractPeriod>Months}" text="{ContractPeriod>Months}" />
+				</Select>
+
+				<!-- STD Code -->
+                <Label text="{i18n>mobileNo}" required="true" visible="{ContractFormVisibleModel>/showMobileFields}" />
+				<ComboBox selectedKey="{ContractActiveModel>/STDCode}" showSecondaryValues="true" change="CD_ValidateComboBox" id="CR_id_codeModel" items="{codeModel>/}" filterSecondaryValues="true" valueStateText="{i18n>combovalueState}" visible="{ContractFormVisibleModel>/showMobileFields}">
+				<core:ListItem key="{codeModel>calling_code}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}" />
+				</ComboBox>
+
+				<!-- Mobile No -->				
+				<Input value="{ContractActiveModel>/MobileNo}" placeholder="{i18n>mobileNo}" liveChange="CD_validateMobileNo" maxLength="10" id="CR_id_Mobile" valueStateText="{i18n>mobileNoValueState}" visible="{ContractFormVisibleModel>/showMobileFields}" />
+
+				<!-- Comments -->
+				<Label text="Comments" visible="{ContractFormVisibleModel>/showComments}"/>
+				<TextArea value="{ContractActiveModel>/Comments}" id="CR_id_Comments" valueStateText="{i18n>commentsValueState}" maxLength="100" visible="{ContractFormVisibleModel>/showComments}" />
+
+			</f:content>
+		</f:SimpleForm>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer />
+				<Button text="{i18n>submit}" type="Accept" press="CR_onPressSubmit" class="submit" />
+				<Button text="{i18n>close}" press="CR_onPressClose" class="sendMail" type="Reject" />
+			</Toolbar>
+		</footer>
+	</Dialog>
+</core:FragmentDefinition>

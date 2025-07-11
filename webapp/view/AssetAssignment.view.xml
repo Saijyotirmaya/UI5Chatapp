@@ -1,0 +1,350 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AssetAssignment"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+>
+    <Page id="AA_id_Page">
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <fb:FilterBar
+            id="AA_id_FilterBarAsset"
+            persistencyKey="myPersKey"
+            useToolbar="false"
+            clear="AA_onPressClear"
+            showClearOnFB="true"
+            search="AA_onSearch"
+            filterChange="AA_onFilterChange"
+            showFilterConfiguration="false"
+            afterVariantLoad=".onAfterVariantLoad"
+        >
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="AssignEmployeeName"
+                    label="{i18n>employeeName}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            name="AssignEmployeeName"
+                            showClearIcon="true"
+                            id="AA_id_EmployeeName"
+                            items="{EmpModel>/}"
+                            showSecondaryValues="true"
+                        >
+                            <items>
+                                <core:ListItem
+                                    key="{EmpModel>EmployeeName}"
+                                    text="{EmpModel>EmployeeName}"
+                                    additionalText="{EmpModel>EmployeeID}"
+                                />
+                            </items>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem
+                    name="Type"
+                    label="{i18n>type}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            name="Type"
+                            showClearIcon="true"
+                            id="AA_id_Type"
+                            items="{Type>/}"
+                        >
+                            <core:ListItem
+                                key="{Type>Type}"
+                                text="{Type>Type}"  
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                
+                <fb:FilterGroupItem
+                    name="AssignedDate"
+                    label="{i18n>assignedDate}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <DateRangeSelection
+                            id="AA_id_Date"
+                            change="AA_handleChange"
+                            displayFormat="MM/dd/yyyy"
+                            valueFormat="MM/dd/yyyy"
+                        />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                  <fb:FilterGroupItem
+                    name="AssignBranch"
+                    label="{i18n>branch}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            showClearIcon="true"
+                            id="AA_id_Branch"
+                            items="{BaseLocationModel>/}"
+                            showSecondaryValues="true"
+                        >
+                            <core:ListItem
+                                key="{BaseLocationModel>city}"
+                                text="{BaseLocationModel>city}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    name="Status"
+                    label="{i18n>status}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            showClearIcon="true"
+                            id="AA_id_Status"
+                        >
+                            <core:ListItem
+                                key="{AssetAssignmentStatus>/0/Value}"
+                                text="{AssetAssignmentStatus>/0/Value}"
+                            />
+                            <core:ListItem
+                                key="{AssetAssignmentStatus>/1/ID}"
+                                text="{AssetAssignmentStatus>/1/Value}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+        <Table
+            alternateRowColors="true"
+            id="AA_id_AssestTable"
+            fixedLayout="false"
+            busyIndicatorDelay="0"
+            items="{
+                path: 'assetModel>/',
+                sorter: {
+						path: 'Type',
+						descending: false,
+						group: true
+					}
+            }"
+            class="sapUiResponsiveMargin"
+            width="auto"
+            mode="SingleSelectLeft"
+        >
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title
+                        text="{i18n>assestAssignassetData} ({= ${assetModel>/}.length})"
+                    />
+
+                    <ToolbarSpacer />
+                    <Button
+                        text="{i18n>assestAssignassign}"
+                        tooltip="{i18n>assestAssignAssignAsset}"
+                        type="Accept"
+                        press="AA_onPressAssign"
+                        id="AA_AssignBtn"
+                    />
+
+                    <Button
+                        text="{i18n>assestAssignEdit}"
+                        tooltip="{i18n>assestAssignEdit}"
+                        type="Emphasized"
+                        press="AA_onPressEdit"
+                        id="AA_EditBtn"
+                        visible="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'IT Manager'}"
+                    />
+
+                    <Button
+                        type="Reject"
+                        press="AA_onOpenUnassign"
+                        tooltip="{i18n>assestAssignReturnAsset}"
+                        text="{i18n>assestAssignReturn}"
+                    />
+
+                    <Button
+                        press="AA_onDownload"
+                        type="Ghost"
+                        tooltip="{i18n>assestAssignDownload}"
+                        text="{i18n>download}"
+                    />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column
+                    hAlign="Left"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assestAssignEmployeeID}"
+                        tooltip="{i18n>assestAssignEmployeeID}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assestAssignModel}"
+                        tooltip="{i18n>assestAssignModel}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assestAssignedByEmployeeName}"
+                        tooltip="{i18n>assestAssignedByEmployeeName}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Desktop"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assignedDate}"
+                        tooltip="{i18n>assignedDate}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Desktop"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assetAssignValue}"
+                        tooltip="{i18n>assetAssignValue}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Desktop"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>assestAssignReturn}"
+                        tooltip="{i18n>assestAssignReturn}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>comments}"
+                        tooltip="{i18n>comments}"
+                    />
+                </Column>
+                <Column
+                    hAlign="Left"
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>status}"
+                        tooltip="{i18n>status}"
+                    />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                    type="Navigation"
+                    press="AA_onNavClick"
+                    id="AA_id_TableColumnListItem"
+                >
+                    <cells>
+                        <ObjectIdentifier
+                            title="{assetModel>AssignEmployeeID}"
+                            text="{assetModel>AssignEmployeeName}"
+                        />
+                        <VBox class="sapUiTinyMarginTopBottom">
+                            <Text
+                                text="{= 'Model: ' + ${assetModel>Model}}"
+                                class="sapUiTinyMarginBottom"
+                            />
+                            <Text
+                                text="{= 'Eq No: ' + ${assetModel>EquipmentNumber}}"
+                                class="sapUiTinyMarginBottom"
+                            />
+                            <Text
+                                text="{= 'Sl No: ' + ${assetModel>SerialNumber}}"
+                            />
+                        </VBox>
+                        <ObjectIdentifier
+                            title="{assetModel>AssignedByEmployeeID}"
+                            text="{assetModel>AssignedByEmployeeName}"
+                        />
+                        <ObjectIdentifier
+                            title="{path:'assetModel>AssignedDate',formatter:'.Formatter.formatDate'}"
+                            text="{assetModel>AssignBranch}"
+                        />
+                        <Text
+                            text="{assetModel>Currency} {path:'assetModel>AssetValue',formatter:'.Formatter.fromatNumber'}"
+                        />
+                        <VBox class="sapUiTinyMarginTopBottom"
+                        visible="{= ${assetModel>Status}!== 'Assigned'}">
+                            <Text
+                                text="{= 'To: ' + ${assetModel>ReturnEmpID}}"
+                                class="sapUiTinyMarginBottom"
+                            />
+                            <Text
+                                text="{= 'Name: ' + ${assetModel>ReturnEmpName}}"
+                                class="sapUiTinyMarginBottom"
+                            />
+                            <HBox>
+                                <Text
+                                    text="{ path: 'assetModel>ReturnDate', formatter:'.formatReturnBranchText'}"
+                                    class="sapUiTinyMarginBottom"
+                                />
+                            </HBox>
+
+                            <Text
+                                text="{= 'Branch: ' + ${assetModel>ReturnBranch}}"
+                                class="sapUiTinyMarginBottom"
+                            />
+                        </VBox>
+							<Button icon="sap-icon://display-more" text="{i18n>View}" press=".onShowMore"
+                            visible="{= ${assetModel>Status}!== 'Assigned'}" />
+
+                        <ObjectStatus
+                            inverted="false"
+                            state="{= ${assetModel>Status} === 'Assigned' ? 'Indication05' : 'Success' }"
+                            text="{assetModel>Status}"
+                        />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

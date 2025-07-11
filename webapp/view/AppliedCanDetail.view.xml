@@ -1,0 +1,129 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AppliedCanDetail"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+>
+	<Page  title="Recruitment Dashboard" navButtonPress="onPageNavButtonPress" showNavButton="true">
+		<headerContent>
+			<Button
+                press="onLogout"
+                icon="sap-icon://log"
+                tooltip="{i18n>logoutTooltip}"
+                type="Transparent"
+            />
+		</headerContent>
+		<f:SimpleForm
+            layout="ColumnLayout"
+            labelSpanXL="12"
+            labelSpanL="12"
+            labelSpanM="12"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            emptySpanS="0"
+            columnsXL="3"
+            columnsL="3"
+            columnsM="1"
+            singleContainerFullSize="false"
+        >
+			<!-- form header  -->
+			<f:toolbar>
+				<Toolbar>
+					<ToolbarSpacer />
+					<Button
+                        id="ACD_id_EditButton"
+                        text="{= ${viewModel>/isEditMode} ? 'Save' : 'Edit' }"
+                        press="ACD_onEditPress"
+                        type="{= ${viewModel>/isEditMode} ? 'Accept' : 'Emphasized' }"
+                        tooltip="{i18n>editDetails}"
+                    />
+					<Button
+                        text="{i18n>viewResume}"
+                        press="openResumePreview"
+                        icon="sap-icon://display"
+                        type="Attention"
+                    />
+					<Button
+                        text="{i18n>downloadResume}"
+                        press="onDownloadResume"
+                        icon="sap-icon://download"
+                        type="Ghost"
+                    />
+					<Button  tooltip="{i18n>onboardTraineeTool}" text="{i18n>generateOffer}" id="ACD_id_EmpOnBoard"   press="ACD_onBoardCandidate"   type="Accept"/>
+
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+                <!-- Bind the 'editable' property to the viewModel -->
+				<Label text="{i18n>compName}" />
+				<Input value="{setDataToForm>/FullName}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>gender}" />
+				<Input value="{setDataToForm>/Gender}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>FormField}" />
+				<Input value="{path :'setDataToForm>/DOB',formatter:'.formatter.formatDate'}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>address}" />
+				<Input value="{setDataToForm>/Address}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>city}" />
+				<Input value="{setDataToForm>/City}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>expCountry}" />
+				<Input value="{setDataToForm>/Country}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>mobilenumber}" />
+				<Input value="{setDataToForm>/ISD}" editable="{viewModel>/isEditMode}"/>
+				<Input value="{setDataToForm>/Mobile}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>CurrentCompanyField}" />
+				<Input value="{setDataToForm>/CurrentCompany}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>designation}" />
+				<Input value="{setDataToForm>/Designation}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>EmploymentTypeField}" />
+				<Input value="{setDataToForm>/EmploymentType}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>TableColExperience}" />
+				<Input value="{setDataToForm>/Experience}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>TableColNoticePeriod}" />
+				<Input value="{setDataToForm>/NoticePeriod}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>CurrentSalaryField}" />
+				<Input value="{setDataToForm>/CurrentSalary}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>ExpectedSalaryField}" />
+				<Input value="{setDataToForm>/ExpectedSalary}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>Jobtitle}" />
+				<Input value="{setDataToForm>/JobTitle}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>RolesFields}" />
+				<Input value="{setDataToForm>/Roles}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>ExpertiseInField}" />
+				<Input value="{setDataToForm>/ExpertiseIn}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>TableColSkills}" />
+				<Input value="{setDataToForm>/Skills}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>DescribeYourselfField}" />
+				<TextArea
+                    rows="2"
+                    cols="4"
+                    value="{setDataToForm>/DescribeYourSelf}"
+                    editable="{viewModel>/isEditMode}"
+                />
+				<Label text="{i18n>TableColNameHeistQualification}" />
+				<Input value="{setDataToForm>/HighestQualifaction}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>UniversityFiled}" />
+				<Input value="{setDataToForm>/University}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>PassingYearField}" />
+				<Input value="{setDataToForm>/PassingYear}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>WorkDurationStartField}" />
+				<Input value="{path: 'setDataToForm>/WorkDurationStart', formatter:'.formatter.formatDate'}" editable="{viewModel>/isEditMode}"/>
+				<Label text="{i18n>WorkDurationEndField}" />
+				<Input value="{path: 'setDataToForm>/WorkDurationEnd', formatter: '.formatter.formatDate'}" editable="{viewModel>/isEditMode}"/>
+			</f:content>
+		</f:SimpleForm>
+		<footer>
+			<Bar id="ACD_id_FooterBar">
+				<contentLeft>
+					<core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+				</contentLeft>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

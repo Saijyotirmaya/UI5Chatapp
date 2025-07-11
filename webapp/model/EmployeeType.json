@@ -1,0 +1,10 @@
+[
+    {
+        "ID": 1,
+        "Type": "Employee"
+    },
+    {
+        "ID": 2,
+        "Type": "Trainee"
+    }
+]

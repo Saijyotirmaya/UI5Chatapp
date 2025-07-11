@@ -1,0 +1,211 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.SchemeUpload"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:m="sap.m.Table"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+>
+    <Page id="SU_id_PageQuotationScheme">
+        <headerContent>
+           <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+        <content>
+            <fb:FilterBar
+                id="SU_id_Filterbar"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                clear="SU_onClear"
+                showClearOnFB="true"
+                search="SU_onSearch"
+                showFilterConfiguration="false"
+                filterChange="SU_onFilterChange"
+                afterVariantLoad="SU_onAfterVariantLoad"
+                class="sapUiTinyMargin"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        name="Model"
+                        label="{i18n>vehicleModel}"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <ComboBox
+                            showClearIcon="true"
+                                name="Model"
+                                items="{ModelOnly>/results}"
+                                id="SU_id_ModelComboBox"
+                                enabled="true"
+                                selectionChange="SU_onModelChange"
+                            >
+                                <core:Item
+                                    key="{ModelOnly>Model}"
+                                    text="{ModelOnly>Model}"
+                                />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        name="Variant"
+                        label="{i18n>vehicleVariant}"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <ComboBox
+                            showClearIcon="true"
+                                name="Variant"
+                                id="SU_id_Variant1"
+                                enabled="true"
+                                items="{VariantOnly>/results}"
+                            >
+                                <core:Item
+                                    key="{VariantOnly>Variant}"
+                                    text="{VariantOnly>Variant}"
+                                />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+                        name="Transmission"
+                        label="{i18n>vehicleTransmission}"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <ComboBox
+                            showClearIcon="true"
+                                name="Transmission"
+                                id="SU_id_Transmission1"
+                                items="{TransmissionOnly>/results}"
+                                enabled="true"
+                            >
+                                <core:Item
+                                    key="{TransmissionOnly>Transmission}"
+                                    text="{TransmissionOnly>Transmission}"
+                                />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </content>
+        <content>
+            <Table
+            growingScrollToLoad="true"
+                id="SU_id_Quotationtable"
+                class="sapUiTinyMargin"
+                width="auto"
+                inset="false"
+                items="{MainModel>/results}"
+                mode="SingleSelectLeft"
+                growing="true"
+                growingThreshold="50"
+                alternateRowColors="false"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            text="Quotation Scheme ({= ${MainModel>/results}.length })"
+                            level="H2"
+                        />
+                        <ToolbarSpacer />
+                        <Button
+                            id="SU_id_Upload"
+                            text="{i18n>upload}"
+                            press="SU_onUploadpress"
+                            type="Ghost"
+                        /> 
+                        <Button
+                            id="SU_id_Export"
+                            text="{i18n>download}"
+                            press="SU_onDownloadpress"
+                            type="Ghost"
+                        />
+                        <Button
+                            id="SU_id_Add"
+                            text="{i18n>create}"
+                            press="SU_onCreateform"
+                            type="Accept"
+                        />
+                        <Button
+                            id="SU_id_Delete"
+                            text="{i18n>delete}"
+                            press="SU_onDeletepress"
+                            type="Reject"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                
+                    <Column
+                        hAlign="Left"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleModel}" />
+                    </Column>
+                    <Column
+                        hAlign="Left"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleVariant}" />
+                    </Column>
+                    <Column
+                        hAlign="Left"
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleTransmission}" />
+                    </Column>
+                    <Column
+                        hAlign="Left"
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleColor}" />
+                    </Column>
+                    <Column
+                        hAlign="Left"
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleFuel}" />
+                    </Column>
+                    <Column
+                        hAlign="Left"
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>vehicleBoardPlate}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        press="SU_onItemPress"
+                        type="Navigation"
+                    >
+                        <cells>
+                            <!-- <Text text="" />s -->
+                            <Text text="{MainModel>Model}" />
+                            <Text text="{MainModel>Variant}" />
+                            <Text text="{MainModel>Transmission}" />
+                            <Text text="{MainModel>Color}" />
+                            <Text text="{MainModel>Fuel}" />
+                            <Text text="{MainModel>BoardPlate}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+              <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

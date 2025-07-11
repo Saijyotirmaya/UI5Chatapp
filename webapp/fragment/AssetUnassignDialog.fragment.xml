@@ -1,0 +1,96 @@
+<core:FragmentDefinition
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="FAU_id_unassignDialog"
+        busyIndicatorDelay="0"
+        contentWidth="25%"
+        title="{i18n>assestAssignReturnData}"
+        afterClose="onDialogClose"
+    >
+           <f:SimpleForm
+            id="FAU_id_FormFrag"
+            busyIndicatorDelay="0"
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="4"
+            labelSpanL="4"
+            labelSpanM="12"
+            labelSpanS="12"
+            columnsXL="2"
+            columnsL="2"
+            columnsM="2"
+        >
+            <f:content>
+            <Label text="{i18n>assestAssignReturnID}" required="true"/>
+				<ComboBox
+                    id="FAU_id_returnTo"
+                    items="{AdminModel>/}"
+                    change="FAU_onChangeReturnTo"
+                    showSecondaryValues="true"
+                    value="{myform>/formData/data/ReturnEmpName}"
+                    editable="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'IT Manager'}"
+                    valueStateText="{i18n>commonNameValueState}"
+                >   
+					<core:ListItem
+                        key="{AdminModel>EmployeeID}"
+                        text="{AdminModel>EmployeeName}"
+                        additionalText="{AdminModel>EmployeeID}"
+                    />
+				</ComboBox>
+                <Label text="{i18n>assestAssignReturnDate}" />
+                <DatePicker
+                    id="FAU_id_unassignDate"
+                    required="true"
+                    valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                    change="FAU_onDateLiveChange"
+                    valueStateText="{i18n>invalidDate}"
+                    value="{path:'myform>/formData/data/ReturnDate', formatter:'.Formatter.formatDate'}"
+                />
+                <Label text="{i18n>assestAssignReturnBranch}" />
+                <ComboBox
+                    editable="false"
+                    id="FAU_id_branch"
+                    showSecondaryValues="true"
+                    change="FAU_onReturnBranchChange"
+                    items="{BaseLocationModel>/}"
+                    valueStateText="{i18n>selectBranch}"
+                    value="{myform>/formData/data/ReturnBranch}"
+                >
+                    <core:ListItem
+                        key="{BaseLocationModel>city}"
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+                </ComboBox>
+                <Label text="{i18n>comments}" />
+                <TextArea rows="2" cols="20" 
+                    maxLength="200"
+                    id="FAU_id_Comments"
+                    required="true"
+                    placeholder="{i18n>enterComments}"
+                    liveChange="FAU_validatecomments"
+                    valueStateText="{i18n>commentsValueState}"
+                    value="{myform>/formData/data/Comments}"
+                />
+            </f:content>
+        </f:SimpleForm>
+        <beginButton>
+            <Button
+                text="{i18n>save}"
+                type="Accept"
+                press="FAU_onSaveReturn"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="{i18n>assestAssignCancel}"
+                type="Reject"
+                press="FAU_onCancelReturn"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

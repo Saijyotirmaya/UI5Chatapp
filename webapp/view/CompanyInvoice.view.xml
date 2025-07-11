@@ -1,0 +1,106 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.CompanyInvoice"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<Page id="CI_id_CompanyInvoice">
+		<headerContent>
+        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+		<content>
+			<fb:FilterBar id="CI_id_InvoiceFilterBar" showFilterConfiguration="false" useToolbar="false" clear="onPressClear" showClearOnFB="true" search="CompanyInvoice_onSearch" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="InvNo" label="{i18n>invoiceNo}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="CI_id_InvNo"
+                    items="{path:'CompanyInvoiceFilterModel>/', length:1000}" filterSecondaryValues="true"
+                    showSecondaryValues="true" showClearIcon="true">
+								<core:ListItem key="{CompanyInvoiceFilterModel>InvNo}" text="{CompanyInvoiceFilterModel>InvNo}" additionalText="{CompanyInvoiceFilterModel>CustomerName}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="InvoiceDate" label="{i18n>invoiceDate}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="CI_id_InvoiceDatePicker" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" change="onDateRangeChange" />
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="CustomerName" label="{i18n>customerName}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="CI_id_CustomerNameComboBox" items="{ManageCustomerModel>/}" showSecondaryValues="true" showClearIcon="true">
+								<core:ListItem key="{ManageCustomerModel>ID}" text="{ManageCustomerModel>companyName}" additionalText="{ManageCustomerModel>salutation} {ManageCustomerModel>name}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="Status" label="{i18n>status}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="CI_id_StatusComboBox" items="{CompanyInvoiceStatus>/}" showClearIcon="true">
+								<core:ListItem key="{CompanyInvoiceStatus>ID}" text="{CompanyInvoiceStatus>InvoiceStatus}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="CI_id_InvoiceTable" items="{CompanyInvoiceModel>/}">
+				<headerToolbar>
+					<Toolbar>
+						<Title id="CI_id_Title" text="{i18n>invoiceapp} ({= ${CompanyInvoiceModel>/}.length})"/>
+						<ToolbarSpacer />
+						<!-- <ToolbarSeparator /> -->
+						<Button text="{i18n>download}" type="Ghost" tooltip="{i18n>invoicedownload}" press="CI_onPressDownload" />
+
+						<Button text="{i18n>InvoiceAddBtn}" type="Accept" tooltip="{i18n>addInvoice}" press="CI_onPressAddInvoice" />
+						<ToolbarSeparator />
+						<Button text="{i18n>InvoiceDeleteBtn}" id="CI_InvoiceDelete" visible="false" type="Reject" press="CI_OnPressDeleteInvoice" enabled="false" />
+						<!-- <ToolbarSeparator /> -->
+						<Button text="{i18n>msasow}" type="Ghost" press="CI_onPressMSASOW"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column  demandPopin="true">
+						<Text text="{i18n>invoiceNo}" />
+					</Column>
+					<Column demandPopin="true">
+						<Text text="{i18n>customerName}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>invoiceDate}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>invoiceDescription}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>totalAmount}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>PayByDate}"  />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>status}"  />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="CI_onPressInvoiceRow">
+						<cells>
+							<Text text="{CompanyInvoiceModel>InvNo}" />
+							<Text text="{CompanyInvoiceModel>CustomerName}" />
+							<Text text="{path:'CompanyInvoiceModel>InvoiceDate',formatter: '.Formatter.formatDate'}" />
+							<Text text="{CompanyInvoiceModel>InvoiceDescription}" />
+							<Text text="{path: 'CompanyInvoiceModel>TotalAmount', formatter: '.Formatter.fromatNumber'} {CompanyInvoiceModel>Currency}" textAlign="End" />
+							<ObjectStatus class="PayByDateClass" text="{path:'CompanyInvoiceModel>PayByDate',formatter:'.Formatter.formatDate'}" inverted="false" state="{ parts: [{path: 'CompanyInvoiceModel>PayByDate'},{path: 'CompanyInvoiceModel>Status'}], formatter: '.Formatter.companyInvoicePayByDate'}" />
+							<ObjectStatus text="{CompanyInvoiceModel>Status}" inverted="false" state="{path: 'CompanyInvoiceModel>Status', formatter: '.Formatter.formatObjectStatus'}" class="PayByDateClass" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+                <contentRight>
+                </contentRight>
+            </Bar>
+        </footer>
+	</Page>
+</mvc:View>

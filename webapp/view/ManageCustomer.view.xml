@@ -1,0 +1,87 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.ManageCustomer"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar">
+	<Page id="MC_id_ManageCustomer">
+		<headerContent>
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<fb:FilterBar id="MC_id_CompanyFilter" persistencyKey="myPersKey" useToolbar="false" clear="MC_onClear" showClearOnFB="true" search="MC_onSearch" filterChange=".onFilterChange" showFilterConfiguration="false">
+				<fb:filterGroupItems>
+				<fb:FilterGroupItem name="companyName" label="{i18n>companyName}" groupName="ManageCustomerGroup" visibleInFilterBar="true">
+					<fb:control>
+					<ComboBox items="{CreateCustomerModelInitial>/}" id="MC_id_CompanyName" showClearIcon="true">
+						<core:ListItem key="{CreateCustomerModelInitial>/companyName}" text="{CreateCustomerModelInitial>companyName}" />
+					</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="MC_id_CustTable" mode="SingleSelectLeft" 
+			 items="{CreateCustomerModel>/}"
+			 growing="true"
+             growingThreshold="100"
+             alternateRowColors="true"
+			 selectionChange="MC_onTableSelectionChange">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="MC_id_Title" text="{i18n>custDetails} ({= ${CreateCustomerModel>/}.length })"/>
+						<ToolbarSpacer/>
+						<Button  type="Accept" text="{i18n>addCustomerBtn}" tooltip="{i18n>custAddButToolTip}" press="MC_onAddCustomerDetails" id="MC_id_AddCustomer" />
+						<ToolbarSeparator />
+						<Button text="{i18n>custEditButToolTip}" type="Emphasized" tooltip="{i18n>custEditButToolTip}" press="MC_onEditCustomerDetails" id="MC_id_EditCustomer"/>
+						<ToolbarSeparator />
+						<Button type="Reject" text="{i18n>custDeleteToolTip}" tooltip="{i18n>custDeleteToolTip}" press="MC_onDeleteAddCustomer" id="MC_id_DeleteCustomer" />
+						<ToolbarSeparator />
+						<Button type="Attention" text="{i18n>msasow}" press="MC_OnPressMSASOW" />
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>companyName}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>customerName}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>gstNo}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>type}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>percentage}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>email}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>mobileNo}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{CreateCustomerModel>companyName}" />
+							<Text text="{CreateCustomerModel>salutation} {CreateCustomerModel>name}" />
+							<Text text="{CreateCustomerModel>GST}" />
+							<Text text="{CreateCustomerModel>type}" />
+							<Text text="{CreateCustomerModel>value}" />
+							<Text text="{CreateCustomerModel>mailID}" />
+							<Text text="{CreateCustomerModel>stdCode} {CreateCustomerModel>mobileNo}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+			  <contentLeft>
+				 <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML"/>
+			  </contentLeft>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

@@ -1,0 +1,45 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core" 
+	xmlns:layout="sap.ui.layout.form" 
+	xmlns:mvc="sap.ui.core.mvc">
+	<Dialog id="referrerDialog" title="Referrer Details" draggable="true" resizable="true" contentWidth="500px">
+		<layout:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanL="4" labelSpanM="4" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1">
+			<Label text="Referrer Name" required="true"/>
+			<HBox width="100%">
+				<Select id="salutationSelect" width="auto">
+					<layoutData>
+						<FlexItemData growFactor="0" />
+					</layoutData>
+					<items>
+						<core:Item key="Mr." text="Mr."/>
+						<core:Item key="Ms." text="Ms."/>
+						<core:Item key="Mrs." text="Mrs."/>
+						<core:Item key="Dr." text="Dr."/>
+					</items>
+				</Select>
+				<Input id="refName" placeholder="Enter full name" liveChange=".onNameChange" width="100%">
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+				</Input>
+			</HBox>
+			<Label text="Email" required="true"/>
+			<Input id="refEmail" liveChange=".onEmailChange" type="Email" placeholder="Enter email"/>
+			<Label text="Mobile" required="true"/>
+			<Input id="refMobile" liveChange=".onMobileChange" type="Tel" placeholder="Enter mobile"/>
+			<Label text="Referred To" required="true"/>
+			<ComboBox id="referredToCombo" items="{RefPeople>/people}" change="onReferredToChange" class="blockInputTyping" placeholder="Select person">
+				<core:Item key="{RefPeople>id}" text="{RefPeople>name}" />
+			</ComboBox>
+			<Label text="Applied For"/>
+			<Title id="positionInput" level="H6" titleStyle="H6" />
+		</layout:SimpleForm>
+		<beginButton>
+			<Button text="Submit" type="Emphasized" press="onSubmitReferrer"/>
+		</beginButton>
+		<endButton>
+			<Button text="Close" press="onCloseReferrerDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

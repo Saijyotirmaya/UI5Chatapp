@@ -1,0 +1,177 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.ContractDetails"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page id="C_id_PageCreate" title="{i18n>headerContractDetails}" showNavButton="true" navButtonPress="CD_onPressback" >
+	<headerContent>
+	<Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</headerContent>
+		<content>
+			<Wizard id="CD_id_Wizard" showNextButton="true"  busyIndicatorDelay="0" >
+				<WizardStep id="CD_id_Firststep" title="{i18n>basicDetails}" validated="true" complete="CD_StepTwo" >
+					<f:SimpleForm  editable="true" layout="ColumnLayout" columnsM="1" columnsL="2" columnsXL="2">
+						<f:content>
+							<Label text="{i18n>agreementDate}" required="true"/>
+							<DatePicker value="{ContractModelWizart>/AgreementDate}" id="CD_id_AgreeDate" change="ChangeAggrementDate"  valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" valueStateText="{i18n>dateValueState}"/>
+							<Label text="{i18n>consultantName}" required="true"/>
+							<Select id=""  selectedKey="{ContractModelWizart>/Salutation}" items="{Salutation>/salutation}" width="100%">
+								<core:Item key="{Salutation>text}" text="{Salutation>text}" />
+							</Select>
+							<Input value="{ContractModelWizart>/ConsultantName}" placeholder="{i18n>placeConsultantName}"  id="CD_id_CName" liveChange="CD_ValidateConsultantName" maxLength="50" class="ClientCompanyInput" valueStateText="{i18n>nameConsultantValueState}"/>
+							<Label text="{i18n>address}" required="true"/>
+							<TextArea value="{ContractModelWizart>/ConsultantAddress}"  maxLength="120" rows="2" id="CD_id_Address" placeholder="{i18n>placeAddress}" change="onAddress" valueStateText="{i18n>addressValueState}"
+									liveChange="CD_ValidateCommonFields"/>
+							<Label text="{i18n>consultantEmailID}" required="true"/>
+							<Input value="{ContractModelWizart>/ContarctEmail}"  maxLength="50" placeholder="{i18n>placeConsultantEmail}" id="CD_id_Email"  liveChange="CD_validateEmail"  valueStateText="{i18n>emailValueState}"/>
+							<Label text="{i18n>consultingService}" required="true"/>
+							<Input value="{ContractModelWizart>/ConsultingService}"  valueStateText="{i18n>placeConsultingService}" placeholder="{i18n>placeConsultingService}" id="CD_id_ConsultingService"  change="CD_ValidateConsultantName"  maxLength="50"/>
+							<Label text="{i18n>rate}" required="true" />
+							<RadioButtonGroup id="rbg3" columns="5" selectedIndex="{= ${ContractModelWizart>/Rate} === 'Hour' ? 0 : (${ContractModelWizart>/Rate} === 'Day' ? 1 : 2)}" select="RadioButtonSelect">
+								<RadioButton text="{i18n>rateHour}" />
+								<RadioButton text="{i18n>rateDaily}" />
+								<RadioButton text="{i18n>rateMonthly}" />
+							</RadioButtonGroup>
+							<Label text="{i18n>amount}" required="true" />
+							<Input value="{ContractModelWizart>/Amount}"  id="CD_id_Amount"  placeholder="{i18n>placeAmount}"  liveChange="CD_validateAmount"  maxLength="10" valueStateText="{i18n>ammountValuState}" />
+							<Select items="{CurrencyModel>/}" 
+									selectedKey="{ContractModelWizart>/Currency}" id="CD_id_Currency" visible="true" class="marginLeft">
+								<core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+							</Select>
+
+							<Label text="{i18n>endClientHirer}" required="true"/>
+							<ComboBox items="{path:'CreateCustomerModel>/', sorter: {path:'companyName', descending:false }}" value="{ContractModelWizart>/EndClientHirer}" showSecondaryValues="true" id="CD_id_EndClientHirer" change="CD_validateName" valueStateText="{i18n>combovalueState}">
+                            <core:ListItem  key="{CreateCustomerModel>salutation}" text="{CreateCustomerModel>companyName}" additionalText="{CreateCustomerModel>name}" />
+                            </ComboBox>
+							<Label text="{i18n>hiringContactLabel}" required="true"/>
+							<Select id="CD_id_selectSal" selectedKey="{ContractModelWizart>/Salutation2}" 
+                              items="{Salutation>/salutation}" width="100%" >
+								<core:Item key="{Salutation>text}" text="{Salutation>text}" />
+							</Select>
+							<Input value="{ContractModelWizart>/ClientReportContact}"
+                             placeholder="{i18n>hiringContactPlaceholder}" maxLength="50" id="CD_id_HiringContact" change="CD_validateName" valueStateText="{i18n>commonNameValueState}"/>
+							<Label text="{i18n>locationswhereServices}" />
+							<Select id="CD_id_Locationcomb" selectedKey="{ContractModelWizart>/Location}" items="{WorkingMode>/location}">
+								<core:Item key="{WorkingMode>Location}" text="{WorkingMode>Location}" />
+							</Select>
+							<Label text="{i18n>startDate}" required="true"/>
+							<DatePicker value="{ContractModelWizart>/StartDate}" id="CD_id_Datestart" valueFormat="dd/MM/yyyy" displayFormat="dd/MM/yyyy" change="validateDate" valueStateText="{i18n>dateValueState}" maxDate="{ContractModelWizart>/MaxFromDate}"/>
+							<Label text="{i18n>endDate}" required="true"/>
+							<DatePicker value="{ContractModelWizart>/EndDate}" id="CD_id_DateEnd" valueFormat="dd/MM/yyyy"  
+							displayFormat="dd/MM/yyyy" change="validateDate" valueStateText="{i18n>dateValueState}" minDate="{ContractModelWizart>/MinToDate}"/>
+							<Label text="{i18n>specificInsuranceRequirement}"  />
+
+							<Select id="CD_id_InsuranceReq" selectedKey="{ContractModelWizart>/InsuranceRequirement}" items="{TravelAllowance>/type}">
+							<core:Item key="{TravelAllowance>text}" text="{TravelAllowance>text}" />
+							</Select>
+							<Label text="{i18n>warrantyDate}" />
+							<Select id="CD_id_Warranty" selectedKey="{ContractModelWizart>/WarrantyDate}" items="{ContractPeriod>/ContractPeriod}">
+								<core:Item key="{ContractPeriod>Months}" text="{ContractPeriod>Months}" />
+							</Select>
+							<Label text="{i18n>calloutadditionalratesexpenses}" />
+							<Select  id="CD_id_AddRate" selectedKey="{ContractModelWizart>/AdditionalRates}" items="{TravelAllowance>/type}">
+							<core:Item key="{TravelAllowance>text}" text="{TravelAllowance>text}" />
+							</Select>
+							<Label text="{i18n>paymentterms}"/>
+							<Select id="CD_id_PaymentTerms" selectedKey="{ContractModelWizart>/PaymentTerms}" items="{ContractpaymentModel>/}">
+								<core:Item key="{ContractpaymentModel>days}" text="{ContractpaymentModel>days}" />
+							</Select>
+
+							<Label text="{i18n>expCountry}" required="true"/>
+				             <ComboBox change="CD_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="CD_id_Country" items="{path:'CountryModel>/',length:1000}" selectedKey="{ContractModelWizart>/Country}" showSecondaryValues="true"  >
+					        <core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+				            </ComboBox>
+							<Label text="{i18n>contractLocation}" required="true"/>
+								 <ComboBox change="CD_onBaseLocationChange" items="{BaseLocationModel>/}" id="CD_id_ConLocation"  showSecondaryValues="true" selectedKey="{ContractModelWizart>/contractLocation}" valueStateText="{i18n>combovalueState}" >
+												   <core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+										   </ComboBox>
+										   
+							<Label text="{i18n>mobileNo}" required="true" />
+							<ComboBox items="{codeModel>/}" value="{ContractModelWizart>/STDCode}" showSecondaryValues= "true" id="CD_id_codeModel" change="CD_ValidateComboBox" valueStateText="{i18n>combovalueState}" filterSecondaryValues="true">
+								<core:ListItem key="{codeModel>calling_code}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}" />
+							</ComboBox>
+
+							<Input value="{ContractModelWizart>/MobileNo}" placeholder="{i18n>mobileNo}"  liveChange="CD_validateMobileNo" maxLength="10" id="CD_id_Mobile" valueStateText="{i18n>mobileNoValueState}"/>
+
+						</f:content>
+					</f:SimpleForm>
+				</WizardStep>
+				<WizardStep id="CD_id_StepTwo"
+                            title="{i18n>review}"
+							validated="true">
+					<f:SimpleForm 
+                                id="SimpleForm"
+                                editable="true"
+                                layout="ColumnLayout"
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="0"  
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="2"    
+                                columnsM="1">
+						<f:content>
+							<Label text="{i18n>agreementDate}"/>
+							<Text text="{path:'ContractModelWizart>/AgreementDate'}"/>
+							<Label text="{i18n>consultantName}"/>
+							<Text text="{= ${ContractModelWizart>/Salutation} + ' ' + ${ContractModelWizart>/ConsultantName}}"/>
+							<Label text="{i18n>address}"/>
+							<Text text="{ContractModelWizart>/ConsultantAddress}"/>
+							<Label text="{i18n>consultantEmailID}"/>
+							<Text text="{ContractModelWizart>/ContarctEmail}"/>
+							<Label text="{i18n>consultingService}"/>
+							<Text text="{ContractModelWizart>/ConsultingService}"/>
+							<Label text="{i18n>amount}"/>
+							<Text text="{path:'ContractModelWizart>/Amount', formatter: '.Formatter.CurrencyInINR'} {ContractModelWizart>/Currency} Per {ContractModelWizart>/Rate}" />	
+							<Label text="{i18n>endClientHirer}"/>
+							<Text text="{ContractModelWizart>/EndClientHirer}"/>
+							<Label text="{i18n>hiringContactLabel}"/>
+							<Text text="{= ${ContractModelWizart>/Salutation2} + ' ' + ${ContractModelWizart>/ClientReportContact} }" />
+							<Label text="{i18n>locationswhereServices}"/>
+							<Text text="{ContractModelWizart>/Location}"/>
+							<Label text="{i18n>startDate}"/>
+							<Text text="{path : 'ContractModelWizart>/StartDate'}"/>
+							<Label text="{i18n>endDate}"/>
+							<Text text="{path:'ContractModelWizart>/EndDate'}"/>
+							<Label text="{i18n>specificInsuranceRequirement}"/>
+							<Text text="{ContractModelWizart>/InsuranceRequirement}"/>
+							<Label text="{i18n>warrantyDate}"/>
+							<Text text="{ContractModelWizart>/WarrantyDate}"/>
+							<Label text="{i18n>calloutadditionalratesexpenses}"/>
+							<Text text="{ContractModelWizart>/AdditionalRates}"/>
+							<Label text="{i18n>paymentterms}"/>
+							<Text text="{ContractModelWizart>/PaymentTerms}"/>
+							<Label text="{i18n>expCountry}"/>
+							<Text text="{ContractModelWizart>/Country}"/>
+							<Label text="{i18n>contractLocation}"/>
+							<Text  text="{ContractModelWizart>/contractLocation}" />	
+							<Label text="{i18n>mobileNo}"/>
+							<Text text="{= ${ContractModelWizart>/STDCode} + ' ' + ${ContractModelWizart>/MobileNo} }"/>
+						</f:content>
+					</f:SimpleForm>
+				</WizardStep>
+			</Wizard>
+		</content>
+		<footer>
+			<Bar>
+					    <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+				<contentRight>
+					<Button text="{i18n>submit}" press="CD_onSubmit" id="CD_id_Submit" type="Accept"  enabled="false"/>
+				</contentRight>
+			</Bar>
+		</footer>
+	</Page>
+	<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.ContractUpdate" type="XML" />
+</mvc:View>

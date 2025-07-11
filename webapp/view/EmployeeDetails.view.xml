@@ -1,0 +1,118 @@
+<mvc:View
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar"
+	controllerName="sap.kt.com.minihrsolution.controller.EmployeeDetails"
+	height="100%">
+	<Page >
+		<headerContent>
+	   <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<fb:FilterBar  class="sapUiTinyMargin" id="ED_id_FilterBar" persistencyKey="myPersKey" useToolbar="false" showClearOnFB="true" search="Emp_det_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" clear="onClearEmployeeDetails" showFilterConfiguration="false" >	
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="EmployeeID" label="{i18n>employeeID}" groupName="Group1" visibleInFilterBar="true"  visible="{= ${LoginModel>/Role} === 'Admin' }">
+						<fb:control>
+							<ComboBox  showSecondaryValues= "true"  items="{sEmployeeDetails>/}" id="ED_id_EmpIDFilter" showClearIcon="true">
+								<core:ListItem key="{sEmployeeDetails>EmployeeID}" text="{sEmployeeDetails>EmployeeID}" additionalText="{sEmployeeDetails>EmployeeName}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<!-- <fb:FilterGroupItem name="Type" label="{i18n>type}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox  showSecondaryValues= "true"  items="{EmpType>/}" id="ED_id_TypeFilter" showClearIcon="true">
+								<core:ListItem key="{EmpType>ID}" text="{EmpType>Type}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem> -->
+					<fb:FilterGroupItem name="ManagerName" label="{i18n>manager}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox showSecondaryValues= "true"  items="{empModel>/}" id="ED_id_ManagerFilter" showClearIcon="true">
+								<core:ListItem key="{empModel>EmployeeID}" text="{empModel>EmployeeName}" additionalText="{empModel>EmployeeID}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="Role" label="{i18n>role}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox showSecondaryValues= "true"  items="{RoleModel>/}" id="ED_id_RoleFilter" showClearIcon="true">
+								<core:ListItem key="{RoleModel>Role}" text="{RoleModel>Role}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="BaseLocation" label="{i18n>baseLocation}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox items="{BaseLocationModel>/}" showClearIcon="true" showSecondaryValues="true" id="ED_id_BaseLFilter">
+								<core:ListItem key="{BaseLocationModel>id}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem name="EmployeeStatus" label="{i18n>status}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox showSecondaryValues= "true"  items="{StatusEmp>/}" id="ED_id_Status" showClearIcon="true">
+								<core:ListItem key="{StatusEmp>Value}" text="{StatusEmp>Value}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="ED_id_EmpDetailsTable" class="sapUiTinyMargin" items="{
+                path: 'sEmployeeDetails>/', sorter: {path: 'EmployeeStatus',descending: false,group: true}}"  busyIndicatorDelay="0"  width="auto"
+                   growingScrollToLoad="false" growing="true"  growingThreshold="50"  alternateRowColors="true">
+				<headerToolbar>
+					<OverflowToolbar >
+						<Title id="ED_id_TitleTable" text="{i18n>headerEmpDetails} ({= ${sEmployeeDetails>/}.length})"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column demandPopin="true">
+						<Text text="{i18n>employeeID}"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" >
+						<Text text="{i18n>employeeName}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Text text="{i18n>role}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>designation}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true" width="20%">
+						<Text text="{i18n>email}" />
+					</Column>
+					<Column demandPopin="true" >
+						<Text text="{i18n>manager}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Text text="{i18n>baseLocation}" />
+					</Column>
+					<!-- <Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>status}" />
+					</Column> -->
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="ED_onPressEmployeeRow">
+						<cells>
+							<Text text="{sEmployeeDetails>EmployeeID}"/>
+							<Text text="{sEmployeeDetails>EmployeeName}"/>
+							<Text text="{sEmployeeDetails>Role}"/>
+							<Text text="{sEmployeeDetails>Designation}"/>
+							<Text text="{sEmployeeDetails>CompanyEmailID}"/>
+							<ObjectIdentifier title="{sEmployeeDetails>ManagerName}" text="{sEmployeeDetails>ManagerID}" />
+							<Text text="{sEmployeeDetails>BaseLocation}"/>
+							<!-- <ObjectStatus text="{sEmployeeDetails>EmployeeStatus}" state="{path: 'sEmployeeDetails>EmployeeStatus', formatter: '.Formatter.statusState'}" /> -->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>	
+		</content>
+        	<footer>
+			<Bar id="ED_id_FooterBar">
+			    <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+            </Bar>
+            </footer>
+	</Page>
+</mvc:View>

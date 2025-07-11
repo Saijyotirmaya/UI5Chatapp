@@ -1,0 +1,1057 @@
+{
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "sap.kt.com.minihrsolution",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.16.5",
+            "toolsId": "e41e0e16-770d-46f8-9339-aef876c756f5"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "dependencies": {
+            "minUI5Version": "1.133.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ui.richtexteditor": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "sap.kt.com.minihrsolution.i18n.i18n"
+                }
+            },
+            "BloodGroup": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/BloodGroup.json",
+                "preload": true
+            },
+            "BondModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Bond.json",
+                "preload": true
+            },
+            "DurationTraining": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/DurationTraining.json",
+                "preload": true
+            },
+            "RelationModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Relations.json",
+                "preload": true
+            },
+            "EmployeeStatus": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/EmployeeStatus.json",
+                "preload": true
+            },
+            "TraineeStatus": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TraineeStatus.json",
+                "preload": true
+            },
+            "CollegeGrade": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/CollegeGrade.json",
+                "preload": true
+            },
+            "CompanyInvoiceStatus": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/CompanyInvoiceStatus.json",
+                "preload": true
+            },
+            "Degree": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Degree.json",
+                "preload": true
+            },
+            "leaveTypeModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/LeaveModel.json",
+                "preload": true
+            },
+            "ModeOfPayment": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/ModeOfPayment.json",
+                "preload": true
+            },
+            "Costcenter": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Costcenter.json",
+                "preload": true
+            },
+            "MyInbox": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/MyInbox.json",
+                "preload": true
+            },
+            "RateType": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/RateType.json",
+                "preload": true
+            },
+            "TripType": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TripType.json",
+                "preload": true
+            },
+            "Salutation": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Salutation.json",
+                "preload": true
+            },
+            "TaskType": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TaskType.json",
+                "preload": true
+            },
+            "Months": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Months.json",
+                "preload": true
+            },
+            "Quotation": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Quotation.json",
+                "preload": true
+            },
+            "Payroll": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Payroll.json",
+                "preload": true
+            },
+            "PDFData": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/PDFData.json",
+                "preload": true
+            },
+            "TraineeCourse": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Course.json",
+                "preload": true
+            },
+            "ContractPeriod": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/ContractPeriod.json",
+                "preload": true
+            },
+            "AssetAssignmentStatus": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/AssetAssignmentStatus.json",
+                "preload": true
+            },
+            "GenderModel": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/Gender.json",
+                "preload":true
+            },
+              "EmpType": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/EmployeeType.json",
+                "preload": true
+            },
+              "ContractpaymentModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/PaymentTerms.json",
+                "preload": true
+            },
+            "SowModel": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/SowStatus.json",
+                "preload":true
+            },
+              "codeModel": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/STDCode.json",
+                "preload":true
+            },
+            "SowStatusModel": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/SowFilter.json",
+                "preload":true
+            },
+            "InvoiceSAC": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/InvoiceSAC.json",
+                "preload": true
+            },
+            "StatusEmp": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/StatusEmp.json",
+                "preload":true
+            },
+               "DocumentJson": {
+                "type":"sap.ui.model.json.JSONModel",
+                "uri":"model/Document.json",
+                "preload":true
+            },
+            "TypeModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TrainingType.json",
+                "preload": true
+            },
+            "AssignmentStatus": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/AssignmentStatus.json",
+                "preload": true
+            },
+            "WorkingMode": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/WorkingMode.json",
+                "preload": true
+            },
+            "TravelAllowance": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TravelAllowance.json",
+                "preload": true
+            },
+            "ContractPeriodThree": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/ThreeMonthGap.json",
+                "preload": true
+            },
+            "PaySlip": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/PaySlip.json",
+                "preload": true
+            },
+             "TStatusModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TimesheetStatus.json",
+                "preload": true
+            },
+               "TApprovalModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/TimesheetApprovalStatus.json",
+                "preload": true
+            },
+             "ExpectedCTC": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/ExpectedctcRange.json",
+                "preload": true
+            },
+             "Experience": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "model/Experience.json",
+                "preload": true
+            }
+        },
+        "resources": {
+            "js": [
+                {
+                    "uri": "./libs/jspdf.umd.min.js"
+                },
+                {
+                    "uri": "./libs/jspdf.plugin.autotable.min.js"
+                },
+                {
+                    "uri": "./libs/xlsx-to-json.js"
+                },
+                {
+                    "uri": "./libs/json-to-xlsx.js"
+                }
+            ],
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "transition": "slide",
+                "type": "View",
+                "viewType": "XML",
+                "path": "sap.kt.com.minihrsolution.view",
+                "async": true,
+                "viewPath": "sap.kt.com.minihrsolution.view"
+            },
+            "routes": [
+                {
+                    "name": "RouteView1",
+                    "pattern": "View1",
+                    "target": [
+                        "TargetView1"
+                    ]
+                },
+                {
+                    "name": "RouteHomePage",
+                    "pattern": ":?query:",
+                    "target": "TargetHomePage"
+                },
+                {
+                    "name": "RouteLoginPage",
+                    "pattern": "LoginPage",
+                    "target": "TargetLoginPage"
+                },
+                {
+                    "name": "RouteTilePage",
+                    "pattern": "TilePage",
+                    "target": "TargetTilePage"
+                },
+                {
+                    "name": "RouteTraineeDetails",
+                    "pattern": "TraineeDetails/{sParTrainee}",
+                    "target": "TargetTraineeDetails"
+                },
+                {
+                    "name": "RouteTrainee",
+                    "pattern": "Trainee/{value}",
+                    "target": "TargetTrainee"
+                },
+                {
+                    "name": "RouteEmployeeOffer",
+                    "pattern": "EmployeeOffer/{valueEmp}",
+                    "target": "TargetEmployeeOffer"
+                },
+                {
+                    "name": "RouteEmployeeOfferDetails",
+                    "pattern": "EmployeeOfferDetails/{sParOffer}/{sParEmployee}",
+                    "target": "TargetEmployeeOfferDetails"
+                },
+                {
+                    "name": "RouteListofholidays",
+                    "pattern": "Listofholidays",
+                    "target": [
+                        "TargetListofholidays"
+                    ]
+                },
+                {
+                    "name": "RouteIDCardApplication",
+                    "pattern": "IdCard",
+                    "target": [
+                        "TargetIDCardApplication"
+                    ]
+                },
+                {
+                    "name": "RouteAdminApplyLeave",
+                    "pattern": "AdminApplyLeave",
+                    "target": [
+                        "TargetAdminApplyLeave"
+                    ]
+                },
+                {
+                    "name": "RouteContractDetails",
+                    "pattern": "ContractDetails/{sParContract}/:sID:",
+                    "target": [
+                        "TargetContractDetails"
+                    ]
+                },
+                {
+                    "name": "RouteContract",
+                    "pattern": "Contract",
+                    "target": [
+                        "TargetContract"
+                    ]
+                },
+                {
+                    "name": "RouteConsultantInvoiceApplication",
+                    "pattern": "ConsultantInvoice",
+                    "target": [
+                        "TargetConsultantInvoiceApplication"
+                    ]
+                },
+                {
+                    "name": "RouteNavConsultantInvoiceApplication",
+                    "pattern": "ConsultantInvoiceDetails/{sPath}/{oPath}",
+                    "target": [
+                        "TargetNavConsultantInvoiceApplication"
+                    ]
+                },
+                {
+                    "name": "RouteAdminPaySlip",
+                    "pattern": "AdminPaySlip",
+                    "target": [
+                        "TargetAdminPaySlip"
+                    ]
+                },
+                {
+                    "name": "RouteNavAdminPaySlipApp",
+                    "pattern": "AdminPaySlipDetails",
+                    "target": [
+                        "TargetNavAdminPaySlipApp"
+                    ]
+                },
+                {
+                    "name": "SelfService",
+                    "pattern": "SelfService/{sPath}/{Role}",
+                    "target": [
+                        "SelfServiceTarget"
+                    ]
+                },
+                {
+                    "name": "RouteMyInbox",
+                    "pattern": "MyInbox/{sMyInBox}",
+                    "target": [
+                        "TargetMyInbox"
+                    ]
+                },
+                {
+                    "name": "RouteLOPDetails",
+                    "pattern": "LOPDetails",
+                    "target": [
+                        "TargetLOPDetails"
+                    ]
+                },
+                {
+                    "name": "RouteEmployeeDetails",
+                    "pattern": "EmployeeDetails/{sPath}",
+                    "target": [
+                        "TargetEmployeeDetails"
+                    ]
+                },
+                {
+                    "name": "RouteCompanyInvoice",
+                    "pattern": "CompanyInvoice",
+                    "target": [
+                        "TargetCompanyInvoice"
+                    ]
+                },
+                {
+                    "name": "RouteCompanyInvoiceDetails",
+                    "pattern": "InvoiceDetails/{sPath}",
+                    "target": [
+                        "TargetCompanyInvoiceDetails"
+                    ]
+                },
+                {
+                    "name": "RouteQuotation",
+                    "pattern": "Quotation",
+                    "target": [
+                        "TargetQuotation"
+                    ]
+                },
+                {
+                    "name": "RouteQuotationForm",
+                    "pattern": "QuotationForm",
+                    "target": [
+                        "TargetQuotationForm"
+                    ]
+                },
+                {
+                    "name": "RouteQuotationDashboard",
+                    "pattern": "QuotationDashboard",
+                    "target": [
+                        "TargetQuotationDashboard"
+                    ]
+                },
+                {
+                    "name": "RouteExpensePage",
+                    "pattern": "Expense",
+                    "target": "TargetExpense"
+                },
+                {
+                    "name": "RouteExpensDetails",
+                    "pattern": "ExpenseDetails/{sPath}",
+                    "target": "TargetExpenseDetails"
+                },
+                {
+                    "name": "RouteManageAssignment",
+                    "pattern": "ManageAssignment",
+                    "target": [
+                        "TargetManageAssignment"
+                    ]
+                },
+                {
+                    "name": "RouteDetailLeave",
+                    "pattern": "DetailLeave/{sLeaveID}",
+                    "target": [
+                        "TargetDetailLeave"
+                    ]
+                },
+                {
+                    "name": "RouteTimesheet",
+                    "pattern": "Timesheet",
+                    "target": [
+                        "TargetTimesheet"
+                    ]
+                },
+                {
+                    "name": "RouteTimesheetDetails",
+                    "pattern": "TimesheetDetails/{sPath}",
+                    "target": [
+                        "TargetTimesheetDetails"
+                    ]
+                },
+                {
+                    "name": "RouteTimesheetApproval",
+                    "pattern": "TimesheetApproval",
+                    "target": [
+                        "TargetTimesheetApproval"
+                    ]
+                },
+                {
+                    "name": "RouteAssignTask",
+                    "pattern": "AssignTask/{taskID}",
+                    "target": [
+                        "TargetAssignTask"
+                    ]
+                },
+                {
+                    "name": "RouteGenerateSalary",
+                    "pattern": "GenerateSalary",
+                    "target": [
+                        "TargetGenerateSalary"
+                    ]
+                },
+                {
+                    "name": "RouteManagePayroll",
+                    "pattern": "ManagePayroll",
+                    "target": [
+                        "TargetManagePayroll"
+                    ]
+                },
+                {
+                    "name": "RouteManageCustomer",
+                    "pattern": "ManageCustomer/{value}",
+                    "target": [
+                        "TargetManageCustomer"
+                    ]
+                },
+                {
+                    "name": "RouteMSA",
+                    "pattern": "MSA",
+                    "target": [
+                        "TargetMSA"
+                    ]
+                },
+                {
+                    "name": "RouteMSADetails",
+                    "pattern": "MSADetails",
+                    "target": [
+                        "TargetMSADetails"
+                    ]
+                },
+                {
+                    "name": "RouteMSAEdit",
+                    "pattern": "MSAEdit/{sPath}",
+                    "target": [
+                        "TargetMSAEdit"
+                    ]
+                },
+                {
+                    "name": "RouteSchemeUpload",
+                    "pattern": "SchemeUpload/{value}",
+                    "target": [
+                        "TargetSchemeUpload"
+                    ]
+                   
+                },
+                {
+                    "name": "RouteSchemeUploadDetails",
+                    "pattern": "SchemeuploadDetails/{data}",
+                    "target": [
+                        "TargetSchemeUploadDetails"
+                    ]
+                   
+                },
+                {
+                    "name": "RouteIncomeAsset",
+                    "pattern": "IncomeAsset",
+                    "target": [
+                        "TargetIncomeAsset"
+                    ]
+                   
+                },
+                {
+                    "name": "RouteAssetAssignment",
+                    "pattern": "AssetAssignment",
+                    "target": [
+                        "TargetAssetAssignment"
+                    ]
+                   
+                },
+                {
+                    "name":"RouteAssetDetails",
+                    "pattern": "AssetDetails/{SerialNumber}",
+                    "target":[
+                        "TargetAssetDetails"
+                    ]
+                },
+                {
+                    "name":"RouteHrQuotation",
+                    "pattern":"HrQuotation",
+                    "target": [
+                        "TargetHrQuotation"
+                    ]
+                },
+                {
+                    "name":"RouteHrQuotationDetails",
+                    "pattern":"HrQuotationDetails/{sQuotationNo}",
+                    "target": [
+                        "TargetHrQuotationDetails"
+                    ]
+                },
+                 {
+                    "name":"AssetObjectPage",
+                    "pattern": "Page/{sPath}/{Name}",
+                    "target":[
+                        "TargetAssetObjectPage"
+                    ]
+                },
+                 {
+                    "name":"MyAsset",
+                    "pattern": "MyAsset",
+                    "target":[
+                        "TargetMyAsset"
+                    ]
+                },
+                 {
+                    "name":"PurchaseOrder",
+                    "pattern": "PurchaseOrder",
+                    "target":[
+                        "TargetPurchaseOrder"
+                    ]
+                },
+                   {
+                    "name":"PurchaseOrderObject",
+                    "pattern": "PurchaseOrderObjectPage/{sPath}",
+                    "target":[
+                        "TargetPurchaseOrderObject"
+                    ]
+                },
+                {
+                    "name":"Recruitment",
+                    "pattern": "Recruitment",
+                    "target":[
+                        "TargetRecruitment"
+                    ]
+                },
+                {
+                    "name":"AppliedCandidates",
+                    "pattern": "AppliedCandidates",
+                    "target":[
+                        "TargetAppliedCandidates"
+                    ]
+                },
+                 {
+                    "name": "RouteKTChat",
+                    "pattern": "KTChat",
+                    "target": [
+                        "TargetChat"
+                    ]
+                },
+                 {
+          "name": "RouteJobView",
+          "pattern": "JobView:?query:",
+          "target": ["TargetJobView"]
+        },
+                 {
+          "name": "AppliedCanDetail",
+          "pattern": "AppliedCanDetail/{id}",
+          "target": ["TargetAppliedCanDetail"]
+        }
+
+            ],
+            "targets": {
+                "TargetView1": {
+                    "id": "View1",
+                    "name": "View1"
+                },
+                  "TargetAssetObjectPage": {
+                    "id": "AssetObjectPage",
+                    "name": "AssetObjectPage"
+                },
+                "TargetMyAsset": {
+                    "id": "MyAsset",
+                    "name": "MyAsset"
+                },
+                "TargetPurchaseOrder": {
+                    "id": "PurchaseOrder",
+                    "name": "PurchaseOrder"
+                },
+                "TargetPurchaseOrderObject": {
+                    "id": "PurchaseOrderObject",
+                    "name": "PurchaseOrderObject"
+                },
+
+                "TargetHomePage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "HomePage",
+                    "viewName": "HomePage"
+                },
+                "TargetLOPDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "LOPDetails",
+                    "viewName": "LOPDetails"
+                },
+                "TargetLoginPage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "LoginPage",
+                    "viewName": "LoginPage"
+                },
+                "TargetDetailLeave": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "DetailLeave",
+                    "viewName": "DetailLeave"
+                },
+                "TargetTilePage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "TilePage",
+                    "viewName": "TilePage"
+                },
+                "TargetTraineeDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "TraineeDetails",
+                    "viewName": "TraineeDetails"
+                },
+                "TargetTrainee": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Trainee",
+                    "viewName": "Trainee"
+                },
+                "TargetEmployeeOffer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "EmployeeOffer",
+                    "viewName": "EmployeeOffer"
+                },
+                "TargetEmployeeOfferDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "EmployeeOfferDetails",
+                    "viewName": "EmployeeOfferDetails"
+                },
+                "TargetListofholidays": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Listofholidays",
+                    "viewName": "Listofholidays"
+                },
+                "TargetIDCardApplication": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "IdCard",
+                    "viewName": "IdCard"
+                },
+                "TargetAdminApplyLeave": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AdminApplyLeave",
+                    "viewName": "AdminApplyLeave"
+                },
+                "TargetContractDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ContractDetails",
+                    "viewName": "ContractDetails"
+                },
+                "TargetContract": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Contract",
+                    "viewName": "Contract"
+                },
+                "TargetConsultantInvoiceApplication": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ConsultantInvoice",
+                    "viewName": "ConsultantInvoice"
+                },
+                "TargetNavConsultantInvoiceApplication": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ConsultantInvoiceDetails",
+                    "viewName": "ConsultantInvoiceDetails"
+                },
+                "TargetAdminPaySlip": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AdminPaySlip",
+                    "viewName": "AdminPaySlip"
+                },
+                "TargetNavAdminPaySlipApp": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AdminPaySlipDetails",
+                    "viewName": "AdminPaySlipDetails"
+                },
+                "SelfServiceTarget": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "SelfService",
+                    "viewName": "SelfService"
+                },
+                "TargetMyInbox": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MyInbox",
+                    "viewName": "MyInbox"
+                },
+                "TargetEmployeeDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "EmployeeDetails",
+                    "viewName": "EmployeeDetails"
+                },
+                "TargetCompanyInvoice": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "CompanyInvoice",
+                    "viewName": "CompanyInvoice"
+                },
+                "TargetCompanyInvoiceDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "CompanyInvoiceDetails",
+                    "viewName": "CompanyInvoiceDetails"
+                },
+                "TargetQuotation": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Quotation",
+                    "viewName": "Quotation"
+                },
+                "TargetQuotationForm": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "QuotationForm",
+                    "viewName": "QuotationForm"
+                },
+                "TargetQuotationDashboard": {
+                    "viewType": "XML",
+                    "transition": "zoomOut",
+                    "viewId": "QuotationDashboard",
+                    "viewName": "QuotationDashboard"
+                },
+                "TargetExpense": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Expense",
+                    "viewName": "ExpenseApplication"
+                },
+                "TargetExpenseDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ExpenseDetails",
+                    "viewName": "ExpenseDetails"
+                },
+                "TargetManageAssignment": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ManageAssignment",
+                    "viewName": "ManageAssignment"
+                },
+                "TargetTimesheet": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Timesheet",
+                    "viewName": "Timesheet"
+                },
+                "TargetTimesheetDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "TimesheetDetails",
+                    "viewName": "TimesheetDetails"
+                },
+                "TargetTimesheetApproval": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "TimesheetApproval",
+                    "viewName": "TimesheetApproval"
+                },
+                "TargetAssignTask": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AssignTask",
+                    "viewName": "AssignTask"
+                },
+                "TargetGenerateSalary": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "GenerateSalary",
+                    "viewName": "GenerateSalary"
+                },
+                "TargetManagePayroll": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ManagePayroll",
+                    "viewName": "ManagePayroll"
+                },
+                "TargetManageCustomer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ManageCustomer",
+                    "viewName": "ManageCustomer"
+                },
+                "TargetMSA": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MSA",
+                    "viewName": "MSA"
+                },
+                "TargetMSADetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MSADetails",
+                    "viewName": "MSADetails"
+                },
+                "TargetMSAEdit": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "MSAEdit",
+                    "viewName": "MSAEdit"
+                },
+                "TargetSchemeUpload": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "SchemeUpload",
+                    "viewName": "SchemeUpload"
+                },
+                "TargetSchemeUploadDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "SchemeuploadDetails",
+                    "viewName": "SchemeuploadDetails"
+                },
+                "TargetIncomeAsset": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "IncomeAsset",
+                    "viewName": "IncomeAsset"
+                },
+                "TargetAssetAssignment": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AssetAssignment",
+                    "viewName": "AssetAssignment"
+                },
+                "TargetAssetDetails":{
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AssetDetails",
+                    "viewName": "AssetDetails"
+                },
+                "TargetHrQuotation":{
+                    "viewType": "XML",
+                    "transition":"slide",
+                    "clearControlAggregation": false,
+                    "viewId": "HrQuotation",
+                    "viewName": "HrQuotation"
+                },
+                "TargetHrQuotationDetails":{
+                    "viewType": "XML",
+                    "transition":"slide",
+                    "clearControlAggregation": false,
+                    "viewId": "HrQuotationDetails",
+                    "viewName": "HrQuotationDetails"
+                },
+                "TargetRecruitment":{
+                    "viewType": "XML",
+                    "transition":"slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Recruitment",
+                    "viewName": "Recruitment"
+                },
+                 "TargetAppliedCandidates":{
+                    "viewType": "XML",
+                    "transition":"slide",
+                    "clearControlAggregation": false,
+                    "viewId": "AppliedCandidates",
+                    "viewName": "AppliedCandidates"
+                },
+                 "TargetChat":{
+                    "viewType": "XML",
+                    "transition":"slide",
+                    "clearControlAggregation": false,
+                    "viewId": "KTChat",
+                    "viewName": "KTChat"
+                },
+                "TargetAppliedCanDetail": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "AppliedCanDetail",
+          "viewName": "AppliedCanDetail"
+        },
+        "TargetJobView": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "JobView",
+          "viewName": "JobView"
+        }
+            }
+        },
+        "rootView": {
+            "viewName": "sap.kt.com.minihrsolution.view.App",
+            "type": "XML",
+            "id": "App"
+        }
+    }
+}

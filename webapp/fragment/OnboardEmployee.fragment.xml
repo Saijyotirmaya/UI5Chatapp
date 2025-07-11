@@ -1,0 +1,85 @@
+
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog 
+        title="{i18n>headerEmpDetails}">	
+		<f:SimpleForm
+            editable="true" layout="ColumnLayout" id="OEF_id_SimpleForm"
+            labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+            adjustLabelSpan="false" emptySpanXL="0" columnsXL="2" columnsL="2"
+            columnsM="1" singleContainerFullSize="false">
+			<f:content>
+				<Label text="{i18n>employeeName}"  />
+				<Input value=" {oEmpolyeeDetailsModel>/Salutation} {oEmpolyeeDetailsModel>/EmployeeName}"   editable="false" />
+				<Label text="{i18n>gender}"  />
+				<Input value=" {oEmpolyeeDetailsModel>/Gender}"   editable="false" />
+				<Label text="{i18n>designation}" required="true"/>
+				<Select items="{DesignationModel>/}" showSecondaryValues="true" selectedKey="{oEmpolyeeDetailsModel>/Designation}">
+					<items>
+						<core:ListItem key="{DesignationModel>designationName}" text="{DesignationModel>designationName}" additionalText="{DesignationModel>department}" />
+					</items>
+				</Select>
+				<Label text="{i18n>empRole}" required="true"/>
+				<ComboBox value="{oEmpolyeeDetailsModel>/Role}" showSecondaryValues= "true" id="OEF_id_EmployeeRole" items="{RoleModel>/}"	filterSecondaryValues="true" change="validateCombo" valueStateText="{i18n>combovalueState}">
+				<core:ListItem key="{RoleModel>Role}" text="{RoleModel>Role}" />
+				</ComboBox>
+				<Label text="{i18n>joiningDate}" />
+					<DatePicker  value="{ path: 'oEmpolyeeDetailsModel>/JoiningDate',formatter:'.Formatter.formatDate' }"  editable="false"   displayFormat="dd/MM/yyyy"  valueFormat="dd/MM/yyyy"  />
+				<Label text="{i18n>expCountry}" required="true"/>
+				<ComboBox change="OE_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="OEF_id_Country" items="{path:'CountryModel>/',length:1000}" selectedKey="{oEmpolyeeDetailsModel>/Country}" showSecondaryValues="true">
+				<core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+				</ComboBox>
+				<Label text="{i18n>baseLocation}" required="true"/>
+			   <ComboBox items="{BaseLocationModel>/}"  showSecondaryValues="true" value="{oEmpolyeeDetailsModel>/BaseLocation}" change="EO_onBaseLocationChange" id="idSelect" valueStateText="{i18n>selectBase}">
+						<core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+				</ComboBox>
+				<!-- <Label text="{i18n>branchCode}" />
+				<Input value="{oEmpolyeeDetailsModel>/BranchCode}" editable="false" id="OE_id_BranchInput"/> -->
+				<Label text="{i18n>companyMailid}" required="true"/>
+				<Input value="{oEmpolyeeDetailsModel>/CompanyEmailID}" id="OEF_id_CompanyMail" maxLength="50" liveChange="validateEmail" placeholder="{i18n>companyMailid}" valueStateText="{i18n>emailValueState}"/>
+				<Label text="{i18n>permanentAddress}"  required="true" />
+				<TextArea value="{oEmpolyeeDetailsModel>/PermanentAddress}" id="OEF_id_PAddress" placeholder="{i18n>permanentAddress}" maxLength="120" liveChange="validateMandetory" valueStateText="{i18n>addressValueState}"/>
+				<Label text="{i18n>correspondenceAddress}" required="true" />
+				<TextArea value="{oEmpolyeeDetailsModel>/CorrespondenceAddress}" id="OEF_id_CAddress" placeholder="{i18n>correspondenceAddress}" maxLength="120" liveChange="validateMandetory" valueStateText="{i18n>addressValueState}"/>
+				<Label text="{i18n>dateOfBirth}" required="true" />
+				<DatePicker 
+                 id="OEF_id_DateofBirth"
+				 value="{oEmpolyeeDetailsModel>/DateOfBirth}"
+                 change="validateDate"
+	             displayFormat="dd/MM/yyyy"
+				 valueFormat="dd/MM/yyyy"
+				 initialFocusedDateValue="{controller>/focusedDate}"
+				 maxDate="{controller>/maxDate}"
+				 minDate="{controller>/minDate}"
+				 valueStateText="{i18n>dateValueState}" />
+				<Label text="{i18n>bloodGroup}" required="true"/>
+				<ComboBox value="{oEmpolyeeDetailsModel>/BloodGroup}" showSecondaryValues= "true" id="OEF_id_blood" items="{BloodGroup>/bloodgroup}"	filterSecondaryValues="true" change="validateCombo" valueStateText="{i18n>combovalueState}">
+				<core:ListItem key="{BloodGroup>Code}" text="{BloodGroup>Code}" />
+				</ComboBox>
+				<Label text="{i18n>mobileNo}" required="true" />
+				<ComboBox value="{oEmpolyeeDetailsModel>/STDCode}" showSecondaryValues= "true" id="OEF_id_STDCode" items="{codeModel>/}" filterSecondaryValues="true" change="validateCombo" valueStateText="{i18n>combovalueState}">
+					<core:ListItem key="{codeModel>country}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}"/>
+				</ComboBox>
+				<Input value="{oEmpolyeeDetailsModel>/MobileNo}" placeholder="{i18n>mobileNo}" liveChange="validateMobileNo" maxLength="10" id="OEF_id_Mobile" valueStateText="{i18n>mobileNoValueState}"/>
+				<Label text="{i18n>manager}" required="true"/>
+				<ComboBox value="{oEmpolyeeDetailsModel>/ManagerName}"
+				showSecondaryValues= "true"
+				id="OEF_id_Manager"
+				items="{empModel>/}"
+				filterSecondaryValues="true"
+				change="validateCombo"
+				valueStateText="{i18n>combovalueState}">
+					<core:ListItem key="{empModel>EmployeeID}" text="{empModel>EmployeeName}" additionalText="{empModel>EmployeeID}"/>
+				</ComboBox>
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>onboardEmp}" type="Ghost" press="OEF_onPressOnBoard"  />
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>close}" press="OEF_onPressClose" type="Reject"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

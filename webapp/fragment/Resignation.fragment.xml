@@ -1,0 +1,133 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:rich="sap.ui.richtexteditor"
+>
+    <Dialog
+    title="{i18n>applyResign}"
+    contentWidth="85%"
+    contentHeight="auto"
+    id="RF_dialog"
+    verticalScrolling="true"
+    horizontalScrolling="false"
+>
+        <f:SimpleForm
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            emptySpanS="0"
+            columnsXL="4"
+            columnsL="4"
+            columnsM="2"
+            singleContainerFullSize="false"
+        >
+            <f:content>
+                <Label text="{i18n>employeeName}" />
+                <Input
+                    id="RF_id_TraineeName"
+                    value="{sEmployeeModel>/0/Salutation} {sEmployeeModel>/0/EmployeeName}"
+                    editable="false"
+                />
+                <Label text="{i18n>joiningDate}" />
+                <DatePicker
+                    value="{path:'sEmployeeModel>/0/JoiningDate' ,formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+					editable="false"
+                    id="RF_id_JoiningDate"
+                />
+                <Label
+                    text="{i18n>designation}"
+                    required="true"
+                />
+                <Input
+                    id="RF_id_Designation"
+                    value="{sEmployeeModel>/0/Designation}"
+					editable="false"
+                />
+                <Label text="{i18n>startDate}" required="true" />
+                <DatePicker
+                    value="{path:'sEmployeeModel>/0/ResignationStartDate' ,formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    editable="{viewModel>/editableResignatin}"
+                    id="RF_id_StartDate"
+                    change="SS_ResignStartDateChange"
+                    minDate="{viewModel>/Max}"
+                />
+                <Label text="{i18n>reportingManager}" />
+                <Input
+                    value="{sEmployeeModel>/0/ManagerName}"
+                    editable="false"
+                    id="RF_id_ReportingManager"
+                />
+                <Label
+                    text="{i18n>endDate}"
+                    required="true"
+                />
+                <DatePicker
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    id="RF_id_EndDate"
+                    minDate="{viewModel>/min}"
+                    change="SS_validateDate"
+                    editable="{viewModel>/editableResignatin}"
+                    value="{path:'sEmployeeModel>/0/ResignationEndDate' ,formatter:'.Formatter.formatDate'}"
+                />
+                <Label
+                    text="{i18n>resignComment}"
+                    required="true"
+                />
+                <TextArea
+                    rows="4"
+                    id="RF_id_ResignReason"
+                    editable="{viewModel>/editableResignatin}"
+                    liveChange="onDocumentTypeChange"
+                    value="{sEmployeeModel>/0/ResignComment}"
+                    maxLength="1000"
+                    valueStateText="{i18n>commentsValueState}"
+                    placeholder="{i18n>resignComment}"
+                />
+            </f:content>
+        </f:SimpleForm>
+        <rich:RichTextEditor
+            id="RF_id_RTE"
+            width="100%"
+            height="60vh"
+            showGroupFontStyle="true"
+            showGroupTextAlign="true"
+            showGroupStructure="true"
+            value="{PDFData>/RTEText}"
+              editable="{viewModel>/editableResignatin}"
+			visible="true"
+        />
+        <FlexBox justifyContent="End" >
+        	<Button
+    text="{i18n>withdrawResign}"
+    visible="{viewModel>/CanWithdrawResignation}"
+    type="Emphasized"
+    press="onWithdrawResignation" class="submit"/>
+       
+            <Button
+                text="{= ${PDFData>/PreviewFlag} ? ${i18n>applyResign} : ${i18n>preview} }"
+                type="{= ${PDFData>/PreviewFlag} ? 'Accept' : 'Emphasized' }"
+                press="RF_onPressHandlePreview" class="submit" visible="{viewModel>/BtnVisible}"
+            />
+        
+            <Button
+                text="{i18n>close}"
+                press="RF_onPressCloseDialog"
+                type="Reject"
+                class="submit"
+            />
+        </FlexBox>   
+    </Dialog>
+</core:FragmentDefinition>

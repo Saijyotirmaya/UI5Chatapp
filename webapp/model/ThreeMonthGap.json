@@ -1,0 +1,24 @@
+{
+  "ContractPeriod": [
+    { "No": 1, "Months": "3 Months" },
+    { "No": 2, "Months": "6 Months" },
+    { "No": 3, "Months": "9 Months" },
+    { "No": 4, "Months": "12 Months" },
+    { "No": 5, "Months": "15 Months" },
+    { "No": 6, "Months": "18 Months" },
+    { "No": 7, "Months": "21 Months" },
+    { "No": 8, "Months": "24 Months" },
+    { "No": 9, "Months": "27 Months" },
+    { "No": 10, "Months": "30 Months" },
+    { "No": 11, "Months": "33 Months" },
+    { "No": 12, "Months": "36 Months" },
+    { "No": 13, "Months": "39 Months" },
+    { "No": 14, "Months": "42 Months" },
+    { "No": 15, "Months": "45 Months" },
+    { "No": 16, "Months": "48 Months" },
+    { "No": 17, "Months": "51 Months" },
+    { "No": 18, "Months": "54 Months" },
+    { "No": 19, "Months": "57 Months" },
+    { "No": 20, "Months": "60 Months" }
+  ]
+}

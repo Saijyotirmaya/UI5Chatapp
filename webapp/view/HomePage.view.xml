@@ -1,0 +1,158 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.HomePage"
+    displayBlock="true"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:tnt="sap.tnt"
+	xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:svm="sap.ui.comp.smartvariants" height="100%">
+	<tnt:ToolPage id="toolPage">
+		<tnt:header>
+			<tnt:ToolHeader>
+				<Avatar src="./image/logo.jpg" displaySize="XS" tooltip="Company Logo"/>
+				<Title level="H1" text="{i18n>companynameKT}" class="custom-text"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://employee-pane" text="" tooltip="{i18n>tooltipLogin}" press="onpressLogin">
+					<layoutData>
+						<OverflowToolbarLayoutData priority="NeverOverflow"/>
+					</layoutData>
+				</Button>
+			</tnt:ToolHeader>
+		</tnt:header>
+		<tnt:subHeader>
+			<tnt:ToolHeader>
+				<IconTabHeader id="mainTabHeader" select="onTabSelect" >
+					<items>
+						<IconTabFilter key="idHome" text="{i18n>toolHome}" />
+						<IconTabFilter key="idAboutUs" text="{i18n>aboutus}"/>
+						<IconTabFilter key="idProducts" text="{i18n>product}"/>
+						<IconTabFilter key="idTraning" text="{i18n>training}"/>
+						<IconTabFilter key="idCareer" text="{i18n>careers}"/>
+						<IconTabFilter key="idContact" text="{i18n>contact}"/>
+						<IconTabFilter key="idBookfordemo" text="{i18n>bookdemo}"/>
+					</items>
+				</IconTabHeader>
+			</tnt:ToolHeader>
+		</tnt:subHeader>
+		<tnt:mainContents>
+			<NavContainer id="pageContainer">
+				<pages>
+					<ScrollContainer id="idHome" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding home-background sapUiTinyMargin">
+						<l:Grid defaultSpan="XL12 L12 M12 S12" width="100%" class="position-welcome">
+							<VBox class="sapUiLargeMarginTop">
+								<Text class="custom-welcome sapUiTinyMarginTopBottom" textAlign="Center" text="{i18n>welcometoKT}"/>
+								<Text class="custom-welcome sapUiTinyMarginTopBottom" text="{i18n>companynameKT}"/>
+								<Text text="{i18n>afutureoftomorrow}" class="custom-tagline sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+								<Text class="custom-welcome-desc sapUiMediumMarginTop" textAlign="Left" text="{i18n>homepagecoute}"/>
+							</VBox>
+						</l:Grid>
+					</ScrollContainer>
+					<ScrollContainer id="idAboutUs" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding home-background sapUiTinyMargin">
+						<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Aboutus" type="XML"/>
+					</ScrollContainer>
+					<Page id="idProducts" showHeader="false" class=" Products_list sapUiTinyMargin" >
+						<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.ProductList" type="XML"/>
+					</Page>
+					<ScrollContainer id="idCareer" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding career-background sapUiTinyMargin" >
+						<l:VerticalLayout width="100%">
+							<l:BlockLayout background="Dashboard">
+								<l:BlockLayoutRow>
+									<l:BlockLayoutCell width="2" title="{i18n>careersJointeam}">
+										<Text text="{i18n>careersDes}" class="carrer-Des" />
+									</l:BlockLayoutCell>
+								</l:BlockLayoutRow>
+							</l:BlockLayout>
+							<VBox height="1rem"/>
+							<fb:FilterBar
+            id="V1_ID_filterbar"
+            class="sapUiSmallMargin myCustomFilterBar"
+            clear="v1_filClear"
+            search="V1_onSearch"
+            showClearOnFB="true"
+            showAllFilters="true"
+            showFilterConfiguration="false"
+            filtersDialogCancel="false"
+            persistencyKey="myPersKey"
+            useToolbar="false"
+            filterChange=".onFilterChange"
+            afterVariantLoad=".onAfterVariantLoad">
+								<fb:filterGroupItems>
+									<fb:FilterGroupItem name="Skills" label="{i18n>V1_L_Skills}" groupName="Group1" visibleInFilterBar="true">
+										<fb:control>
+											<Input id="V1_ID_SkillsInput" placeholder="Type a skill" showSuggestion="true" showClearIcon="true" suggest="onSuggestSkills" suggestionItems="{skillModel>/skills}">
+												<core:Item key="{skillModel>skill}" text="{skillModel>skill}" />
+											</Input>
+										</fb:control>
+									</fb:FilterGroupItem>
+									<fb:FilterGroupItem name="Location" label="{i18n>V1_L_Location}" groupName="Group1" visibleInFilterBar="true">
+										<fb:control>
+											<ComboBox id="V1_ID_LocationComboBox" placeholder="Select Location" items="{LocationModel>/}"  showClearIcon="true" selectedKey="">
+												<core:Item key="{LocationModel>key}" text="{LocationModel>key}" />
+											</ComboBox>
+										</fb:control>
+									</fb:FilterGroupItem>
+									<fb:FilterGroupItem name="ExpYears" label="{i18n>v1_L_EXP}" groupName="Group1" visibleInFilterBar="true">
+										<fb:control>
+											<ComboBox id="V1_ID_ExpComboBox" items="{ExpYears>/}" selectedKey="" placeholder="Select Experience" showClearIcon="true">
+												<core:Item key="{ExpYears>key}" text="{ExpYears>text}" />
+											</ComboBox>
+										</fb:control>
+									</fb:FilterGroupItem>
+								</fb:filterGroupItems>
+							</fb:FilterBar>
+							<Table
+            id="V1_ID_Table"
+            items="{JobApplicationModel>/Candidates}"
+            mode="SingleSelectMaster"
+            alternateRowColors="true"
+            class="sapUiSmallMargin"
+            width="auto">
+								<columns>
+									<Column demandPopin="true">
+										<Text text="{i18n>v1_jobTitle}" />
+									</Column>
+									<Column minScreenWidth="Desktop" demandPopin="true">
+										<Text text="{i18n>v1_PriSkills}" />
+									</Column>
+									<Column demandPopin="true">
+										<Text text="{i18n>v1_s_postDate}" />
+									</Column>
+									<Column minScreenWidth="Desktop" demandPopin="true">
+										<Text text="{i18n>V1_L_Location}" />
+									</Column>
+									<Column minScreenWidth="Desktop" demandPopin="true">
+										<Text text="{i18n>v1_s_Exp}" />
+									</Column>
+									<Column minScreenWidth="Desktop" demandPopin="true"></Column>
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Link text="{JobApplicationModel>JobTitle}" press="v1_onViewItem" />
+											<Text text="{JobApplicationModel>PrimarySkills}" />
+											<Text text="{path: 'JobApplicationModel>PostDate', formatter:'.Formatter.formatDate'}" />
+											<Text text="{JobApplicationModel>Location}" />
+											<Text text="{JobApplicationModel>Experience}" />
+											<Button text="{i18n>v1_s_ViewJob}" icon="sap-icon://opportunities" press="v1_onViewItem" type="Emphasized" />
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</l:VerticalLayout>
+					</ScrollContainer>
+					<ScrollContainer id="idContact" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding contact-background sapUiTinyMargin">
+						<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.ContactPage" type="XML"/>
+					</ScrollContainer>
+					<Page id="idBookfordemo" showHeader="false" class="sapUiContentPadding demo-form sapUiTinyMargin" >
+						<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Demoform" type="XML"/>
+					</Page>
+					<ScrollContainer id="idTraning" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding Training-background sapUiTinyMargin">
+						<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Training" type="XML"/>
+					</ScrollContainer>
+				</pages>
+			</NavContainer>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+</mvc:View>

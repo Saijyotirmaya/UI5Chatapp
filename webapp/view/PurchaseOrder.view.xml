@@ -1,0 +1,228 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.PurchaseOrder"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:m="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
+>
+    <Page>
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <fb:FilterBar
+            id="PO_id_FilterbarEmployee"
+            persistencyKey="myPersKey"
+            useToolbar="false"
+            clear="PO_onPressClear"
+            showClearOnFB="true"
+            search="PO_onSearch"
+            filterChange="IA_.onFilterChange"
+            afterVariantLoad="IA_.onAfterVariantLoad"
+            showFilterConfiguration="false"
+            filterContainerWidth="auto"
+
+        >
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="Company Name"
+                    label="Company Name"
+                    groupName="Group"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="PO_id_CustomerName"
+                            items="{ManageCustomerModel>/}"
+                            showClearIcon="true"
+                        >
+                            <core:Item
+                                key="{ManageCustomerModel>companyName}"
+                                text="{ManageCustomerModel>companyName}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="Po Number"
+                    label="PO Number"
+                    groupName="Group"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="PO_id_PoNumber"
+                            items="{POModelfilter>/}"
+                            showClearIcon="true"
+                        >
+                            <core:Item
+                                key="{POModelfilter>PoNumber}"
+                                text="{POModelfilter>PoNumber}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="Creation Date"
+                    label="Creation Date"
+                    groupName="Group"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <DateRangeSelection
+                            id="PO_idECreationDatePicker"
+                            displayFormat="dd/MM/yyyy"
+                            valueFormat="yyyy-MM-dd"
+                        />
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+        <Table
+            id="idPOTable"
+            mode="SingleSelectLeft"
+            width="auto"
+            class="sapUiResponsiveMargin"
+            items="{
+        path: 'POModel>/',
+        sorter: {
+            path: 'PoNumber',
+            descending: true
+        }
+    }"
+        >
+            <headerToolbar>
+                <Toolbar>
+                    <Title
+                        text="Purchase Order List ({=${POModel>/}.length})"
+                    />
+                    <ToolbarSpacer />
+                    <Button
+                        text="Create Purchase Order"
+                        press="PO_onCreatePurchaseOrder"
+                        type="Accept"
+                    />
+                    <Button
+                        text="Delete"
+                        press="PO_onDeleteButtonPress"
+                        type="Reject"
+                    />
+                </Toolbar>
+            </headerToolbar>
+            <columns>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>ponumber}"
+                        tooltip="{i18n>ponumber}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>companyName}"
+                        tooltip="{i18n>companyName}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>customerAddress}"
+                        tooltip="{i18n>customerAddress}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>type}"
+                        tooltip="{i18n>type}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>pan}"
+                        tooltip="{i18n>pan}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>sdate}"
+                        tooltip="{i18n>sdate}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>edate}"
+                        tooltip="{i18n>edate}"
+                    />
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text
+                        text="{i18n>podate}"
+                        tooltip="{i18n>podate}"
+                    />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                    type="Navigation"
+                    press="onColumnListItemPress"
+                >
+                    <cells>
+                        <Text text="{POModel>PoNumber}" />
+                        <Text text="{POModel>CustomerName}" />
+                        <Text text="{POModel>Address}" />
+                        <Text text="{POModel>Type}" />
+                        <Text text="{POModel>PAN}" />
+                        <Text
+                            text="{path:'POModel>StartDate', formatter: '.formatter.formatDate'}"
+                        />
+                        <Text
+                            text="{path:'POModel>EndDate', formatter: '.formatter.formatDate'}"
+                        />
+                        <Text
+                            text="{path:'POModel>CurrentDate', formatter: '.formatter.formatDate'}"
+                        />
+
+                        <!-- <Text text="{POModel>StartDate}"/> -->
+                        <!-- <Text text="{POModel>EndDate}"/> -->
+                        <!-- <Text text="{path:'POModel>CurrentDate',formatter:'.Formatter.formatDate' }" /> -->
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Page>
+</mvc:View>

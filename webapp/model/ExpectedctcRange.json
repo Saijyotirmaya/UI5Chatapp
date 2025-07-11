@@ -1,0 +1,10 @@
+{
+  "data": [
+    { "key": 1, "value": "15" },
+    { "key": 2, "value": "30" },
+    { "key": 3, "value": "45" },
+    { "key": 4, "value": "60" },
+    { "key": 5, "value": "75" },
+    { "key": 6, "value": "90" }
+  ]
+}

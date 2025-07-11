@@ -1,0 +1,52 @@
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form" 
+    controllerName="sap.kt.com.minihrsolution.controller.LoginPage" 
+    displayBlock="true">
+	<Page id="Lp_id_Loginpage" class="login-background">
+		<headerContent>
+			<Avatar src="./image/logo.jpg" displaySize="XS" press="onAvatarPressed" tooltip="Company Logo"/>
+			<Title level="H1" text="{i18n>companynameKT}" class="custom-text" wrapping="false"/>
+			<ToolbarSpacer/>
+			<Button icon="sap-icon://home" press="onpresshome" class="sapUiTinyMarginEnd" tooltip="{i18n>toolHome}"/>
+		</headerContent>
+		<content>
+			<FlexBox class="sapUiMediumMargin responsiveCenterFlex" direction="Column" alignItems="End" justifyContent="End">
+				<form:SimpleForm id="LP_id_Form" editable="true" layout="ResponsiveGridLayout" 
+                class="loginForm"
+                title="{i18n>loginDetails}" singleContainerFullSize="false" >
+					<form:content>
+						<Label text="{i18n>userId}" required="true"/>
+						<Input placeholder="{i18n>placeUserId}" valueState="{LoginViewModel>/userIdValueState}"  valueStateText="{i18n>placeUserId}" liveChange="LP_onValidateUserId" id="Lp_id_Userid" value="{LoginViewModel>/userId}"  maxLength="7" />
+						
+						<Label text="{i18n>userName}" required="true"/>
+						<Input placeholder="{i18n>placeUserName}" valueStateText="{i18n>placeUserName}" liveChange="LP_onValidateUsername" valueState="{LoginViewModel>/userNameValueState}" id="Lp_id_Username"  value="{LoginViewModel>/userName}"  maxLength="50" />
+						
+						<Label text="{i18n>headloginwith}" />
+<HBox alignItems="End" justifyContent="Start" >
+    <RadioButton id="Lp_id_PasswordRadio" text="{i18n>btnpass}" groupName="loginOption" select="onLoginOptionChange" class="sapUiTinyMarginEnd " selected="{LoginViewModel>/isPasswordSelected}"/>
+    <RadioButton id="Lp_id_OtpRadio" text="{i18n>btnotp}"  groupName="loginOption"  select="onLoginOptionChange" class="otpclass  sapUiTinyMarginEnd" selected="{LoginViewModel>/isOtpSelected}" />
+	<Button text="{LoginViewModel>/sendOtpText}" press="LP_onOtppress" id="idbtnsendotp" type="Ghost" class="Login" width="8rem" visible="{LoginViewModel>/isSendOtpVisible}"  />
+</HBox>
+						<!-- OTP Input Field -->
+						<Label text="{i18n>btnotp}" id="Lp_id_OtpLabel" visible="{LoginViewModel>/isOtpVisible}"  required="true" />
+						<Input value="{LoginViewModel>/otp}" id="Lp_id_CaptchaInput" class="sapUiTinyMarginEnd" submit="LP_onOTPchange"
+                            placeholder="{i18n>placeOtp}"  visible="{LoginViewModel>/isOtpVisible}"  maxLength="6"/>
+						<!-- Password Input Field (Initially Hidden) -->
+						<Label text="{i18n>btnpass}" id="Lp_id_PasswordLabel" visible="{LoginViewModel>/isPasswordVisible}"  required="true" />
+						<Input id="Lp_id_PasswordInput" liveChange="LP_onpresPassword"  type="Password" placeholder="{i18n>placepass}" valueStateText="{i18n>placepass}"  visible="{LoginViewModel>/isPasswordVisible}" valueState="{LoginViewModel>/passwordValueState}" valueHelpIconSrc="sap-icon://show" valueHelpRequest="LP_onTogglePasswordVisibility" 
+						value="{LoginViewModel>/password}" submit="LP_onpasswordchange" showValueHelp="true"  maxLength="50"/>
+						<!-- Forgot Password Link  -->
+						<Link text="{i18n>forgotPass}" press="LP_onForgotPassword" id="Lp_id_ForgotPasswordLink" visible="{LoginViewModel>/isForgotPasswordVisible}"  />
+						
+						<HBox alignContent="Center" justifyContent="End">
+							<Button text="{i18n>btnLogin}" press="LP_onLogin"  icon="sap-icon://key" type="Emphasized" class="Login" width="8rem" id="LP_id_loginBTn"/>
+						</HBox>
+					</form:content>
+				</form:SimpleForm>
+			</FlexBox>
+		</content>
+	</Page>
+</mvc:View>

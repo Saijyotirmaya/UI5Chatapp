@@ -1,0 +1,88 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified">
+	<Dialog title="{i18n>addCardDetails}">
+		<MessageStrip text="{i18n>imageMsg}" type="Warning" class="sapUiTinyMarginBottom" />
+		<f:SimpleForm
+		    editable="false"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
+            columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+			<f:content>
+				<!-- Employee ID -->
+				<Label text="{i18n>employeeID}"/>
+				<Text text="{IdCardModel>/EmployeeID}" />
+
+				<!-- Employee Name -->
+				<Label text="{i18n>employeeName}"  />
+				<Text text="{IdCardModel>/EmployeeName}" />
+
+				<!-- Designation -->
+				<Label text="{i18n>designation}" />
+				<Text text="{IdCardModel>/Designation}" />
+
+				<!-- Email -->
+				<Label text="{i18n>emailId}" />
+				<Text text="{IdCardModel>/Email}" />
+
+				<!-- DOB -->
+				<Label text="{i18n>dateOfBirth}" />
+				<Text text="{IdCardModel>/DOB}" />
+
+				<!-- MobileNo -->
+				<Label text="{i18n>mobileNo}" />
+				<Text text="{IdCardModel>/MobileNo}" />
+
+				<!-- BloodGroup -->
+				<Label text="{i18n>bloodGroup}" />
+				<Text text="{IdCardModel>/BloodGroup}" />
+
+				<!-- Base Location -->
+				<Label text="{i18n>baseLocation}"  />
+				<Text text="{IdCardModel>/BaseLocation}" />
+
+				<!-- File Uploader -->
+				<Label text="{i18n>fileUploader}" required="true"/>
+				<HBox width="100%" justifyContent="Start" alignItems="Center">
+					<VBox width="30%">
+						<u:FileUploader
+							name="myFileUpload"
+							uploadUrl="upload/"
+							tooltip="{i18n>fileUploadId}"
+							change="IC_onHandleUploadPress"
+							maximumFileSize="5MB"
+							fileType="jpg,jpeg,png"
+							buttonOnly="true"
+							fileSizeExceed="onFileSizeExceeds"
+							valueStateText="{i18n>fileUploaderValueState}"
+							uploadComplete="handleUploadComplete"/>
+					</VBox>
+					<VBox width="70%">
+						<Text text="{TextDisplay>/name}" />
+					</VBox>
+				</HBox>
+
+				<!-- Camera and Canvas  -->
+				<Label text="{i18n>picture}"/>
+				<Button text="{i18n>openCamera}" icon="sap-icon://camera" press="IC_onPressOpenCamera" />
+				<Label/>
+				<VBox id="CC_id_canvasContainer" visible="true" class="sapUiSmallMargin canvas">
+					<core:HTML content="&lt;canvas id='canvas' class='passport-size-canvas'&gt;&lt;/canvas&gt;" />
+				</VBox>
+			</f:content>
+		</f:SimpleForm>
+
+		<!-- Footer Buttons -->
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>submit}" type="Accept" press="CC_onPressSubmit" class="sendMail" visible="{IdCardModel>/Submit}"/>
+				<Button text="{i18n>close}" class="sendMail" press="CC_onPressClose" type="Reject" />
+			</Toolbar>
+		</footer>
+	</Dialog>
+</core:FragmentDefinition>

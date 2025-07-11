@@ -1,0 +1,131 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="sap.kt.com.minihrsolution.controller.TimesheetApproval"
+    displayBlock="true"
+    xmlns:u="sap.ui.unified"
+    xmlns:fb="sap.ui.comp.filterbar">
+    <Page id="TSA_id_Page">
+        <headerContent>
+            <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+        <content>
+            <u:CalendarDateInterval
+                id="TSA_id_calendar"
+                width="100%"
+                startDate="{viewModel>/calendarStartDate}" 
+                days="7"
+                 legend="calendarLegend"
+                select="TSA_onCalendarDateSelect" 
+                startDateChange="filterTimesheetForCurrentWeek"
+ />
+            <fb:FilterBar
+                class="sapUiTinyMargin"
+                id="TSA_id_Filter"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                clear="TSA_onClear"
+                showClearOnFB="true"
+                search="TSA_onSearch"
+                filterChange="onFilterChange"
+                showFilterConfiguration="false"
+                afterVariantLoad="onAfterVariantLoad">
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem name="EmployeeID" label="{i18n>employeeID}" groupName="Group1" visibleInFilterBar="true" >
+                        <fb:control>
+                    <ComboBox  showSecondaryValues= "true"  id="TSA_id_Employee" showClearIcon="true" items="{path:'EmployeeFilterModel>/'}" >
+						<core:ListItem key="{EmployeeFilterModel>EmployeeID}" text="{EmployeeFilterModel>EmployeeID}" additionalText="{EmployeeFilterModel>EmployeeName}" />
+					</ComboBox>                        
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="Status" label="{i18n>status}" groupName="Group1" visibleInFilterBar="true" >
+                        <fb:control>
+                    <ComboBox  showSecondaryValues= "true"  id="TSA_id_Status" showClearIcon="true" items="{path:'TApprovalModel>/'}"  >
+						<core:ListItem key="{TApprovalModel>ID}" text="{TApprovalModel>StatusName}" />
+					</ComboBox>                        
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                     <fb:FilterGroupItem name="Month" label="{i18n>month}" groupName="Group1" visibleInFilterBar="true" >
+                        <fb:control>
+                        <ComboBox  showSecondaryValues= "true"  id="TSA_id_Month" showClearIcon="true" items="{Months>/month}" >
+						<core:ListItem key="{Months>ID}" text="{Months>Month}" />
+					</ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="Year" label="{i18n>year}" groupName="Group1" visibleInFilterBar="true">
+                        <fb:control>
+                            <DatePicker 
+                                id="TSA_id_Year"
+                                displayFormat="yyyy"
+                                valueFormat="yyyy"
+                                showclearicon="true"
+                                placeholder="{i18n>year}" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+            <Table
+                id="TSA_id_Table"
+                mode="MultiSelect"
+                items="{path:'ApprovalTimesheetModel>/', sorter: {path: 'EmployeeID',descending: false,group: true}}"
+                growing="true"
+                selectionChange="TSA_onSelect"
+                growingScrollToLoad="true"
+                growingThreshold="50"
+                alternateRowColors="true"
+                class="sapUiTinyMargin"
+                 noDataText="{i18n>noData}">
+                <columns>
+                    <!-- <Column demandPopin="true">
+                        <Text text="{i18n>employeeID}"/>
+                    </Column> -->
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>assignmentName}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>date}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>day}" />
+                    </Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="{i18n>hoursWorked}" />
+                    </Column>
+                    <Column  demandPopin="true">
+                        <Text text="{i18n>status}" />
+                    </Column>
+                    <Column  demandPopin="true">
+                        <Text text="{i18n>comments}" />
+                    </Column>
+                   
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <!-- <Text text="{ApprovalTimesheetModel>EmployeeID}"/> -->
+                            <Text text="{ApprovalTimesheetModel>TaskName}"/>
+                            <Text text="{path:'ApprovalTimesheetModel>Date',formatter:'.Formatter.formatDate'}"/>
+                            <Text text="{ApprovalTimesheetModel>Day}"/>
+                            <Text text="{ApprovalTimesheetModel>HoursWorked}"/>
+                            <ObjectStatus text="{ApprovalTimesheetModel>Status}" inverted="false"
+                                state="{path:'ApprovalTimesheetModel>Status', formatter: '.Formatter.formatObjectStatus'}" />
+                            <Button icon="sap-icon://display-more" text="{i18n>View}" press="TSA_onShowComments" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+                <contentRight>
+                   <Button text="Approve" press="TSA_onApprove" type="Accept" enabled="{viewModel>/canApproveReject}"/>
+                   <Button text="Reject" press="TSA_onReject" type="Reject" enabled="{viewModel>/canApproveReject}"/>
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

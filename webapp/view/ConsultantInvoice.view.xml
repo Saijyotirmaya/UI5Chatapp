@@ -1,0 +1,91 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.ConsultantInvoice"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<Page id="CI_id_ConsultantInvoicePage">
+		<headerContent>
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<fb:FilterBar id="CI_id_ConsultantInvoiceFilterBar"  showFilterConfiguration="false" useToolbar="false" clear="CI_onClearFilters" showClearOnFB="true" search="CI_OnSearch" class="sapUiTinyMargin">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="InvoiceNo" label="{i18n>invoiceNo}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="CI_id_InvoiceNo" items="{path:'InvoiceModel>/', length:1000}"
+								showSecondaryValues="true" showClearIcon="true">
+								<core:ListItem key="{= ${InvoiceModel>InvoiceNo} + '|' + ${InvoiceModel>EmployeeID} }"
+									text="{InvoiceModel>InvoiceNo}" additionalText="{InvoiceModel>EmployeeID}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem id="CI_filterItem_EmployeeID" name="EmployeeID" label="{i18n>employeeID}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="CI_id_EmployeeID" items="{path:'EmpModel>/', length:1000}" showSecondaryValues="true" showClearIcon="true">
+								<core:ListItem key="{EmpModel>EmployeeID}" text="{EmpModel>EmployeeID}" additionalText="{EmpModel>EmployeeName}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="InvoiceDate" label="{i18n>invoiceDate}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="CI_id_DatePicker" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" change="onDateRangeChange" />
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table  class="sapUiResponsiveMargin" items="{path: 'ConsultantModel>/', sorter: {path: 'EmployeeID',descending: false,group: true}}" growingScrollToLoad="true" width="auto" growing="true"  growingThreshold="50"  alternateRowColors="true"  busyIndicatorDelay="0"  id="CI_id_ConsultantInvoiceTable">
+				<headerToolbar>
+					<Toolbar>
+						<Title id="CI_id_TitleInv" text="{i18n>consultantInvoiceDetails}  ({= ${ConsultantModel>/}.length })"/>
+						<ToolbarSpacer />
+						<Button text="{i18n>addInvoice}" tooltip="{i18n>addInvoice}" type="Accept" press="CI_onPressAddInvoice" />
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column  demandPopin="true">
+						<Text text="{i18n>consultantName}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Text text="{i18n>invoiceNo}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Text text="{i18n>invoiceTo}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>invoiceDate}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>payBy}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>GSTNO}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>totalAmount}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem  type="Navigation" press="CI_onPressInvoice">
+						<cells>
+							<Text text="{ConsultantModel>ConsultantName}" />
+							<Text text="{ConsultantModel>InvoiceNo}" />
+							<Text text="{ConsultantModel>InvoiceTo}" />
+							<Text text="{path:'ConsultantModel>InvoiceDate',formatter:'.Formatter.formatDate'}" />
+							<Text text="{path:'ConsultantModel>PayBy' ,formatter:'.Formatter.formatDate'}" />
+							<Text text="{ConsultantModel>GSTNO}" />
+						<Text text="{ConsultantModel>Currency} {path:'ConsultantModel>TotalSum',formatter: '.Formatter.fromatNumber'}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+				<contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</contentLeft>
+				<contentRight></contentRight>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

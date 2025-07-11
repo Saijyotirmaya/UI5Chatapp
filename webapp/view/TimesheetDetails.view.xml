@@ -1,0 +1,133 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.TimesheetDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:u="sap.ui.unified"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Page
+        showNavButton="true"
+        navButtonPress="TSD_onPressBack"
+        title="{viewModel>/pageTitle}"
+    >
+    <headerContent>
+        <Button
+            press="onLogout"
+            icon="sap-icon://log"
+            tooltip="{i18n>logoutTooltip}"
+            type="Transparent"
+        />
+        </headerContent>
+        <content>
+            <!-- Calendar with legend -->
+            <u:CalendarDateInterval
+                id="calendar"
+                width="100%"
+                legend="calendarLegend"
+                startDate="{path: 'viewModel>/calendarStartDate'}"
+                select="onDateSelect"
+                startDateChange="onInitializeLegend"
+                days="7"
+                showDayNamesLine="true"
+                intervalSelection="false"
+                enabled="{viewModel>/isCalendarEnabled}"
+            />
+
+            <!-- Form for timesheet entry -->
+            <f:SimpleForm
+                id="SimpleFormToolbar"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                editable="true"
+                labelSpanL="3"
+                labelSpanM="4"
+                title="{viewModel>/formTitle}"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="4"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="1"
+                columnsM="1"
+                width="100%"
+                singleContainerFullSize="false"
+                ariaLabelledBy="Title1"
+            >
+                <f:content>
+                    <!-- Assignment Selection -->
+                    <Label text="{i18n>selectAssignment}"  required="true"/>
+                    <Input
+                        id="TSD_id_Assignment"
+                        showSuggestion="true"
+                        liveChange="TD_ValidateCommonFields"
+                        value="{newModel>/TaskName}"
+                        showValueHelp="true"
+                        valueHelpRequest="onValueHelpRequest"
+                        valueStateText="{i18n>selectAssignment}"
+                        editable="{= ${viewModel>/isCreate} }"
+                    />
+                    <!-- Only editable in create mode -->
+
+                    <!-- Hours Worked -->
+                    <Label text="{i18n>hoursWorked}" required="true" />
+                    <TimePicker
+                        value="{newModel>/HoursWorked}"
+                        id="TSD_id_TimeHours"
+                        displayFormat="HH"
+                        valueFormat="HH"
+                        visible="{visiblePlay>/isAssignmentMode}"
+                        change="TD_ValidateTime"
+                        valueStateText="{i18n>hoursValueState}"
+                        editable="{= ${viewModel>/isEditing} }"
+                    />
+
+                    <Text
+                        id="idTextActHour"
+                        text="Actual Hours: {/newModel/ActualHours}"
+                    />
+                    <!-- Employee Comment -->
+                    <Label text="{i18n>employeeComment}"  required="true"/>
+                    <TextArea
+                        id="TSD_id_EmpComment"
+                        value="{newModel>/Comment}"
+                        liveChange="TD_ValidateCommonFields"
+                        maxLength="1000"
+                        valueStateText="{i18n>commentsValueState}"
+                        editable="{viewModel>/isEditing}"
+                    />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+
+        <!-- Footer with action buttons -->
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+                <contentRight>
+                    <Button
+                        text="{= ${viewModel>/isEditing} ? 'Save' : 'Edit' }"
+                        type="{= ${viewModel>/isEditing} ? 'Accept' : 'Emphasized' }"
+                        press="TSD_onToggleEdit"
+                        id="TSD_id_EditDetail"
+                        visible="{= ${viewModel>/isUpdate} }"
+                    />
+                    <Button
+                        text="{i18n>save}"
+                        press="TSD_onSubmit"
+                        type="Accept"
+                        visible="{= ${viewModel>/isCreate} }"
+                    />
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

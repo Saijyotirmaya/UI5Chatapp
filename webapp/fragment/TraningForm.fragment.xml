@@ -1,0 +1,33 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog title="{i18n>traineeFormtile}" stretch="false" >
+        <content>
+            <f:SimpleForm layout="ResponsiveGridLayout" editable="true">
+                <Label text=""/>
+                <Input class="custom-input-height" id="FTF_idName" liveChange="FTF_onlivename" value="{TraineeData>/Name}" placeholder="{i18n>placeName}" valueStateText="{i18n>placeName}" maxLength="40"/>
+
+                <Label text=""/>
+                <Input class="custom-input-height" id="FTF_idClgname" liveChange="FTF_onliveclg"  value="{TraineeData>/CollegeName}" placeholder="{i18n>placeclg}"  valueStateText="{i18n>placeclg}" maxLength="50"/>   
+                
+                <Label text=""/>
+                <Input class="custom-input-height" id="FTF_idmail" type="Email" liveChange="FTF_onlivemail"  value="{TraineeData>/EmailID}" placeholder="{i18n>placeEmailId}"  valueStateText="{i18n>placeEmailId}" maxLength="50"/>
+
+                <Label text=""/>
+                <Input class="custom-input-height" id="FTF_idMobnumber" type="Number" liveChange="FTF_onlivemobile" value="{TraineeData>/MobileNo}" placeholder="{i18n>placeholderMobileNo}"  valueStateText="{i18n>placeholderMobileNo}"/>
+
+                <Label text=""/>
+                <TextArea  id="FTF_idcomments" liveChange="FTF_onlivecomment" rows="2"  value="{TraineeData>/Comments}" placeholder="{i18n>enterComments}"  valueStateText="{i18n>enterComments}" maxLength="120"/>
+            </f:SimpleForm>
+        </content>
+        
+        <buttons>
+            <Button text="{i18n>submit}" type="Emphasized" press="FTF_onSubmitForm"/>
+            <Button text="{i18n>CancelButton}" type="Reject" press="FTF_onCancelform"/>
+        </buttons>
+    </Dialog>
+
+</core:FragmentDefinition>

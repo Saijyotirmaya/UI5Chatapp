@@ -1,0 +1,20 @@
+{
+    "documents": [
+      { "id": "1", "name": "Pan Card" },
+      { "id": "2", "name": "Aadhar Card" },
+      { "id": "3", "name": "Voter ID" },
+      { "id": "4", "name": "Passport" },
+      { "id": "5", "name": "School/10th"},
+      { "id": "6", "name": "PUC/12th" },
+      { "id": "7", "name": "UG Degree Certificate" },
+      { "id": "8", "name": "PG Degree Certificate" },
+      { "id": "9", "name": "Previous Company offer Letter" },
+      { "id": "10", "name": "Previous Company Relieving Letter" },
+      { "id": "11", "name": "Previous Company Hike Letter" },
+      { "id": "12", "name": "Previous Company Experience Letter" },
+      {"id": "13", "name": "Previous Company 3 Months Payslip"},
+      {"id": "14", "name": "Internship/Course Certificate"},
+      {"id": "15", "name": "Bank details" },
+      { "id": "16", "name": "Other Document" }
+    ]
+  }

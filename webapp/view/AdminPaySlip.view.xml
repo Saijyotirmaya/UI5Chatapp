@@ -1,0 +1,170 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AdminPaySlip"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+>
+    <Page id="AP_id_PaySlipPage">
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <content>
+            <fb:FilterBar
+                id="AP_id_AdminPaySlip"
+                clear="AP_onClear"
+                showClearOnFB="true"
+                search=".AP_onSearch"
+                showFilterConfiguration="false"
+                showRestoreButton="true"
+                useToolbar="false"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        groupName="Basic"
+                        name="EmployeeID"
+                        label="{i18n>employeeID}"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <ComboBox
+                                id="AP_id_Employee"
+                                showClearIcon="true"
+                                items="{EmployeeModel>/}"
+                                showSecondaryValues="true"
+                            >
+                                <core:ListItem
+                                    key="{EmployeeModel>EmployeeID}"
+                                    text="{EmployeeModel>EmployeeID}"
+                                    additionalText="{EmployeeModel>EmployeeName}"
+                                />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem
+                        groupName="Basic"
+                        name="PaySlipDate"
+                        label="{i18n>monthAndYear}"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <DateRangeSelection
+                                id="AP_id_Date"
+                                name="PaySlipDate"
+                                delimiter="to"
+                                displayFormat="MM-yyyy"
+                                valueFormat="MM-yyyy"
+                                change="Q_onFilterChange"
+                            />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+            <Table
+                id="AP_id_AdminPaySlipTable"
+                busyIndicatorDelay="0"
+                class="sapUiResponsiveMargin"
+                width="auto"
+                growing="true"
+                growingThreshold="50"
+                growingScrollToLoad="true"
+                items="{
+                    path: 'PaySlip>/EmpTable',
+                    sorter: {
+                        path: 'FinancialYear',
+                        descending: false,
+                        group: true
+                    }
+                }"
+            >
+                <headerToolbar>
+                    <Toolbar>
+                        <Title
+                            id="AP_id_Title"
+                            text="{= ${i18n>paySlipDetails} + ' (' + ${PaySlip>/EmpTable}.length + ')' }"
+                        />
+                        <ToolbarSpacer />
+                        <Button
+                            text="{i18n>paySlipTitle}"
+                            type="Accept"
+                            press="AP_onPressAddPayslip"
+                        />
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column mergeDuplicates="true">
+                        <Text text="{i18n>employeeID}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>monthAndYear}" />
+                    </Column>
+                    <Column width="10%"
+                        demandPopin="true"
+                        minScreenWidth="Tablet"
+                    >
+                        <Text text="{i18n>payableDays}" />
+                    </Column>
+                    <Column hAlign="End"
+                        demandPopin="true"
+                        minScreenWidth="Desktop"
+                    >
+                        <Text text="{i18n>totalEarningAmount}" />
+                    </Column>
+                    <Column hAlign="End"
+                        demandPopin="true"
+                        minScreenWidth="Desktop"
+                    >
+                        <Text text="{i18n>totalDeductionAmount}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>netPay}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        type="Navigation"
+                        press="AP_onPressPayslip"
+                    >
+                        <cells>
+                            <ObjectIdentifier
+                                title="{PaySlip>EmployeeID}"
+                                text="{PaySlip>EmployeeName}"
+                            />
+                        </cells>
+                        <cells>
+                            <Text
+                                text="{path: 'PaySlip>YearMonth', formatter: '.Formatter.formatMonthYear'}"
+                            />
+                        </cells>
+                        <cells>
+                            <Text text="{PaySlip>PayableDays}" />
+                        </cells>
+                        <cells>
+                            <Text text="{path: 'PaySlip>EarningsTotalMonthly', formatter: '.Formatter.CurrencyInINRText'}" />
+                        </cells>
+                        <cells>
+                            <Text text="{path: 'PaySlip>DeductionsTotalMonthly', formatter: '.Formatter.CurrencyInINRText'}" />
+                        </cells>
+                        <cells>
+                            <Text text="{path: 'PaySlip>NetPay', formatter: '.Formatter.CurrencyInINRText'}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+                <contentRight />
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

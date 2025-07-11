@@ -1,0 +1,15 @@
+{
+    "TableData": null,
+    "BaseLocationData": null,
+    "PayRollRules": null,
+
+    "TableRowCount": 0,
+    "ShowOnPayroll": false,
+    "ShowOnGenerate": false,
+    "isSELVisible": false,
+    "isExcelMismatch": false,
+
+    "FilterBranch": null,
+    "FilterMonth": null,
+    "FilterYear": null
+}

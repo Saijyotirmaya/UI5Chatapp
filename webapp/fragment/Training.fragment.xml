@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout">
+    
+    <l:Grid defaultSpan="XL6 L6 M12 S12" class="grid-container">
+        
+                <!-- SAP UI5 Section -->
+                <VBox class="content-box"  backgroundDesign="Solid" >
+                    <Text class="custom-trainee-title" text="{i18n>traineesapui5}"/>
+                    <Text class="description-text" text="{i18n>traineeDes1}"/>
+                    <Text class="highlight-text" text="{i18n>traineeDes2}"/>
+                    
+                    <Text class="checkmark-text" text="✅ {i18n>traineeUi5highlight}"/>
+                    <Text class="checkmark-text" text="✅ {i18n>traineeUi5highlight2}"/>
+                    <Text class="checkmark-text" text="✅ {i18n>traineeUi5highlight3}"/>
+                    
+                    <Text class="section-title" text="{i18n>traineeInclude}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeInclude1}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeInclude2}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeInclude3}"/>
+                    <HBox justifyContent="End">
+                <Button text="{i18n>careersapply}"  press="onUI5ress" class="big-apply-button sapUiLargeMarginEnd" type="Emphasized"/>
+            </HBox> 
+                </VBox>
+                <VBox class="content-box"  backgroundDesign="Solid">
+                    <Text class="custom-trainee-title " text="{i18n>traineeCapmtitle}"/>
+                    <Text class="description-text" text="{i18n>traineeCapmhighlight}"/>
+                    <Text class="highlight-text" text="{i18n>traineeCapmhighlight2}"/>
+                    
+                    <Text class="checkmark-text" text="✅ {i18n>traineeCapmDes1}"/>
+                    <Text class="checkmark-text" text="✅ {i18n>traineeCapmDes2}"/>
+                    <Text class="checkmark-text" text="✅ {i18n>traineeCapmDes3}"/>
+
+                    <Text class="section-title" text="{i18n>traineeInclude}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeCapminclude}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeCapminclude2}"/>
+                    <Text class="training-text" text="▪ {i18n>traineeCapminclude3}"/>
+                     <HBox justifyContent="End">
+                <Button text="{i18n>careersapply}"  press="onCapmpress" class="big-apply-button sapUiLargeMarginEnd" type="Emphasized"/>
+            </HBox>
+                </VBox>
+             </l:Grid>
+</core:FragmentDefinition>

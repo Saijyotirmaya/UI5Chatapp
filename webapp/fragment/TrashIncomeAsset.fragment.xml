@@ -1,0 +1,96 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+>
+	<Dialog title="{i18n>trash}">
+	
+		<f:SimpleForm
+			id="FTIA_id_SimpleFormChange354wi"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+		>
+
+			<f:content>
+			 <Label text="{i18n>Trash By}"/>
+                <Select
+                    id="FCIA_id_trashBy"
+					required="true"
+                    selectedKey="{CreateIncomeAssetModel>/TrashByEmployeeName}
+}"                  showSecondaryValues="true"
+                    items="{AdminModel>/}"
+                >
+                    <core:ListItem
+                        text="{AdminModel>EmployeeName}"
+                        key="{AdminModel>EmployeeName}"
+                        additionalText="{AdminModel>EmployeeID}"
+                    />
+               </Select>
+			<Label text="{i18n>trashDate}"/>
+				<DatePicker 
+					id="FTIA_id_Date"
+					tooltip="Pick Date"
+					minDate="{VisiableModel>/minDate}"
+				    change="FCIA_onInputLiveChange"
+					valueFormat="yyyy-MM-dd"
+					displayFormat="dd/MM/yyyy"
+
+					required="true"
+				/>
+				<Label text="{i18n>branch}" required="true" />
+                <ComboBox
+                    id="FCIA_id_trashbranch"
+                    placeholder="Select Branch"
+                    change="FCIA_onInputLiveChange"
+                    valueStateText="Select Branch"
+                    value="{CreateIncomeAssetModel>/TrashBranch}"
+                    selectedKey="{CreateIncomeAssetModel>/TrashBranch}"
+                    showSecondaryValues="true"
+                    items="{branchModel>/}"
+                >
+                    <core:ListItem
+                        key="{branchModel>city}" 
+                        text="{branchModel>city}"
+                        additionalText="{branchModel>branchCode}"
+                    />
+                </ComboBox>
+				<Label text="{i18n>Comments}"/>
+				    <TextArea id="FTIA_id_Comments" 
+					required="true"
+                  valueStateText="Write A Comment On Trashed Asset"
+                  liveChange="FCIA_onDescriptionTextAreaChange"
+                  value="{CreateIncomeAssetModel>/TrashComments}"
+                  placeholder="Enter Comments" 
+                  maxLength="200" width="100%" />
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button
+				text="{i18n>save}"
+				press="FTIA_onsavepress"
+				type="Accept"
+			/>
+		</beginButton>
+		<endButton>
+			<Button
+				text="{i18n>btnCancel}"
+				press="FTIA_onCancelPress"
+				type="Reject"
+			/>
+		</endButton>
+	</Dialog>
+</c:FragmentDefinition>

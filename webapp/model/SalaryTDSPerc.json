@@ -1,0 +1,44 @@
+[
+  {
+    "ID": 1,
+    "IncomeStart": 0,
+    "IncomeEnd": 300000,
+    "TaxRate": 0,
+    "Amount": 0
+  },
+  {
+    "ID": 2,
+    "IncomeStart": 300001,
+    "IncomeEnd": 600000,
+    "TaxRate": 5,
+    "Amount": 15000
+  },
+  {
+    "ID": 3,
+    "IncomeStart": 600001,
+    "IncomeEnd": 900000,
+    "TaxRate": 10,
+    "Amount": 30000
+  },
+  {
+    "ID": 4,
+    "IncomeStart": 900001,
+    "IncomeEnd": 1200000,
+    "TaxRate": 15,
+    "Amount": 45000
+  },
+  {
+    "ID": 5,
+    "IncomeStart": 1200001,
+    "IncomeEnd": 1500000,
+    "TaxRate": 20,
+    "Amount": 60000
+  },
+  {
+    "ID": 6,
+    "IncomeStart": 1500001,
+    "IncomeEnd": null,
+    "TaxRate": 30,
+    "Amount": 0
+  }
+]

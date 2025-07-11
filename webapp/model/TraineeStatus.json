@@ -1,0 +1,27 @@
+[
+    {
+      "ID": 1,
+      "StatusValue": "New"
+    },
+    {
+      "ID": 2,
+      "StatusValue": "Offer Sent"
+    },
+    {
+      "ID": 3,
+      "StatusValue": "Onboarded"
+    },
+    {
+      "ID": 4,
+      "StatusValue": "Rejected"
+    },
+    {
+      "ID": 5,
+      "StatusValue": "Saved"
+    },
+    {
+      "ID":6,
+      "StatusValue":"Training Completed"
+        }
+  ]
+  

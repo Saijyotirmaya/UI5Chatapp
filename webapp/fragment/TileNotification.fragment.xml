@@ -1,0 +1,236 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+>
+    <Popover
+        contentWidth="750px"
+        placement="Bottom"
+        verticalScrolling="true"
+        showHeader="true"
+        resizable="true"
+        modal="true"
+    >
+        <customHeader>
+            <Toolbar>
+                <Title text="Notifications" />
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://decline"
+                    press=".onClosePopover"
+                    tooltip="Close"
+                />
+            </Toolbar>
+        </customHeader>
+        <VBox>
+            <Carousel
+                id="TN_idd_Carouselid"
+                visible="{= ${BirthdayModel>/}.length > 0 }"
+                class="courselclass responsiveCarousel"
+                backgroundDesign="Transparent"
+                height="17.5rem"
+                width="45rem"
+                loop="true"
+                showPageIndicator="false"
+                pages="{path: 'BirthdayModel>/'}"
+            >
+                <pages>
+                    <f:Card
+                        class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop responsiveCard"
+                        width="95%"
+                        height="auto"
+                    >
+                        <f:header>
+                            <card:Header
+                                title="{BirthdayModel>EmployeeName}"
+                                subtitle="{BirthdayModel>Role}"
+                                iconSrc="data:image/png;base64,{BirthdayModel>ProfilePhoto}"
+                                iconDisplayShape="Circle"
+                                iconFitType="Cover"
+                            />
+                        </f:header>
+                        <f:content>
+                            <VBox
+                                class="sapUiContentPadding sapUiMediumMarginBeginEnd"
+                                width="100%"
+                                renderType="Bare"
+                            >
+                                <Title
+                                    level="H3"
+                                    text="Happy Birthday!! 🎉"
+                                    titleStyle="H3"
+                                    class="sapUiSmallMarginBottom"
+                                />
+                                <Text
+                                    text="Wishing you a day filled with happiness and a year filled with joy. We hope you have a wonderful birthday and a great year ahead."
+                                    class="sapUiSmallMarginBottom"
+                                />
+                                <HBox
+                                    justifyContent="End"
+                                    class="sapUiSmallMarginBottom"
+                                >
+                                    <Button
+                                        text="Send Wishes"
+                                        type="Emphasized"
+                                        press="onPressCC"
+                                    />
+                                </HBox>
+                            </VBox>
+                        </f:content>
+                    </f:Card>
+                </pages>
+            </Carousel>
+            <f:Card
+                width="auto"
+                class="sapUiSmallMarginBeginEnd sapUiTinyMarginTop"
+                visible="{= ${MSASOWModel>/length} > 0
+                        &amp;&amp; (
+                            ${LoginModel>/Role} === 'Admin' ||
+                            ${LoginModel>/Role} === 'Demo' ||
+                            ${LoginModel>/Role} === 'AccountManage' ||
+                            ${LoginModel>/Role} === 'HR Manager'
+                        )}"
+            >
+                <f:content>
+                    <Table
+                        items="{MSASOWModel>/}"
+                        id=""
+                    >
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <Title
+                                    text="{i18n>msaDetails}"
+                                    level="H1"
+                                />
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>companyName}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>companyHeadName}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>companyHeadPosition}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>paymentterms}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem
+                                type="Navigation"
+                                press="OnPressNavigationMsaDet"
+                            >
+                                <cells>
+                                    <Text text="{MSASOWModel>CompanyName}" />
+                                    <Text
+                                        text="{MSASOWModel>CompanyHeadName}"
+                                    />
+                                    <Text
+                                        text="{MSASOWModel>CompanyHeadPosition}"
+                                    />
+                                    <ObjectStatus
+                                        class="PayByDateClass"
+                                        text="{path: 'MSASOWModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatDate'}"
+                                        inverted="false"
+                                        state="{path: 'MSASOWModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatContractEndState'}"
+                                    />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </f:content>
+            </f:Card>
+
+            <f:Card
+                width="auto"
+                class="sapUiSmallMargin"
+                visible="{= ${CompanyInvoiceModelData>/length} > 0
+      &amp;&amp; (
+        ${LoginModel>/Role} === 'Admin' ||
+        ${LoginModel>/Role} === 'Demo' ||
+        ${LoginModel>/Role} === 'AccountManage' ||
+        ${LoginModel>/Role} === 'HR Manager'
+      )}"
+            >
+                <f:content>
+                    <Table items="{CompanyInvoiceModelData>/}">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <Title
+                                    text="{i18n>invoiceTileDetail}"
+                                    level="H1"
+                                />
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>invoiceNo}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>customerName}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>invoiceDate}" />
+                            </Column>
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true"
+                            >
+                                <Text text="{i18n>PayByDate}" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem
+                                type="Navigation"
+                                press="CI_onPressInvoiceRow"
+                            >
+                                <cells>
+                                    <Text
+                                        text="{CompanyInvoiceModelData>InvNo}"
+                                    />
+                                    <Text
+                                        text="{CompanyInvoiceModelData>CustomerName}"
+                                    />
+                                    <Text
+                                        text="{path:'CompanyInvoiceModelData>InvoiceDate',formatter: '.Formatter.formatDate'}"
+                                    />
+                                    <ObjectStatus
+                                        class="PayByDateClass"
+                                        text="{path:'CompanyInvoiceModelData>PayByDate',formatter:'.Formatter.formatDate'}"
+                                        inverted="false"
+                                        state="{ parts: [{path: 'CompanyInvoiceModelData>PayByDate'},{path: 'CompanyInvoiceModelData>Status'}], formatter: '.Formatter.companyInvoicePayByDate'}"
+                                    />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </f:content>
+            </f:Card>
+        </VBox>
+    </Popover>
+</core:FragmentDefinition>

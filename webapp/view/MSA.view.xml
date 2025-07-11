@@ -1,0 +1,90 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core" controllerName="sap.kt.com.minihrsolution.controller.MSA"
+	xmlns:fb="sap.ui.comp.filterbar" displayBlock="true">
+	<Page  >
+		<headerContent>
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<fb:FilterBar class="sapUiTinyMargin" id="MSA_id_AdminFilter" persistencyKey="myPersKey" useToolbar="false" clear="onPressClear" showClearOnFB="true" search="MSA_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" showFilterConfiguration="false">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="CompanyName" label="{i18n>companyName}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox showSecondaryValues= "true" items="{CompanyNameModel>/}" id="MSA_id_CompanyName" showClearIcon="true">
+								<core:ListItem key="{CompanyNameModel>companyName}" text="{CompanyNameModel>companyName}" additionalText="{CompanyNameModel>name}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="Type" label="{i18n>type}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox id="MSA_id_Type" showClearIcon="true">
+								<core:Item key="Service" text="{i18n>Service}" />
+								<core:Item key="Recruitment" text="{i18n>Recruitment}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="CreateMSADate" label="{i18n>createMSADate}" groupName="ConsultantInvoice" visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="id_msa_date" valueFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" change="onDateRangeChange" />
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="MSA_id_Table" class="sapUiTinyMargin" items="{
+                path: 'MSADisplayModel>/', sorter: {path: 'CreateMSADate',descending: false,group: true}}" busyIndicatorDelay="0" width="auto" growingScrollToLoad="true" growing="true" growingThreshold="50" alternateRowColors="true">
+				<headerToolbar>
+					<OverflowToolbar >
+						<Title id="MSA_id_Title" text="{i18n>msaDetails} ({= ${MSADisplayModel>/}.length })"/>
+						<ToolbarSpacer/>
+						<Button text="{i18n>addMSA}" id="MSA_id_Add" type="Accept" press="MSA_AddmsaDetails" />
+						<Button text="{i18n>headerCustomer}" id="MSA_id_Customer" type="Emphasized" press="MSA_onAddCustomer"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column demandPopin="true">
+						<Text text="{i18n>companyName}"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>companyHeadName}" />
+					</Column>
+					<Column minScreenWidth="Desktop" demandPopin="true">
+						<Text text="{i18n>companyHeadPosition}" />
+					</Column>
+					<Column demandPopin="true">
+						<Text text="{i18n>paymentterms}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>msaEndDate}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>type}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press="OnPressNavigationMsaDet">
+						<cells>
+							<Text text="{MSADisplayModel>CompanyName}"/>
+							<Text text="{MSADisplayModel>CompanyHeadName}"/>
+							<Text text="{MSADisplayModel>CompanyHeadPosition}"/>
+							<Text text="{MSADisplayModel>PaymentTerms}"/>
+							<ObjectStatus class="PayByDateClass"
+    text="{path: 'MSADisplayModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatDate'}" inverted="false"
+    state="{path: 'MSADisplayModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatContractEndState'}" />
+
+							<!-- <Text text="{path:'MSADisplayModel>MsaContractPeriodEndDate',formatter: '.Formatter.formatDate'}"/> -->
+							<Text text="{MSADisplayModel>Type}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+				<contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</contentLeft>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

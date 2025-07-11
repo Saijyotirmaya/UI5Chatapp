@@ -1,0 +1,69 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form">
+
+    <Dialog  title="{i18n>assigntasktitle}" id="FAT_id_dialog"   stretch="false" >
+        <f:SimpleForm layout="ResponsiveGridLayout" editable="true">
+            <f:content>
+            
+                <Label text="{i18n>employeeID}" required="true" visible="{visiblePlay>/isAssignmentMode}" />
+                <MultiComboBox 
+    id="FAT_id_EmployeeID" 
+    width="490px" 
+    selectionChange="FAT_onchangeEmpId"
+    selectedKeys="{EditTaskModel>/EmployeeID}"
+    items="{LoginDetailsModel>/}"
+    showSecondaryValues="true"
+    editable="{= !${visiblePlay>/isEditMode} }">
+    <core:ListItem 
+        key="{LoginDetailsModel>EmployeeID}" 
+        text="{LoginDetailsModel>EmployeeID}" 
+        additionalText="{LoginDetailsModel>EmployeeName}"/>
+</MultiComboBox>
+                <Label text="{i18n>taskName}"/>
+                <Input value="{TaskDetailsModel>/TaskName}" id="FAT_id_TaskName" liveChange="AT_ValidateCommonFields" maxLength="99" valueStateText="{i18n>taskNameValueState}" editable="false"/>
+                <Label text="{i18n>taskid}" />
+                <Input value="{TaskDetailsModel>/TaskID}" id="FAT_id_TaskID"  maxLength="99" valueStateText="{i18n>taskNameValueState}" editable="false" visible="false"/>
+
+                <Label text="{i18n>startDate}" required="true"/>
+                <DatePicker
+                minDate="{newTaskModel>/minDate}"
+                maxDate="{newTaskModel>/maxDate}"
+                    change="AT_onstartDatevalidateDate"
+                    value="{path:'EditTaskModel>/StartDate', formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    id="FAT_id_StartDate"
+                    valueStateText="{i18n>dateValueState}"/>
+                <Label text="{i18n>endDate}" required="true"/>
+                <DatePicker
+                minDate="{newTaskModel>/minDate}"
+                     maxDate="{newTaskModel>/maxDate}"
+                    change="AT_validateDate"
+                    value="{path:'EditTaskModel>/EndDate', formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    id="FAT_id_EndDate"
+                    valueStateText="{i18n>dateValueState}"/>
+                <Label text="{i18n>hours}" required="true" visible="{visiblePlay>/isAssignmentMode}" />
+                <TimePicker 
+    value="{EditTaskModel>/HoursWorked}" 
+    id="FAT_id_HoursWorked" 
+    displayFormat="HH" 
+    valueFormat="HH" 
+    visible="{visiblePlay>/isAssignmentMode}"
+    change="AT_ValidateHournFields"
+     valueStateText="{i18n>hoursLimit}"/>
+    
+            </f:content>
+             </f:SimpleForm>
+            <HBox justifyContent="End" >
+            <Button text="{i18n>save}" type="Accept" press="MA_onPressSave" class="submit" visible="{visiblePlay>/save}"/>
+                <Button text="{i18n>submit}" type="Accept" press="FAT_onSubmitTask" class="submit" visible="{visiblePlay>/submit}"/>
+                <Button text="{i18n>close}" press="FAT_onTaskClose" class="sendMail" type="Reject"/>
+          </HBox>
+        
+    </Dialog>
+</core:FragmentDefinition>

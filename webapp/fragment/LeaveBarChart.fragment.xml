@@ -1,0 +1,229 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:g="sap.f"
+	xmlns:com="sap.suite.ui.commons"
+	xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:layout="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<VBox id="AL_id_LeaveBarChart">
+		<Panel headerText="{i18n>titleInBox}" >
+			<OverflowToolbar>
+				<Label text="{i18n>type}" />
+				<Select id="AL_id_TypeOfLeave"
+						selectedKey="{selectedModel>/selectedType}"
+						change="AL_onChangeLeaveType"
+						width="200px"
+						items="{leaveTypeModel>/}">
+					<core:Item key="{leaveTypeModel>id}" text="{leaveTypeModel>name}" />
+				</Select>
+				<ToolbarSeparator />
+				<Label text="Year" id="AL_id_YearLabel" />
+				<Select id="AL_id_LeaveYear"
+					change="AL_onChangeYears"
+					width="100px"
+					items="{YearModel>/items}">
+				<core:Item key="{YearModel>key}" text="{YearModel>text}" />
+			    </Select>
+				<ToolbarSpacer/>
+				<Button id="AL_id_SmartTableCharBut" text="{i18n>tableView}" tooltip="{i18n>gototable}" press="AL_onPressGoSmartTable" />
+			</OverflowToolbar>
+		</Panel>
+		<g:GridContainer id="AL_id_DemoGrid" columnsChange=".onGridColumnsChange">
+			<g:layout>
+				<g:GridContainerSettings columnSize="49.5%" gap="10px" />
+			</g:layout>
+			<g:layoutXS>
+				<g:GridContainerSettings columnSize="100%" gap="10px" />
+			</g:layoutXS>
+			 <g:layoutS>
+				<g:GridContainerSettings columnSize="100%" gap="10px" />
+			</g:layoutS>
+			 <g:layoutM>
+				<g:GridContainerSettings columnSize="100%" gap="10px" />
+			</g:layoutM>
+			<!-- First Chart -->
+			<VBox height="25rem" width="auto" class="sapUiSmallMargin">
+				<com:ChartContainer id="AL_id_ChartContainer" showFullScreen="true" showPersonalization="false" autoAdjustHeight="false" contentChange="attachContentChange">
+					<com:dimensionSelectors>					
+						<ToolbarSeparator />
+						<ToolbarSpacer />
+						<ToolbarSpacer />
+						<FlexBox justifyContent="End" alignItems="Center">
+							<Button icon="sap-icon://pie-chart" press="AL_onPressPie"></Button>
+							<ToolbarSeparator />
+							<Button icon="sap-icon://bar-chart" press="AL_onPressColumn"></Button>
+							<ToolbarSeparator />
+							<Button icon="sap-icon://line-charts" press="AL_onPressBar"></Button>
+						</FlexBox>
+					</com:dimensionSelectors>
+					<com:content>
+						<com:ChartContainerContent>
+							<com:content>								
+								<viz:VizFrame height="21rem" width="50rem" id="AL_id_VizFrame6" uiConfig="{applicationSet:'fiori'}" vizType="{MonthlyBar>/type}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{firstLeaveData>/chartData}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="LeaveType" value="{firstLeaveData>LeaveStatus}" />
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="No of Days" value="{firstLeaveData>Count}" />
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="No of Days" />
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="LeaveType" />
+									</viz:feeds>
+									<viz:dependents>
+										<viz:Popover id="AL_id_PieChart" />
+									</viz:dependents>
+								</viz:VizFrame>
+							</com:content>
+						</com:ChartContainerContent>
+					</com:content>
+				</com:ChartContainer>
+			</VBox>
+			<!-- Second chart -->
+			<VBox height="25rem" width="auto" class="sapUiSmallMargin">
+				<com:ChartContainer
+                    id="AL_id_ChartContainerAll"
+                    showFullScreen="true"
+                    showPersonalization="false"
+                    autoAdjustHeight="false"
+                    contentChange="attachContentChange">
+					<com:dimensionSelectors>						
+						<ToolbarSeparator />
+						<ToolbarSpacer />
+						<ToolbarSpacer />
+						<FlexBox justifyContent="End" alignItems="Center">
+							<Button icon="sap-icon://area-chart" press="AL_onPressAreaChart"></Button>
+							<ToolbarSeparator />
+							<Button icon="sap-icon://bar-chart" press="AL_onPressColumnAllStatus"></Button>
+							<ToolbarSeparator />
+							<Button icon="sap-icon://line-charts" press="AL_onPressBar" visible="false"></Button>
+						</FlexBox>
+					</com:dimensionSelectors>
+					<com:content>
+						<com:ChartContainerContent>
+							<com:content>								
+								<viz:VizFrame height="21rem" width="50rem" id="AL_id_VizFrameAll" uiConfig="{applicationSet:'fiori'}" vizType="{MonthlyBar>/AllStatus}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{secondLeaveData>/chartData}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="LeaveType" value="{secondLeaveData>LeaveStatus}" />
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="No of Days" value="{secondLeaveData>Count}" />
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="No of Days" />
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="LeaveType" />
+									</viz:feeds>
+									<viz:dependents>
+										<viz:Popover id="AL_id_PieChartAll" />
+									</viz:dependents>
+								</viz:VizFrame>
+							</com:content>
+						</com:ChartContainerContent>
+					</com:content>
+				</com:ChartContainer>
+			</VBox>
+			<!-- thried Chart -->
+			<VBox id="AL_id_MonthlyChart" height="25rem" width="auto" class="sapUiSmallMargin">
+				<com:ChartContainer
+                    id="AL_id_ChartContainer1"
+                    showFullScreen="true"
+                    showPersonalization="false"
+                    autoAdjustHeight="false"
+                    contentChange="attachContentChange">
+					<com:dimensionSelectors>						
+						<ToolbarSeparator />
+						<ToolbarSpacer />
+						<ToolbarSpacer />
+						<FlexBox justifyContent="End" alignItems="Center">
+							<Button icon="sap-icon://line-charts" press="AL_onPresslineChartMonth"></Button>
+							<ToolbarSeparator />
+							<Button icon="sap-icon://bar-chart" press="AL_onPressBarChartMonth"></Button>
+						</FlexBox>
+					</com:dimensionSelectors>
+					<com:content>
+						<com:ChartContainerContent>
+							<com:content>
+								<viz:VizFrame height="21rem" width="50rem" id="AL_id_VizFrame" uiConfig="{applicationSet:'fiori'}" vizType="{MonthlyBar>/Name}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{MonthleaveData>/chartData}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Month" value="{MonthleaveData>Month}" />
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="No of Days" value="{MonthleaveData>Count}" />
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="No of Days" />
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
+									</viz:feeds>
+									<viz:dependents>
+										<viz:Popover id="AL_id_Popover" />
+									</viz:dependents>
+								</viz:VizFrame>
+							</com:content>
+						</com:ChartContainerContent>
+					</com:content>
+				</com:ChartContainer>
+			</VBox>
+			<!-- fourth chart -->
+			<VBox id="AL_id_YearlyChart" height="25rem" width="auto" class="sapUiSmallMargin">
+			<com:ChartContainer
+                        id="AL_id_ChartContainer6"
+                        showFullScreen="true"
+                        showPersonalization="false"
+                        autoAdjustHeight="false"
+                        contentChange="attachContentChange">
+				<com:dimensionSelectors>
+					<!-- <Text text="Yearly Approved Leave" /> -->
+				</com:dimensionSelectors>
+				<com:content>
+					<com:ChartContainerContent>
+						<com:content>
+							<viz:VizFrame height="22rem" width="98%" id="AL_id_VizFrameYear" uiConfig="{applicationSet:'fiori'}" vizType="line">
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{YearleaveData>/chartData}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition name="Year"
+                                                        value="{YearleaveData>Year}" />
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition name="All In One Leave"
+                                                        value="{YearleaveData>AllInOneLeave}" />
+											<viz.data:MeasureDefinition name="LOP"
+                                                        value="{YearleaveData>LOP}" />
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem id='AL_id_valueAxisFeed' uid="valueAxis" type="Measure"
+                                                values="All In One Leave" />
+									<viz.feeds:FeedItem id='AL_id_ValueAxisFeed1' uid="valueAxis" type="Measure"
+                                                values="LOP" />
+									<viz.feeds:FeedItem id='AL_id_CategoryAxisFeed' uid="categoryAxis" type="Dimension"
+                                                values="Year" />
+								</viz:feeds>
+								<viz:dependents>
+									<viz:Popover id="AL_id_PopOver"></viz:Popover>
+								</viz:dependents>
+							</viz:VizFrame>
+						</com:content>
+					</com:ChartContainerContent>
+				</com:content>
+			</com:ChartContainer>
+		</VBox>
+		</g:GridContainer>		
+	</VBox>
+</core:FragmentDefinition>

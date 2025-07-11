@@ -1,0 +1,119 @@
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+    controllerName="sap.kt.com.minihrsolution.controller.Trainee"
+	xmlns:fb="sap.ui.comp.filterbar"
+    displayBlock="true">
+	<Page  >
+		<headerContent>
+	     <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+			</headerContent>
+		<content>
+			<fb:FilterBar showFilterConfiguration="false" class="sapUiTinyMargin" id="T_id_Filterbar" persistencyKey="myPersKey" useToolbar="false" clear="T_onPressClear" showClearOnFB="true" search="T_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="TraineeName" label="{i18n>traineeName}" groupName="Group1" visibleInFilterBar="true" >
+						<fb:control>
+							<ComboBox  showSecondaryValues= "true"  id="T_id_TraineeName" showClearIcon="true" items="{path:'traineeNameModel>/', sorter: {path:'TraineeName', descending:false }}" >
+								<core:ListItem key="{traineeNameModel>TraineeName}" text="{traineeNameModel>TraineeName}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="ReportingManager" label="{i18n>reportingManager}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+						<ComboBox showSecondaryValues="true" showClearIcon="true" id="T_id_RmFilterBar" items="{path:'empModel>/', sorter: {path:'EmployeeName', descending:false }}">
+						<core:ListItem key="{empModel>EmployeeID}" text="{empModel>EmployeeName}" additionalText="{empModel>EmployeeID}" />
+						</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="Type" label="{i18n>trainingType}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox   items="{TypeModel>/}" id="T_id_TypeBar" showClearIcon="true">
+								<core:Item key="{TypeModel>Type}" text="{TypeModel>Type}"/>
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem name="JoiningDate" label="{i18n>joiningDate}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+                    <DateRangeSelection id="T_id_JoiningDate" valueFormat="MM/dd/yyyy"  displayFormat="MM/dd/yyyy" change="onDateChange" />						
+					</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="Status" label="{i18n>status}" groupName="Group1" visibleInFilterBar="true">
+					<fb:control>
+						<ComboBox name="Status" showClearIcon="true" selectionChange="T_onSelectionChange" items="{TraineeStatus>/}">
+							<core:Item key="{TraineeStatus>ID}" text="{TraineeStatus>StatusValue}"/>
+						</ComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="T_id_TraineeTable" class="sapUiResponsiveMargin"    items="{
+                path: 'traineeModel>/', sorter: {path: 'Status',descending: false,group: true}}" busyIndicatorDelay="0"  width="auto" mode="SingleSelectLeft" selectionChange="T_onTableSelectionChange"
+                    growingScrollToLoad="true" growing="true"  growingThreshold="50"  alternateRowColors="true">
+				 <headerToolbar>
+                <OverflowToolbar >
+                    <Title id="T_id_Title" text="{i18n>traineeDetail} ({= ${traineeModel>/}.length })"/>
+                    <ToolbarSpacer/>
+                    <Button  tooltip="{i18n>downloadcCertificate}" text="{i18n>certificate}"  id="T_id_Download"   press="T_onCertDownload"   visible="false" type="Attention"/>
+                    <Button  tooltip="{i18n>sendTrineeCertificate}" text="{i18n>mailCertificate}" id="T_id_Cermail"  type="Ghost" press="T_onCerMail"  visible="false"/>
+                    <Button  text="{i18n>onBoardTrainee}" id="T_id_OnboardBtn"  type="Ghost" press="T_onOnboardPress"  enabled="false" tooltip="{i18n>onboard}"/>
+                    <Button text="{i18n>rejectTainee}" id="T_id_RejectBtn" type="Reject"  press="T_onRejectPress"  enabled="false" tooltip="{i18n>rejectTainee}" />
+                    <Button text="{i18n>addTrainee}" id="T_id_AddBtn" type="Accept"  press="T_onPressAddTrainee"   tooltip="{i18n>addTrainee}"/>
+					<Button  tooltip="{i18n>onboardTraineeTool}" text="{i18n>generateOffer}" id="T_id_EmpOnBoard"   press="T_onBoardTrainee"  visible="false" type="Accept"/>
+
+                </OverflowToolbar>
+            </headerToolbar>
+				<columns>
+					<Column demandPopin="true" >
+						<Text text="{i18n>traineeName}"/>
+					</Column>
+					<Column  demandPopin="true" >
+						<Text text="{i18n>reportingManager}" />
+					</Column>
+					<Column  demandPopin="true">
+						<Text text="{i18n>joiningDate}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>durationT}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>type}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>Amount}"  />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>baseLocation}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" width="20%">
+						<Text text="{i18n>emailId}" />
+					</Column>
+				
+				</columns>
+				<items>
+					<ColumnListItem  type="Navigation" press="T_onPressAddTrainee">
+						<cells>
+						    <!-- <Text text="{traineeModel>NameSalutation} {traineeModel>TraineeName}"/>	 -->
+							<ObjectIdentifier title="{traineeModel>NameSalutation} {traineeModel>TraineeName}" text="{traineeModel>TraineeID}" />
+							<ObjectIdentifier title="{traineeModel>ReportingManager}" text="{traineeModel>ManagerID}" />
+							<Text text="{path:'traineeModel>JoiningDate' ,formatter:'.Formatter.formatDate'}" />
+							<Text text="{traineeModel>TrainingDuration}"/>
+							<Text text="{traineeModel>Type}"/>							
+							<Text text="{path:'traineeModel>Amount', formatter: '.Formatter.CurrencyInINR'} {traineeModel>Currency}" textDirection="RTL"/>
+							<Text text="{traineeModel>BaseLocation}"/>
+							<Text text="{traineeModel>TraineeEmail}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+				<contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</contentLeft>
+				
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

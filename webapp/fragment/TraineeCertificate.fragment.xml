@@ -1,0 +1,118 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:rich="sap.ui.richtexteditor"
+>
+    <Dialog
+        title="{i18n>generateCertificate}"
+        contentWidth="85%"
+        contentHeight="75%"
+    >
+        <f:SimpleForm
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            emptySpanS="0"
+            columnsXL="4"
+            columnsL="3"
+            columnsM="2"
+            singleContainerFullSize="false"
+        >
+            <f:content>
+                <Label text="{i18n>traineeName}" />
+                <Input
+                    id="TCF_id_TraineeName"
+                    value="{traineeModel>NameSalutation} {traineeModel>TraineeName}"
+                    editable="false"
+                />
+                <Label
+                    text="{i18n>department}"
+                    required="true"
+                />
+                <Select
+                    id="TCF_id_Department"
+                    items="{DepartmentModel>/}"
+                    selectedKey="{traineeModel>Department}"
+					editable="{= !${PDFData>/PreviewFlag} }"
+                >
+                    <core:Item
+                        key="{DepartmentModel>departmentName}"
+                        text="{DepartmentModel>departmentName}"
+                    />
+                </Select>
+                <Label text="{i18n>joiningDate}" />
+                <DatePicker
+                    value="{path:'traineeModel>JoiningDate' ,formatter:'.Formatter.formatDate'}"
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+					editable="false"
+                    id="TCF_id_JoiningDate"
+                />
+                 <Label
+                    text="{i18n>endDate}"
+                    required="true"
+                />
+                
+                <DatePicker
+                    displayFormat="dd/MM/yyyy"
+                    valueFormat="dd/MM/yyyy"
+                    id="TCF_id_EndDate"
+                    value="{path:'traineeModel>EndDate' ,formatter:'.Formatter.formatDate'}"
+                    minDate="{traineeModel>EndDate}"
+					editable="{= !${PDFData>/PreviewFlag} }"
+                />
+                <Label text="{i18n>reportingManager}" />
+                <Input
+                    value="{traineeModel>ReportingManager}"
+                    editable="false"
+                    id="TCF_id_ReportingManager"
+                />
+                <Label
+                    text="{i18n>projectName}"
+                    required="true"
+                />
+                <Input
+                    id="TCF_id_ProjectName"
+                    liveChange="T_ValidateCommonFields"
+                    value="{traineeModel>ProjectName}"
+                    maxLength="60"
+                    valueStateText="{i18n>projectValueState}"
+                    placeholder="{i18n>projectValueState}"
+					editable="{= !${PDFData>/PreviewFlag} }"
+                />
+            </f:content>
+        </f:SimpleForm>
+        <rich:RichTextEditor
+            id="myRTE"
+            width="100%"
+            height="70vh"
+            showGroupFontStyle="true"
+            showGroupTextAlign="true"
+            showGroupStructure="true"
+            value="{PDFData>/RTEText}"
+			visible="true"
+        />
+        <beginButton>
+            <Button
+                text="{= ${PDFData>/PreviewFlag} ? ${i18n>downloadcCertificate} : ${i18n>preview} }"
+                type="{= ${PDFData>/PreviewFlag} ? 'Accept' : 'Emphasized' }"
+                press="TCF_onPressHandlePreview"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="{i18n>close}"
+                press="TCF_onPressCloseDialog"
+                type="Reject"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,22 @@
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<l:VerticalLayout  width="98%" class="sapUiTinyMargin Aboutus" >
+		<l:BlockLayout background="Light" >
+			<l:BlockLayoutRow rowColorSet="ColorSet4">
+				<l:BlockLayoutCell titleLevel="H2"
+					title="{i18n>aboutUscontent1}"></l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell title="{i18n>services}" backgroundColorSet="ColorSet4" >
+					<core:HTML content='&lt;div class=&quot;content&quot;&gt;&lt;gt;&lt;div&gt;{i18n>aboutUscontent3}&lt;br&gt;&lt;br&gt;{i18n>aboutUscontent4}&lt;br&gt;&lt;br&gt;{i18n>aboutUsSecondcontent7}&lt;br&gt;&lt;br&gt;{i18n>aboutUsSecondcontent6}&lt;br&gt;&lt;br&gt;{i18n>aboutUscontent2}&lt;/a&gt;&lt;/div&gt;'></core:HTML>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell title="{i18n>recruitment}">
+					<core:HTML content='&lt;div class=&quot;content&quot;&gt;&lt;gt;&lt;div&gt;{i18n>aboutUsSecondcontent5}&lt;br&gt;&lt;br&gt;{i18n>aboutUsSecondcontent9}&lt;br&gt;&lt;br&gt;{i18n>aboutSecondDes}&lt;br&gt;&lt;br&gt;{i18n>aboutSecondDes1}&lt;br&gt;&lt;br&gt;{i18n>aboutSecondDes2}&lt;/a&gt;&lt;/div&gt;'></core:HTML>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</l:VerticalLayout>
+</mvc:View>

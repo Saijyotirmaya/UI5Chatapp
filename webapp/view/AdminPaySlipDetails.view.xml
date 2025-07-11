@@ -1,0 +1,519 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AdminPaySlipDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.uxap"
+    xmlns:g="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+>
+    <m:Page
+        id="APD_id_PaySlipDetailsPage"
+        title="{i18n>paySlipTitle}"
+        navButtonPress="APD_onPressBack"
+        showNavButton="true"
+    >
+        <m:headerContent>
+            <m:Button
+                press="onLogout"
+                icon="sap-icon://log"
+                tooltip="{i18n>logoutTooltip}"
+                type="Transparent"
+            />
+        </m:headerContent>
+        <ObjectPageLayout
+            id="APD_id_NavAdmin"
+            enableLazyLoading="true"
+            useIconTabBar="false"
+            class="sapUiSmallmarginResponsive"
+            upperCaseAnchorBar="false"
+            headerContentPinnable="false"
+            showHeaderContent="{PaySlip>/isIdSelected}"
+        >
+            <headerTitle>
+                <ObjectPageDynamicHeaderTitle visible="{PaySlip>/isIdSelected}">
+                    <expandedHeading>
+                        <m:Title
+                            text="{PaySlip>/EmpData/EmployeeName}"
+                            wrapping="true"
+                        />
+                    </expandedHeading>
+
+                    <snappedHeading>
+                        <m:Title
+                            text="{PaySlip>/EmpData/EmployeeName}"
+                            wrapping="true"
+                        />
+                    </snappedHeading>
+
+                    <expandedContent>
+                        <m:Text text="{PaySlip>/EmpData/EmployeeID}" />
+                    </expandedContent>
+
+                    <snappedContent>
+                        <m:Text text="{PaySlip>/EmpData/EmployeeID}" />
+                    </snappedContent>
+                </ObjectPageDynamicHeaderTitle>
+            </headerTitle>
+
+            <headerContent>
+                <m:FlexBox
+                    busyIndicatorDelay="0"
+                    id="QF_id_Header"
+                    wrap="Wrap"
+                    fitContainer="true"
+                >
+                    <m:Avatar
+                        class="sapUiMediumMarginEnd sapUiTinyMarginBottom sapUiTinyMarginBegin"
+                        displayShape="Circle"
+                        displaySize="L"
+                        src="{PaySlip>/EmpData/ProfilePhoto}"
+                    />
+
+                    <layout:VerticalLayout
+                        class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                    >
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>baseLocation}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/BaseLocation}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>role}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/Role}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>department}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/Department}"
+                            />
+                        </layout:HorizontalLayout>
+                    </layout:VerticalLayout>
+
+                    <layout:VerticalLayout
+                        class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                    >
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>bankName}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/BankName}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>accountNo}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/BankAccountNo}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>PAN}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/PAN}"
+                            />
+                        </layout:HorizontalLayout>
+                    </layout:VerticalLayout>
+
+                    <layout:VerticalLayout
+                        class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginBottom"
+                    >
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>payableDays}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{PaySlip>/EmpData/PayableDays}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                        >
+                            <m:Label text="{i18n>joiningDate}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{path: 'PaySlip>/EmpData/JoiningDate', formatter: '.Formatter.formatDate'}"
+                            />
+                        </layout:HorizontalLayout>
+                        <layout:HorizontalLayout
+                            class="sapUiSmallMarginBeginEnd sapUiTinyMarginBottom"
+                            visible="{= !${PaySlip>/isCreate} }"
+                        >
+                            <m:Label text="{i18n>monthAndYear}:" />
+                            <m:Text
+                                class="sapUiTinyMarginBegin"
+                                text="{path: 'PaySlip>/EmpData/YearMonth', formatter: '.Formatter.formatMonthYear'}"
+                            />
+                        </layout:HorizontalLayout>
+                    </layout:VerticalLayout>
+                </m:FlexBox>
+            </headerContent>
+            <sections>
+                <ObjectPageSection
+                    id="APD_id_First"
+                    showTitle="false"
+                >
+                    <subSections>
+                        <ObjectPageSubSection
+                            showTitle="false"
+                            visible="{PaySlip>/isCreate}"
+                        >
+                            <f:SimpleForm
+                                editable="true"
+                                layout="ColumnLayout"
+                                labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                columnsXL="4"
+                                columnsL="4"
+                                columnsM="2"
+                            >
+                                <f:content>
+                                    <m:Label text="{i18n>employeeID}" />
+                                    <m:ComboBox
+                                        showSecondaryValues="true"
+                                        id="APD_id_Employee"
+                                        change="APD_onEmployeeIDChange"
+                                        showClearIcon="true"
+                                        items="{EmployeeModel>/}"
+                                    >
+                                        <core:ListItem
+                                            key="{EmployeeModel>EmployeeID}"
+                                            text="{EmployeeModel>EmployeeID}"
+                                            additionalText="{EmployeeModel>EmployeeName}"
+                                        />
+                                    </m:ComboBox>
+                                    <m:Label text="{i18n>monthAndYear}" />
+                                    <m:DatePicker
+                                        id="APD_id_Payroll"
+                                        value="{path: 'PaySlip>/EmpData/YearMonth', formatter: '.Formatter.formatMonthYear'}"
+                                        displayFormat="MM-yyyy"
+                                        editable="false"
+                                    />
+                                </f:content>
+                            </f:SimpleForm>
+                        </ObjectPageSubSection>
+                        <!-- Salary Details SubSection -->
+                        <ObjectPageSubSection
+                            title="{i18n>paySlipStructure}"
+                            titleVisible="true"
+                        >
+                            <m:VBox>
+                                <m:FlexBox
+                                    wrap="Wrap"
+                                    direction="Row"
+                                    justifyContent="SpaceBetween"
+                                >
+                                    <m:VBox
+                                        class="salaryBox sapUiTinyMargin"
+                                        width="100%"
+                                        layoutData="{@ui5:layoutData: {rowSpan: 1, columnSpan: 1}}"
+                                    >
+                                        <g:Card>
+                                            <g:content>
+                                                <m:VBox>
+                                                    <m:Table
+                                                        id="APD_id_SalaryTable"
+                                                        items="{PaySlip>/EmpData/EarningData}"
+                                                    >
+                                                        <m:headerToolbar>
+                                                            <m:OverflowToolbar>
+                                                                <m:Title
+                                                                    text="{i18n>salaryDetails}"
+                                                                    level="H2"
+                                                                />
+                                                                <m:ToolbarSpacer
+                                                                />
+                                                                <m:Button
+                                                                    text="{i18n>add}"
+                                                                    type="Accept"
+                                                                    press="APD_onPressSalAdd"
+                                                                    enabled="{PaySlip>/isIdSelected}"
+                                                                    visible="{PaySlip>/isCreate}"
+                                                                />
+                                                            </m:OverflowToolbar>
+                                                        </m:headerToolbar>
+                                                        <m:columns>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>desc}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>amount}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>yearlyAmount}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                width="10%"
+                                                            />
+                                                        </m:columns>
+                                                        <m:items>
+                                                            <m:ColumnListItem>
+                                                                <m:cells>
+                                                                    <m:Input
+                                                                        value="{PaySlip>Description}"
+                                                                        maxLength="25"
+                                                                        editable="{= ${PaySlip>Flag} === true }"
+                                                                    />
+                                                                    <m:Input
+                                                                        value="{PaySlip>Amount}"
+                                                                        change="APD_onAmountChange"
+                                                                        textAlign="End"
+                                                                        type="Number"
+                                                                        editable="{PaySlip>/isCreate}"
+                                                                    />
+                                                                    <m:Input
+                                                                        value="{PaySlip>YearlyAmount}"
+                                                                        editable="false"
+                                                                        textAlign="End"
+                                                                    />
+                                                                    <m:Button
+                                                                        icon="sap-icon://decline"
+                                                                        press="APD_onPressDeleteEarningFields"
+                                                                        type="Transparent"
+                                                                        visible="{= ${PaySlip>Flag} === true }"
+                                                                    />
+                                                                </m:cells>
+                                                            </m:ColumnListItem>
+                                                        </m:items>
+                                                    </m:Table>
+
+                                                    <m:HBox
+                                                        class="customEarningBox sapUiTinyMarginBottom"
+                                                        width="100%"
+                                                    >
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{i18n>totalEarningAmount} :"
+                                                            textAlign="End"
+                                                        />
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{path:'PaySlip>/EmpData/EarningsTotalMonthly', formatter: '.Formatter.fromatNumber'}"
+                                                            textAlign="End"
+                                                        />
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{path:'PaySlip>/EmpData/EarningsTotalYearly', formatter: '.Formatter.fromatNumber'}"
+                                                            textAlign="End"
+                                                        />
+                                                    </m:HBox>
+                                                </m:VBox>
+                                            </g:content>
+                                        </g:Card>
+                                    </m:VBox>
+
+                                    <m:VBox
+                                        class="deductionBox sapUiTinyMargin"
+                                        width="100%"
+                                        layoutData="{@ui5:layoutData: {rowSpan: 1, columnSpan: 1}}"
+                                    >
+                                        <g:Card>
+                                            <g:content>
+                                                <m:VBox>
+                                                    <m:Table
+                                                        items="{PaySlip>/EmpData/DeductionData}"
+                                                    >
+                                                        <m:headerToolbar>
+                                                            <m:OverflowToolbar>
+                                                                <m:Title
+                                                                    text="{i18n>deductionDetails}"
+                                                                    level="H2"
+                                                                />
+                                                                <m:ToolbarSpacer
+                                                                />
+                                                                <m:Button
+                                                                    text="{i18n>add}"
+                                                                    type="Accept"
+                                                                    press="APD_onPressDedAdd"
+                                                                    enabled="{PaySlip>/isIdSelected}"
+                                                                    visible="{PaySlip>/isCreate}"
+                                                                />
+                                                            </m:OverflowToolbar>
+                                                        </m:headerToolbar>
+                                                        <m:columns>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>desc}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>amount}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                minScreenWidth="Tablet"
+                                                                demandPopin="true"
+                                                            >
+                                                                <m:Text
+                                                                    text="{i18n>yearlyAmount}"
+                                                                />
+                                                            </m:Column>
+                                                            <m:Column
+                                                                width="10%"
+                                                            />
+                                                        </m:columns>
+                                                        <m:items>
+                                                            <m:ColumnListItem>
+                                                                <m:cells>
+                                                                    <m:Input
+                                                                        value="{PaySlip>Description}"
+                                                                        maxLength="25"
+                                                                        editable="{= ${PaySlip>Flag} === true }"
+                                                                    />
+                                                                    <m:Input
+                                                                        value="{PaySlip>Amount}"
+                                                                        change="APD_onAmountChange"
+                                                                        textAlign="End"
+                                                                        type="Number"
+                                                                        editable="{PaySlip>/isCreate}"
+                                                                    />
+                                                                    <m:Input
+                                                                        value="{PaySlip>YearlyAmount}"
+                                                                        editable="false"
+                                                                        textAlign="End"
+                                                                    />
+                                                                    <m:Button
+                                                                        icon="sap-icon://decline"
+                                                                        press="APD_onPressDeleteDeductionFields"
+                                                                        type="Transparent"
+                                                                        visible="{= ${PaySlip>Flag} === true }"
+                                                                    />
+                                                                </m:cells>
+                                                            </m:ColumnListItem>
+                                                        </m:items>
+                                                    </m:Table>
+                                                    <m:HBox
+                                                        class="customDeductionBox sapUiTinyMarginBottom"
+                                                        width="100%"
+                                                    >
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{i18n>totalDeductionAmount} :"
+                                                            textAlign="End"
+                                                        />
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{path:'PaySlip>/EmpData/DeductionsTotalMonthly', formatter: '.Formatter.fromatNumber'}"
+                                                            textAlign="Right"
+                                                        />
+                                                        <m:Text
+                                                            class="boldBlackText"
+                                                            text="{path:'PaySlip>/EmpData/DeductionsTotalYearly', formatter: '.Formatter.fromatNumber'}"
+                                                            textAlign="Right"
+                                                        />
+                                                    </m:HBox>
+                                                </m:VBox>
+                                            </g:content>
+                                        </g:Card>
+                                    </m:VBox>
+                                </m:FlexBox>
+                                <m:HBox
+                                    class="customNetPayBox"
+                                    width="100%"
+                                >
+                                    <m:Text
+                                        text="Net Pay ( INR ) : {path: 'PaySlip>/EmpData/NetPay', formatter: '.Formatter.CurrencyInINRText'} ({PaySlip>/EmpData/NetPayText})"
+                                        class="boldBlackText"
+                                        width="100%"
+                                    />
+                                    <!-- <m:Text
+                                        text=" :  {path: 'PaySlip>/totalNetPay', formatter: '.Formatter.numberFormater'} ({PaySlip>/totalNetPayText})"
+                                        class="boldBlackText"
+                                        width="100%"
+                                    /> -->
+                                </m:HBox>
+                            </m:VBox>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+        <m:footer>
+            <m:Bar>
+                <m:contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </m:contentLeft>
+                <m:contentRight>
+                    <m:Button
+                        class="salUploadBtn"
+                        press="APD_onPressViewSalary"
+                        type="Transparent"
+                        text="{i18n>viewsalary}"
+                        visible="{PaySlip>/isIdSelected}"
+                    />
+                    <m:Button
+                        class="salUploadBtn"
+                        press="APD_onPressViewLOP"
+                        type="Transparent"
+                        text="{i18n>viewLOP}"
+                        visible="{PaySlip>/isIdSelected}"
+                    />
+                    <m:Button
+                        text="{i18n>submit}"
+                        type="Accept"
+                        press="APD_onPressSubmit"
+                        class="sendMail"
+                        visible="{PaySlip>/isCreate}"
+                        enabled="{PaySlip>/isIdSelected}"
+                    />
+                    <m:Button
+                        text="{i18n>jsPdf}"
+                        type="Reject"
+                        press="APD_onPressGeneratePdf"
+                        visible="{= !${PaySlip>/isCreate} }"
+                    />
+                </m:contentRight>
+            </m:Bar>
+        </m:footer>
+    </m:Page>
+</mvc:View>

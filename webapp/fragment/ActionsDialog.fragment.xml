@@ -1,0 +1,16 @@
+<ActionSheet id="actionSheet"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	core:require="{ MessageToast: 'sap/m/MessageToast' }"
+	title="Choose Your Action"
+	showCancelButton="true"
+	placement="Bottom">
+	<Button text="{i18n>headerCompanyInvoice}" press="MsaE_GoToInvoice"/>
+	<Button text="{i18n>active}" type="Attention" id="MsaE_id_ActiveBtn" press="MsaE_onPressSOWActive" enabled="{simpleForm>/BtnEnable}"/>
+	<Button text="{i18n>inactive}" type="Attention" id="Msa_id_InactiveBtn" press="MsaE_onPressSOWActive" enabled="{simpleForm>/BtnEnable}"/>
+	<Button id="MsaE_id_RelesedBtn" type="Ghost" press="MsaE_onPressRelesedSow" text="{i18n>ReleaseBtn}" enabled="{simpleForm>/BtnEnable}"/>
+	<Button text="{i18n>ExpendBtn}" type="Ghost" id="MsaE_id_ExpendBtn" press="MasE_onPressExpendSow" enabled="{simpleForm>/BtnEnable}"/>
+	<Button id="SOW" text="{i18n>sowSendEmail}" type="Attention" press="MsaE_onSendEmailMSA" enabled="{simpleForm>/BtnEnable}"/>
+	<Button id="MsaE_id_SowMergeBut" text="{i18n>GeneratePDF}" type="Attention" press="MsaE_onPressMergeSow" enabled="{simpleForm>/BtnEnable}"/>
+	<Button text="{i18n>edit}" type="Ghost" id="MsaE_id_UpdateSow" press="MsaE_onPressUpdateSOW" enabled="{simpleForm>/BtnEnable}"/>
+</ActionSheet>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog 
+        title="{i18n>onBoardTrainee}">
+		<f:SimpleForm 
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+			<Label text="{i18n>companyMailid}"></Label>
+			<Input value="{oTraineeDetailsModel>/CompanyEmailID}" id="OTF_id_TraineeMail" maxLength="100" liveChange="T_validateEmail" placeholder="{i18n>entercomMailid}" valueStateText="{i18n>emailValueState}"/>	
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>onboard}" type="Ghost" press="OTF_onPressOnboard"  />
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>close}" press="OTF_onPressClose" type="Reject"/>
+		</endButton>
+
+	</Dialog>
+</core:FragmentDefinition>

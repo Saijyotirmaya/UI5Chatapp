@@ -1,0 +1,184 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AssignTask"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+>
+    <Page
+        showNavButton="true"
+        title="{i18n>tileAssignmentFooter}"
+        navButtonPress="AT_onPressback"
+    >
+        <headerContent>
+            <Button
+                press="onLogout"
+                icon="sap-icon://log"
+                tooltip="{i18n>logoutTooltip}"
+                type="Transparent"
+            />
+        </headerContent>
+        <content>
+            <ObjectHeader
+              
+                responsive="true"
+                backgroundDesign="Translucent"
+                class="sapUiResponsivePadding--header"
+                binding="{TaskDetailsModel>/}"
+             
+            >
+                <ObjectAttribute
+                    title="{i18n>taskName}"
+                    text="{TaskDetailsModel>TaskName}"
+                    class="taskNameColor"
+                />
+
+                <ObjectAttribute
+                    title="{i18n>description}"
+                    text="{TaskDetailsModel>TaskTypeDescription}  -  {TaskDetailsModel>TaskType}"
+                    class="taskNameColor"
+                />
+
+                <ObjectAttribute
+                    title="{i18n>startDate}"
+                    text="{path:'TaskDetailsModel>StartDate', formatter:'.Formatter.formatDate'}"
+                    class="sapUiSmallMarginEnd taskNameColor"
+                    textDirection="LTR"
+                />
+
+                <ObjectAttribute
+                    title="{i18n>endDate}"
+                    text="{path:'TaskDetailsModel>EndDate', formatter:'.Formatter.formatDate'}"
+                    class="sapUiSmallMarginEnd taskNameColor"
+                    textDirection="LTR"
+                />
+            </ObjectHeader>
+
+            <fb:FilterBar
+                class="sapUiTinyMargin"
+                id="AT_id_FilterBar"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                clear="FAT_onPressClear"
+                showClearOnFB="true"
+                search="FAT_onSearch"
+                filterChange=".onFilterChange"
+                afterVariantLoad=".onAfterVariantLoad"
+                showFilterConfiguration="false"
+            >
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem
+                        name="EmployeeID"
+                        label="{i18n>employeeID}"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <fb:control>
+                            <ComboBox
+                                id="FilterEmployeeId"
+                                selectionChange="onFilterEmployeeChange"
+                                showClearIcon="true"
+                                items="{LoginDetailsModel>/}"
+                                selectedKey="{filterModel>/SelectedEmployeeId}"
+                                showSecondaryValues="true"
+                            >
+                                <core:ListItem
+                                    key="{LoginDetailsModel>EmployeeID}"
+                                    text="{LoginDetailsModel>EmployeeID}"
+                                    additionalText="{LoginDetailsModel>EmployeeName}"
+                                />
+                            </ComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+
+            <Table
+                class="sapUiTinyMargin"
+                growingScrollToLoad="true"
+                width="auto"
+                items="{AssignModel>/}"
+                growing="true"
+                growingThreshold="50"
+                mode="SingleSelectLeft"
+                alternateRowColors="true"
+                id="AT_id_TaskTable"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            text="{i18n>tileAssignmentFooter}({= ${AssignModel>/}.length })"
+                        />
+                        <!-- <ToolbarSeparator/> -->
+                        <ToolbarSpacer />
+                        <Button
+                            text="Assign Employee"
+                            press="AT_onAssignEmpTask"
+                            id="AT_id_Assign"
+                            type="Accept"
+                            tooltip="{i18n>assigntask}"
+                        />
+                        <Button
+                            press="AT_onEditTask"
+                            text="{i18n>edit}"
+                            id="AT_id_EditTask"
+                            tooltip="{i18n>editassigntask}"
+                            type="Emphasized"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>employeeID}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>employeeName}" />
+                    </Column>
+                    <Column demandPopin="true">
+                        <Text text="{i18n>startDate}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>endDate}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>hoursWorked}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{AssignModel>EmployeeID}" />
+                            <Text text="{AssignModel>EmployeeName}" />
+
+                            <Text text="{path:'AssignModel>StartDate',formatter:'.Formatter.formatDate'}" />
+                            <Text text="{path:'AssignModel>EndDate',formatter:'.Formatter.formatDate'}" />
+                            <Text text="{AssignModel>HoursWorked}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

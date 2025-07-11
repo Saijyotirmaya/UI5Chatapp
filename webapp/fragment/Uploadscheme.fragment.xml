@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified">
+    <Dialog id="uploadDialog" title="{i18n>schemeupload}" stretch="false" contentWidth="38rem">
+         <VBox >
+            <MessageStrip
+                text="{i18n>msgstrip}"
+                showIcon="true">
+            </MessageStrip>
+        <f:SimpleForm id="idEntryForm"
+
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="3"
+            adjustLabelSpan="false"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            emptySpanXL="2"
+            emptySpanL="2"
+            emptySpanM="2"
+            emptySpanS="0"
+            columnsM="1"  
+            columnsL="1"  
+            columnsXL="1"
+            singleContainerFullSize="false">
+
+
+            <f:content >
+               
+
+                <Label text="{i18n>fileUploader}" required="true"/>
+                <u:FileUploader
+                    id="idFileUploader"
+                    width="300px"
+                    buttonText="{i18n>fileupload}"
+                    fileType="xlsx"
+                    typeMissmatch="onTypeMissmatch"
+                    placeholder="Choose an Excel file"
+                    change="FUS_onUpload"
+                    icon="sap-icon://upload"
+                   
+                />
+            </f:content>
+        </f:SimpleForm>
+     </VBox>
+        <beginButton>
+            <Button text="{i18n>submit}" type="Accept" press="FUS_onCreateDialogSubmit" enabled="{/isFileValid}"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>btnCancel}" type="Reject" press="FUS_onCreateDialogCancel"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

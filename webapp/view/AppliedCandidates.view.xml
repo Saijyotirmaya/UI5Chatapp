@@ -1,0 +1,183 @@
+<mvc:View
+    controllerName="sap.kt.com.minihrsolution.controller.AppliedCandidates"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:fb="sap.ui.comp.filterbar"
+>
+    <Page>
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        
+        <fb:FilterBar
+            id="appliedCandidatesFilterBar"
+            persistencyKey="myPersKey"
+            useToolbar="false"
+            search="onFilterBarSearch"
+            clear="onFilterBarClear"
+            showClearOnFB="true"
+            showFilterConfiguration="false"
+        >
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="name"
+                    label="{i18n>compName}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            name="Name"
+                            items="{path: 'UniqueNamesModel>/'}"
+                            id="filterEmployeeName"
+                            showClearIcon="true"
+                        >
+                            <core:Item
+                                key="{UniqueNamesModel>FullName}"
+                                text="{UniqueNamesModel>FullName}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    name="SupplierName"
+                    label="{i18n>TableColNoticePeriod}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <Input
+                            id="filterNoticePeriod"
+                            placeholder="e.g., 30, Immediate"
+                            showClearIcon="true"
+                        />
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem
+                    name="skills"
+                    label="{i18n>TableColSkills}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                       <Input
+                            id="filterSkills"
+                            placeholder="Type skill..."
+                            showSuggestion="true"
+                            suggest="onSuggestSkills"
+                            suggestionItems="{path: 'skillModel>/skills'}"
+                        >
+                            <core:Item text="{skillModel>skill}" />
+                        </Input>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                
+                <fb:FilterGroupItem
+                    name="Experince"
+                    label="{i18n>TableColExperience}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="filterExperience"
+                            items="{path: 'Experience>/data'}"
+                            showClearIcon="true"
+                        >
+                            <core:Item
+                                key="{Experience>key}"
+                                text="{Experience>value}"
+                            />
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+
+        <Table
+            id="appliedCandidatesTable"
+            items="{DataTableModel>/}"
+            mode="SingleSelectLeft"
+            class="sapUiResponsiveMargin"
+            width="auto"
+            noDataText="{i18n>noData}"
+        >
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <Title
+                            text="{i18n>TableHeader}"
+                            level="H2"
+                        />
+                        <ToolbarSpacer />
+                        <Button
+                            text="{i18n>create}"
+                            press="onAddNewCandidate"
+                            type="Accept"
+                            tooltip="{i18n>tooltipAdduser}"
+                        />
+                        <Button
+                            text="{i18n>edit}"
+                            type="Emphasized"
+                            press="onEditCandidate"
+                            tooltip="{i18n>tooltipEditUser}"
+                        />
+                        <Button
+                            text="{i18n>delete}"
+                            press="onDeleteCandidate"
+                            type="Reject"
+                            tooltip="{i18n>tooltipDeleteStudent}"
+                        />
+                        <Button
+                            text="{i18n>export}"
+                            type="Ghost"
+                            press="onExport"
+                            class="sapUiSmallMarginEnd"
+                        />
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>compName}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>TableColCurrentPackage}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>TableColExpectedPackage}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>TableColNoticePeriod}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>mobilenumber}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>emailId}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>TableColExperience}" /></Column>
+                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>TableColSkills}" /></Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation" press="onCandidatePress">
+                    <cells>
+                        <Text text="{DataTableModel>FullName}" />
+                        <Text text="{DataTableModel>CurrentSalary} LPA" />
+                        <Text text="{DataTableModel>ExpectedSalary} LPA" />
+                        <Text text="{= ${DataTableModel>NoticePeriod} === '0' ? 'Immediate' : ${DataTableModel>NoticePeriod} + ' Days'}" />
+                        <Text text="{DataTableModel>ISD}-{DataTableModel>Mobile}" />
+                        <Text text="{DataTableModel>Email}" />
+                        <Text text="{DataTableModel>Experience} Years" />
+                        <Text text="{DataTableModel>Skills}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+
+        <footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

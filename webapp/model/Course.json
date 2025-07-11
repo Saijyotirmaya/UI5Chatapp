@@ -1,0 +1,13 @@
+{
+    "Course": [
+        {
+          "ID":1,
+          "name": "CAPM"
+        },
+        {
+          "ID":2,
+          "name": "SAP UI5"
+        }
+    
+      ]
+}

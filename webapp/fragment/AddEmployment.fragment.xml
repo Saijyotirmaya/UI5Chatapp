@@ -1,0 +1,187 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+
+	<Dialog showHeader="true" title="{i18n>employmentDetails}" id="AddEmp_id_Dialog">
+	<ScrollContainer horizontal="true" vertical="true">
+		<l:BlockLayout background="Dashboard">
+	<l:BlockLayoutRow>
+		<!-- Summary Section -->
+		<l:BlockLayoutCell width="4">
+			<f:SimpleForm id="AddEmp_id_Form_Summary"
+						  editable="true"
+						  layout="ColumnLayout"
+								  labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								  adjustLabelSpan="false"
+								  emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+								  columnsXL="2" columnsL="2" columnsM="1"
+						  singleContainerFullSize="false">
+				<f:content>
+					<Label text="{i18n>employeeID}" />
+					<Input value="{employmentModel>/EmployeeID}" editable="false" />
+
+					<Label text="{i18n>companyName}" required="true" />
+					<Input value="{employmentModel>/CompanyName}" id="AddEmp_id_Company" placeholder="{i18n>companyName}" 
+						   maxLength="50" liveChange="SS_ValidateCommonFields" 
+						   valueStateText="{i18n>companyNameValueState}" />
+
+					<Label text="{i18n>designation}" required="true" />
+					<ComboBox items="{path:'DesignationModel>/'}"
+							  id="AddEmp_id_Desig"
+							  change="Emp_onDesignationChange"
+							  valueStateText="{i18n>designationValueState}"
+							  value="{employmentModel>/Designation}"
+							  showSecondaryValues="true"
+							  placeholder="{i18n>plaseDesignation}">
+						<core:Item key="{DesignationModel>designationName}" 
+								   text="{DesignationModel>designationName}" />
+					</ComboBox>
+
+					<Label text="{i18n>companyAddress}" required="true" />
+					<TextArea value="{employmentModel>/OfficeAddress}"
+							  id="AddEmp_id_OfcAddress"
+							  placeholder="{i18n>companyAddress}"
+							  maxLength="120"
+							  liveChange="SS_ValidateCommonFields"
+							  valueStateText="{i18n>companyaddress}" />
+
+					<Label text="{i18n>startDate}" required="true" />
+					<DatePicker value="{path:'employmentModel>/StartDate',formatter:'.Formatter.formatDate'}"
+								maxDate="{viewModel>/Max}"
+								displayFormat="dd/MM/yyyy"
+								valueFormat="dd/MM/yyyy"
+								id="AddEmp_id_StartDate"
+								change="oEmpStartDateChange"
+								valueStateText="{i18n>dateValueState}" />
+
+					<Label text="{i18n>endDate}" required="true" />
+					<DatePicker value="{path:'employmentModel>/EndDate',formatter:'.Formatter.formatDate'}"
+								maxDate="{viewModel>/Max}"
+								displayFormat="dd/MM/yyyy"
+								valueFormat="dd/MM/yyyy"
+								id="AddEmp_id_EndDate"
+								change="SS_validateDate"
+								minDate="{startDate}"
+								valueStateText="{i18n>dateValueState}" />
+				</f:content>
+			</f:SimpleForm>
+		</l:BlockLayoutCell>
+
+		<!-- Reference I -->
+		<l:BlockLayoutCell width="4">
+			<f:SimpleForm id="AddEmp_id_Form_RefI"
+						  title="{i18n>referenceDetailsI}"
+						  editable="true"
+						  layout="ColumnLayout"
+								  labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								  adjustLabelSpan="false"
+								  emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+								  columnsXL="2" columnsL="2" columnsM="1"
+						  singleContainerFullSize="false">
+				<f:content>
+					<Label text="{i18n>salutation}"/>
+					<Select selectedKey="{employmentModel>/RCISal}" 
+							id="AddEmp_id_SalI"
+							items="{Salutation>/salutation}" 
+							width="100%">
+						<core:Item key="{Salutation>text}" text="{Salutation>text}" />
+					</Select>
+
+					<Label text="{i18n>name}" />
+					<Input value="{employmentModel>/RCIName}" id="AdEmp_id_RCNameI"
+						   liveChange="SS_validateName" placeholder="{i18n>placeName}"
+						   maxLength="50" valueStateText="{i18n>commonNameValueState}" />
+
+					<Label text="{i18n>address}" />
+					<TextArea value="{employmentModel>/RCIAddress}" 
+							  id="AdEmp_id_RCAddressI"
+							  placeholder="{i18n>placeAddress}"
+							  maxLength="120" 
+							  liveChange="SS_ValidateCommonFields"
+							  valueStateText="{i18n>addressValueState}" />
+
+					<Label text="{i18n>emailId}" />
+					<Input value="{employmentModel>/RCIEmailID}" id="AdEmp_id_RCMailI"
+						   liveChange="SS_validateEmail"
+						   placeholder="{i18n>placeEmailId}"
+						   maxLength="50"
+						   valueStateText="{i18n>emailValueState}" />
+
+					<Label text="{i18n>mobileNo}" />
+					<Input value="{employmentModel>/RCIMobileNo}" 
+						   liveChange="SS_validateMobileNo"
+						   maxLength="10"
+						   id="AdEmp_id_RCMobileI"
+						   placeholder="{i18n>placeholderMobileNo}"
+						   valueStateText="{i18n>mobileNoValueState}" />
+				</f:content>
+			</f:SimpleForm>
+		</l:BlockLayoutCell>
+
+		<!-- Reference II -->
+		<l:BlockLayoutCell width="4">
+			<f:SimpleForm id="AddEmp_id_Form_RefII"
+						  title="{i18n>referenceDetailsII}"
+						  editable="true"
+						  layout="ColumnLayout"
+								  labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+								  adjustLabelSpan="false"
+								  emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+								  columnsXL="2" columnsL="2" columnsM="1"
+						  singleContainerFullSize="false">
+				<f:content>
+					<Label text="{i18n>salutation}" />
+					<Select selectedKey="{employmentModel>/RCIISal}" 
+							id="AdEmp_id_RCSalII"
+							items="{Salutation>/salutation}" 
+							width="100%">
+						<core:Item key="{Salutation>text}" text="{Salutation>text}" />
+					</Select>
+
+					<Label text="{i18n>name}"/>
+					<Input value="{employmentModel>/RCIIName}" 
+						   id="AdEmp_id_RCNameII"
+						   liveChange="SS_validateName"
+						   placeholder="{i18n>placeName}"
+						   maxLength="50"
+						   valueStateText="{i18n>commonNameValueState}" />
+
+					<Label text="{i18n>address}" />
+					<TextArea value="{employmentModel>/RCIIAddress}" 
+							  id="AdEmp_id_RCAddressII"
+							  placeholder="{i18n>placeAddress}"
+							  maxLength="120"
+							  liveChange="SS_ValidateCommonFields"
+							  valueStateText="{i18n>addressValueState}" />
+
+					<Label text="{i18n>emailId}" />
+					<Input value="{employmentModel>/RCIIEmailID}" 
+						   id="AdEmp_id_RCMailII"
+						   liveChange="SS_validateEmail"
+						   placeholder="{i18n>placeEmailId}"
+						   maxLength="50"
+						   valueStateText="{i18n>emailValueState}" />
+
+					<Label text="{i18n>mobileNo}" />
+					<Input value="{employmentModel>/RCIIMobileNo}"
+						   maxLength="10"
+						   id="AdEmp_id_RCMobileII"
+						   liveChange="SS_validateMobileNo"
+						   placeholder="{i18n>placeholderMobileNo}"
+						   valueStateText="{i18n>mobileNoValueState}" />
+				</f:content>
+			</f:SimpleForm>
+		</l:BlockLayoutCell>
+	</l:BlockLayoutRow>
+</l:BlockLayout>
+</ScrollContainer>
+
+		<FlexBox justifyContent="End">
+			<Button text="{i18n>submit}" id="AddEmp_id_Submit" type="Accept" press="AddEmp_onSubmitEmpDetails" class="submit" visible="{viewModel>/fragmentSubmit}" ></Button>
+			<Button text="{i18n>save}" type="Accept" id="AddEmp_id_Save" press="AddEmp_onUpdateEmpDetails" class="submit" visible="{viewModel>/fragmentSave}"></Button>
+			<Button text="{i18n>close}" press="AddEmp_onClose" class="submit" type="Reject"></Button>
+		</FlexBox>
+	</Dialog>
+</core:FragmentDefinition>  

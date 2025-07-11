@@ -1,0 +1,72 @@
+<ActionSheet
+    id="actionBtn"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    core:require="{ MessageToast: 'sap/m/MessageToast' }"
+    title="Choose Your Action"
+    showCancelButton="true"
+    placement="Bottom"
+>
+    <Button
+        text="{i18n>headerIdCard}"
+        type="Ghost"
+        visible="{viewModel>/RelievingLetter}"
+        id="IC_id_Idcard"
+        press="CC_onPressIdCardDetails"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+    <Button
+        text="{i18n>visit}"
+        press="onDownloadVisitCard"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+        type="Attention"
+        visible="{viewModel>/isVisitMode}"
+    />
+    <Button
+        text="{i18n>resignationletter}"
+        press="onApplyResignation"
+        type="Reject"
+        visible="{viewModel>/ResignationVisible}"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+    <Button
+        text="{i18n>terminateLetter}"
+        type="Reject"
+        visible="{viewModel>/Letter}"
+        id="SS_idTermination"
+        press="SS_onDownloadTerminateLetter"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+    <Button
+        text="{i18n>relievingletter}"
+        type="Accept"
+        visible="{viewModel>/WorkCompletedVisible}"
+        id="SS_idExperience"
+        press="SS_onDownloadExperienceLetter"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+    <Button
+        text="{i18n>workCertificate}"
+        type="Success"
+        visible="{viewModel>/Letter}"
+        id="SS_idWorkBtn"
+        press="SS_onDownloadWorkLetter"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+    <Button
+        text="{i18n>salaryCertificate}"
+        type="Ghost"
+        visible="{viewModel>/Letter}"
+        id="SS_idSalarybtn"
+        press="SS_onDownloadSalLetter"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+       <Button
+        text="{i18n>spotAward}"
+        type="Ghost"
+        visible="{viewModel>/RelievingLetter}"
+        id="SS_idAwardbtn"
+        press="SS_onDownloadSpotAward"
+        enabled="{= ${viewModel>/isEditMode} === true ? false : true}"
+    />
+</ActionSheet>

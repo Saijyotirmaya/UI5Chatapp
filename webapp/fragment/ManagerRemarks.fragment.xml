@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Dialog
+        id="MIF_id_DialogManRemark">
+		<f:SimpleForm
+            editable="true"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false">
+			<f:content>
+				<Label id="MIF_id_RemarkLabel" required="true"></Label>
+				<TextArea value="" liveChange="MIF_liveChangeForMangerComments"  rows="4" id="MIF_id_remark" placeholder="{i18n>remarks}" maxLength="2000"/>
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button type="Emphasized" id="MIF_id_OkBtn" press="MTF_onPressOk" text=""/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>close}" type="Reject" press="MIF_onPressClose" />
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

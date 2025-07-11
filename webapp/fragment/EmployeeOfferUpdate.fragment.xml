@@ -1,0 +1,278 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.uxap"
+	xmlns:m="sap.m"
+	xmlns:core="sap.ui.core">
+	<m:Page  id="EODF_id_PageUpdate" title="{i18n>pageTitleemployee}" showNavButton="true" navButtonPress="EOD_onPressBack"  >
+	<m:headerContent>
+	<m:Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</m:headerContent>
+		<ObjectPageLayout id="EODF_id_ObjectPageLayoutEmp"
+                          selectedSection="{viewModel>/selectedSection}"
+                          useIconTabBar="true"
+                          showTitleInHeaderContent="true"		  
+						  preserveHeaderStateOnScroll="true"
+                          class="sapUiSmallmarginResponsive">
+			<headerTitle>
+				<ObjectPageDynamicHeaderTitle>
+					<!-- Expanded heading to display Consultant Name and Designation -->
+					<expandedHeading>
+						<m:Title text=" {employeeModel>/Salutation} {employeeModel>/ConsultantName}" wrapping="true" width="100%" />
+					</expandedHeading>
+					<expandedContent>
+						<m:Label text="{employeeModel>/Designation}" wrapping="true" width="100%" />
+					</expandedContent>
+					<expandedContent>
+						<m:ObjectStatus  textDirection="LTR" inverted="true" text="{= ${employeeModel>/Status} }"
+                   state="{= ${employeeModel>/Status} === 'Rejected' ? 'Error' :
+                             ${employeeModel>/Status} === 'Saved' ? 'Warning' :
+                             ${employeeModel>/Status} === 'New' ? 'Information' :
+                             ${employeeModel>/Status} === 'Onboarded' ? 'Success' :
+                             ${employeeModel>/Status} === 'Offer Sent' ? 'Indication06' : 'None' }" />
+					</expandedContent>
+				</ObjectPageDynamicHeaderTitle>
+			</headerTitle>
+			<!-- Object Page Sections -->
+			<sections>
+				<ObjectPageSection titleUppercase="false"  id="EODF_id_BasicDetailsSection" title="{i18n>basicDetails}">
+					<subSections>
+						<!-- Subsection of the basic details section -->
+						<ObjectPageSubSection titleUppercase="false">
+							<blocks>
+								<!-- SimpleForm for displaying and editing Employee details -->
+								<f:SimpleForm  id="EOU_id_Form"
+                                              editable="true"
+                                              layout="ColumnLayout"
+                                              columnsM="2"
+											  busyIndicatorDelay="0"
+                                              columnsL="2"
+                                              columnsXL="2">
+									<f:content>
+										<m:Label text="{i18n>salutation}" required="true" />
+										<!-- Consultant Name Field -->
+										<m:Select editable="{viewModel>/editable}"
+											selectedKey="{employeeModel>/Salutation}"
+											items="{Salutation>/salutation}"
+											width="100%"  change="onSalutationChange">
+											<!-- Binding the key and text of the Select control to the NameSalutation model -->
+											<core:Item key="{Salutation>text}" text="{Salutation>text}" />
+										</m:Select>
+										<m:Label text="{i18n>employeeName}" required="true" />
+										<m:Input id="EOUF_id_Name" value="{employeeModel>/ConsultantName}" editable="{viewModel>/editable}" maxLength="50" liveChange="OD_validateName" valueStateText="{i18n>placeEmpName}" placeholder="{i18n>placeEmpName}"/>
+										<m:Label text="{i18n>gender}" required="true" />
+										<m:Select items="{GenderModel>/}" id="EOU_id_Gender" selectedKey="{employeeModel>/Gender}" enabled="false"  editable="{viewModel>/editable}" >
+											<core:Item key="{GenderModel>Value}" text="{GenderModel>Value}" />
+										</m:Select>
+										<!-- Designation ComboBox with data from the DesignationModel -->
+										<m:Label text="{i18n>designation}" required="true" />
+										<m:ComboBox items="{path:'DesignationModel>/', sorter:{ path:'department',descending:false, group:true}}" editable="{viewModel>/editable}" id="EOUF_id_Designation" showSecondaryValues="true" selectedKey="{employeeModel>/Designation}" change="EOD_validateCombobox" valueStateText="{i18n>combovalueState}">
+											<m:items>
+												<core:ListItem key="{DesignationModel>designationName}" text="{DesignationModel>designationName}" additionalText="{DesignationModel>department}" />
+											</m:items>
+										</m:ComboBox>
+										<m:Label text="{i18n>expCountry}" required="true"/>
+										<m:ComboBox change="EUD_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="EUD_Id_Country" items="{path:'CountryModel>/',length:1000}" selectedKey="{employeeModel>/Country}" showSecondaryValues="true" editable="{viewModel>/editable}">
+											<core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+										</m:ComboBox>
+										<m:Label text="{i18n>baseLocation}" required="true" />
+										<m:ComboBox items="{BaseLocationModel>/}"  showSecondaryValues="true" value="{employeeModel>/BaseLocation}" id="EOUF_id_Location" editable="{viewModel>/editable}" valueStateText="{i18n>selectBase}" change="EOD_validateCombobox" selectedKey="{employeeModel>/BaseLocation}">
+											<m:items>
+												<core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+											</m:items>
+										</m:ComboBox>
+										<m:Label text="{i18n>offerReleaseDate}" required="true" />
+										<m:DatePicker id="EOUF_id_Reldate" editable="{viewModel>/editable}" placeholder="{i18n>offerReleaseDate}" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"
+                                             value= "{path:'employeeModel>/OfferReleaseDate',formatter:'.Formatter.formatDate'}"
+                                             change="EOD_validateDate" valueStateText="{i18n>dateValueState}"/>
+										<m:Label text="{i18n>joiningDate}" required="true" />
+										<m:DatePicker id="EOUF_id_Joindate" editable="{viewModel>/editable}" placeholder="{i18n>joiningDate}" minDate="{viewModel>/maxDate}"
+                                            value="{path:'employeeModel>/JoiningDate',formatter:'.Formatter.formatDate'}" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"  valueStateText="{i18n>dateValueState}"/>
+										<!-- Consultant Address TextArea -->
+										<m:Label text="{i18n>EmpAddress}" required="true" />
+										<m:TextArea  editable="{viewModel>/editable}" value="{employeeModel>/ConsultantAddress}" placeholder="{i18n>EmpAddress}" liveChange="EOD_ValidateCommonFields"
+                                            id="EOUF_id_Address" maxLength="120" valueStateText="{i18n>addressValueState}"/>
+										<!-- Employment Bond Year ComboBox -->
+										<m:Label text="{i18n>pinCode}"  required="true" />
+										<m:Input value="{employeeModel>/PinCode}" liveChange="EOD_validatePinCode" editable="{viewModel>/editable}" id="EOUF_id_PinCode" valueStateText="{i18n>enterPinCode}"></m:Input>
+										<m:Label text="{i18n>selectYear}" id="EOUF_id_Lyear" />
+										<m:Select  selectedKey="{employeeModel>/EmploymentBond}" items="{BondModel>/bond}" id="EOUF_id_BondCombo"  editable="{viewModel>/editable}">
+											<core:Item key="{BondModel>Code}" text="{BondModel>Code}" />
+										</m:Select>
+										<!-- Employee Email Input Field -->
+										<m:Label text="{i18n>emailId}" required="true" />
+										<m:Input editable="{viewModel>/editable}" value="{employeeModel>/EmployeeEmail}" placeholder="{i18n>placeEmplyeeEmail}" 
+                                             id="EOUF_id_mail" maxLength="50" liveChange="EOD_validateEmail" valueStateText="{i18n>emailValueState}"/>
+									</f:content>
+								</f:SimpleForm>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<!-- Subsection of the basic details section -->
+				<ObjectPageSection  title="{i18n>salaryDetails}">
+					<subSections>
+						<ObjectPageSubSection >
+							<blocks>
+								<l:VerticalLayout  width="100%">
+									<l:BlockLayout background="Dashboard">
+										<l:BlockLayoutRow >
+											<l:BlockLayoutCell>
+												<m:FlexBox direction="Row" justifyContent="Start" wrap="Wrap">
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>ctc}" required="true" />
+														<m:Input busyIndicatorDelay="0" value="{employeeModel>/CTC}" editable="{viewModel>/editable}" id="EOUF_id_CTC" placeholder="{i18n>placeCtc}" 
+                                             liveChange="EOD_validateAmount" maxLength="10" valueStateText="{i18n>ctcValueState}"/>
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>joiningBonus}" required="true"/>
+														<m:Input value="{employeeModel>/JoiningBonus}" editable="{viewModel>/editable}" placeholder="{i18n>joiningBonus}" 
+                                            liveChange="EOD_validateJoiningBonus" maxLength="10" id="EOUF_id_Bonus" valueStateText="{i18n>joiningBonusValustate}" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>variablePayPer}" required="true"/>
+														<m:Input value="{employeeModel>/VariablePercentage}" editable="{viewModel>/editable}" placeholder="{i18n>variablePayPer}" 
+                                             showValueHelp="true"
+                                             valueHelpRequest="EOD_onVariablePayInfoPress"
+                                             valueHelpIconSrc="sap-icon://message-information"
+                                            liveChange="EOD_validatevariable" maxLength="5" id="EOUF_id_VariablePerc" valueStateText="{i18n>variabelPayValueStae}" change="EOD_ValidatersChange" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>salaryType}"/>
+														<m:RadioButtonGroup id="EOUF_id_RadioButTds" columns="3"  editable="{viewModel>/editable}" select="EOD_onTDSCheckboxChange">
+															<m:RadioButton  text="{i18n>tds}" />
+															<!-- <m:RadioButton  text="{i18n>noTds}" /> -->
+															<m:RadioButton  text="{i18n>pf}" />
+														</m:RadioButtonGroup>
+													</m:VBox>
+												</m:FlexBox>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+										<l:BlockLayoutRow >
+											<l:BlockLayoutCell  width="2">
+												<f:SimpleForm title="{i18n>monthly}" editable="false" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+													<f:content>
+														<core:Title text="{i18n>monthlyComponents}" />
+														<m:Label text="{i18n>basicSalary}" />
+														<m:Text text="{path:'employeeModel>/BasicSalary',formatter:'.Formatter.YearlyToMontlyConv'}"/>
+														<m:Label text="{i18n>hra}" />
+														<m:Text text="{path:'employeeModel>/HRA',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>eplyrPF}" />
+														<m:Text text="{path:'employeeModel>/EmployerPF',formatter:'.Formatter.YearlyToMontlyConv'}"/>
+														<m:Label text="{i18n>medicalInsurance}" />
+														<m:Text text="{path:'employeeModel>/MedicalInsurance',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>gratuity}" />
+														<m:Text text="{path:'employeeModel>/Gratuity',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>SpecailAllowance}" />
+														<m:Text text="{path:'employeeModel>/SpecailAllowance',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>Total}" class="boldBlackText" />
+														<m:Text text="{path:'employeeModel>/Total',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<core:Title text="{i18n>deduction}" />
+														<m:Label text="{i18n>providentFund}" />
+														<m:Text text="{path:'employeeModel>/EmployeePF',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>performanceTax}" />
+														<m:Text text="{path:'employeeModel>/PT',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>incomeTax}" />
+														<m:Text text="{path:'employeeModel>/IncomeTax',formatter:'.Formatter.YearlyToMontlyConv'}"/>
+														<m:Label text="{i18n>totalDeductionAmount}" class="boldBlackText" />
+														<m:Text text="{path:'employeeModel>/TotalDeduction',formatter:'.Formatter.YearlyToMontlyConv'}"  />
+														<m:Label text="{i18n>variablePayTotal}" class="boldBlackText" />
+														<m:Text text="{path:'employeeModel>/VariablePay',formatter:'.Formatter.YearlyToMontlyConv'}"/>
+														<m:Label text="{i18n>grossPayTotal}" class="boldBlackText" />
+														<m:Text text="{path:'employeeModel>/GrossPay',formatter:'.Formatter.YearlyToMontlyConv'}"/>
+													</f:content>
+												</f:SimpleForm>
+											</l:BlockLayoutCell>
+											<l:BlockLayoutCell  width="2">
+												<f:SimpleForm title="{i18n>yearly}" editable="false" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+													<f:content>
+														<core:Title text="{i18n>monthlyComponents}" />
+														<m:Label text="{i18n>basicSalary}" />
+														<m:Text text="INR {path:'employeeModel>/BasicSalary',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>hra}" />
+														<m:Text text="INR {path:'employeeModel>/HRA',formatter: '.Formatter.fromatNumber'}"  />
+														<m:Label text="{i18n>eplyrPF}" />
+														<m:Text text="INR {path:'employeeModel>/EmployerPF',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>medicalInsurance}" />
+														<m:Text text="INR {path:'employeeModel>/MedicalInsurance',formatter: '.Formatter.fromatNumber'}"  />
+														<m:Label text="{i18n>gratuity}" />
+														<m:Text text="INR {path:'employeeModel>/Gratuity',formatter: '.Formatter.fromatNumber'}"  />
+														<m:Label text="{i18n>SpecailAllowance}" />
+														<m:Text text="INR {path:'employeeModel>/SpecailAllowance',formatter: '.Formatter.fromatNumber'}"  />
+														<m:Label text="{i18n>Total}" class="boldBlackText" />
+														<m:Text text="INR {path:'employeeModel>/Total',formatter: '.Formatter.fromatNumber'}"  />
+														<core:Title text="{i18n>deduction}"/>
+														<m:Label text="{i18n>providentFund}" />
+														<m:Text text="INR {path:'employeeModel>/EmployeePF',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>performanceTax}" />
+														<m:Text text="INR {path:'employeeModel>/PT',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>incomeTax}" />
+														<m:Text text="INR {path:'employeeModel>/IncomeTax',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>totalDeductionAmount}" class="boldBlackText" />
+														<m:Text text="INR {path:'employeeModel>/TotalDeduction',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>variablePayTotal}" class="boldBlackText" />
+														<m:Text text="INR {path:'employeeModel>/VariablePay',formatter: '.Formatter.fromatNumber'}"/>
+														<m:Label text="{i18n>grossPayTotal}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/GrossPay',formatter: '.Formatter.fromatNumber'}"/>
+													</f:content>
+												</f:SimpleForm>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+										<l:BlockLayoutRow >
+											<l:BlockLayoutCell width="2">
+												<m:Title text="{i18n>summary}" class="boldBlackText" level="H2" />
+												<m:FlexBox direction="Row" justifyContent="Start" wrap="Wrap">
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>yearlyGrossPay}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/GrossPay',formatter: '.Formatter.fromatNumber'}" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>yearlyDeduction}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/TotalDeduction',formatter: '.Formatter.fromatNumber'}" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>EmpOfferVariablePay}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/VariablePay',formatter: '.Formatter.fromatNumber'}" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>joiningBonus}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/JoiningBonus',formatter: '.Formatter.fromatNumber'}" />
+													</m:VBox>
+													<m:VBox class="summaryBox">
+														<m:Label text="{i18n>costOfCompany}" class="boldBlackText"/>
+														<m:Text text="INR {path:'employeeModel>/CostofCompany',formatter: '.Formatter.fromatNumber'}" />
+													</m:VBox>
+												</m:FlexBox>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+									</l:BlockLayout>
+								</l:VerticalLayout>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+		</ObjectPageLayout>
+		<m:footer>
+			<m:Bar id="idbar">
+				<m:contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</m:contentLeft>
+				<m:contentRight>
+					<!-- Save/Edit and Merge Buttons -->
+					<m:Button text="{i18n>tileFooter}" press="EOUF_onSendEmail"  id="EOUF_id_EmpmailBut" visible="{= ${viewModel>/isVisiable} }" enabled="{viewModel>/isEditMode}" type="Ghost"/>
+					<m:Button text="{= ${viewModel>/editable} ? ${i18n>save} : ${i18n>edit} }"
+                              press="EOUF_onEditOrSavePress"  id="EOUF_id_SaveBut" visible="{= ${viewModel>/ediBut} }" type="{= ${viewModel>/isEditMode} ? 'Emphasized' : 'Accept' }" />
+					<m:Button text="{i18n>GeneratePDF}" press="EOUF_onPressMerge" visible="{= ${viewModel>/isVisiable} }" id="EOUF_id_EmpmergeButton" enabled="{viewModel>/isEditMode}" type="Attention"/>
+				</m:contentRight>
+			</m:Bar>
+		</m:footer>
+	</m:Page>
+</core:FragmentDefinition>

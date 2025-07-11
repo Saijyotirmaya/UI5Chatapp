@@ -1,0 +1,54 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="FDP_id_ValueHelpDialog"
+        title="{i18n>assestAssignselectEquipmentDetails}"
+        contentWidth="50%"
+    >
+        <content>
+            <Table
+                id="FDP_id_VHDTable"
+                items="{filteredAssetDetails>/}"
+            >
+                <columns>
+                    <Column>
+                        <Text text="{i18n>assestAssignModel}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>assestAssignequipmentNumber}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>assestAssignserialNumber}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>assetAssignValue}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        type="Active"
+                        press="FDP_onVHDPick"
+                    >    
+                        <cells>
+                            <Text text="{filteredAssetDetails>Model}" />
+                            <Text
+                                text="{filteredAssetDetails>EquipmentNumber}"
+                            />
+                            <Text text="{filteredAssetDetails>SerialNumber}" />
+                            <Text text="{filteredAssetDetails>AssetValue}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <beginButton>
+            <Button
+                text="{i18n>close}"
+                type="Reject"
+                press="FDP_onVHDClose"
+            />
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

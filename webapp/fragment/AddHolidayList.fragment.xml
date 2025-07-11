@@ -1,0 +1,53 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified">
+	<Dialog title="{i18n>headerListOfHolidays}" stretch="false" contentWidth="38rem">
+		<f:SimpleForm
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="3"
+            adjustLabelSpan="false"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            emptySpanXL="2"
+            emptySpanL="2"
+            emptySpanM="2"
+            emptySpanS="0"
+            columnsM="1"  
+            columnsL="1"  
+            columnsXL="1"
+            singleContainerFullSize="false">
+			<f:content >
+				<Label text="{i18n>year}" required="true"/>
+				<DatePicker 
+                id="ALH_id_Date"
+                value="{path: '/selectedYear', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy' }}"
+                displayFormat="yyyy"
+                valueFormat="yyyy"
+                placeholder="yyyy"
+                change="LOH_ValidateYear"
+					      valueStateText="{i18n>selectionYear}"/>
+				<Label text="{i18n>selectFi}" required="true"/>
+               <u:FileUploader
+                id="ALH_id_LocFileUpload"
+                width="300px"
+                buttonText="{i18n>fileupload}"
+                fileType="xlsx"
+                placeholder="{i18n>placeHolderExcel}"
+                change="LOH_onUpload"
+                sameFilenameAllowed="true"
+                icon="sap-icon://upload"/> 
+			</f:content>
+		</f:SimpleForm>
+	<beginButton>
+      <Button text="{i18n>submit}" id="ALH_id_SubmitButton" type="Accept" press="LOH_onPressSubmit" enabled="{/isFileValid}"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnCancel}" type="Reject" press="LOH_onPressClose"/>
+    </endButton>
+	</Dialog>
+</core:FragmentDefinition>

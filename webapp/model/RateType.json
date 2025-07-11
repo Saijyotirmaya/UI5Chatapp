@@ -1,0 +1,19 @@
+[
+    {
+      "ID": 1,
+      "RateType": "Per Day"
+    },
+    {
+      "ID": 2,
+      "RateType": "Per Hour"
+    },
+    {
+      "ID": 3,
+      "RateType": "Per Month"
+    },
+    {
+      "ID": 4,
+      "RateType": "Fix Bid"
+    }
+  ]
+  

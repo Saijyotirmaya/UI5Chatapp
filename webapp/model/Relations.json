@@ -1,0 +1,37 @@
+{
+    "relation":[
+    {
+      "ID": 1,
+      "Relationship": "Father"
+    },
+    {
+      "ID": 2,
+      "Relationship": "Mother"
+    },
+    {
+      "ID": 3,
+      "Relationship": "Spouse"
+    },
+    {
+      "ID": 4,
+      "Relationship": "Brother"
+    },
+    {
+      "ID": 5,
+      "Relationship": "Sister"
+    },
+    {
+      "ID": 6,
+      "Relationship": "Uncle"
+    },
+    {
+      "ID": 7,
+      "Relationship": "Aunty"
+    },
+    {
+      "ID": 8,
+      "Relationship": "Guardian"
+    }
+  ]
+}
+  

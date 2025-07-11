@@ -1,0 +1,204 @@
+{
+    "Type": "(Type of PDF document)",
+    "EmpName": "(Employee Name)",
+    "EmpRole": "(Employee Role)",
+    "EmpAddress": "(Employee Address)",
+    "CreateDate": "(Offer Create Date)",
+    "JoiningDate": "(Employee Joining Date)",
+    "EmpCTC": "(CTC of Employee)",
+    "BondCondition": "(Condition of Bond)",
+    "BondCondition2": "",
+    "SectorType": "(Type of Sector)",
+    "CompanyLogoHeader": "../image/KT_Logo.png",
+    "CompanyBackImage": "../image/logo.png",
+    "PageHeader": "Salary Breakup",
+    "Title": "Annexure 1",
+    "SubTitle": "COMPENSATION PLAN",
+    "Headers": [
+        {
+            "Title": "Company",
+            "Text": "(Name of Comapny)"
+        },
+        {
+            "Title": "Branch",
+            "Text": "(Branch of Company)"
+        }
+    ],
+    "YearlyComponents": [
+        {
+            "Title": "TOTAL: Yearly Components",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Basic Salary",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "House Rent Allowance",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Employer PF",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Medical Insurance",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Gratuity",
+            "Text": "Amount Value"
+        }
+    ],
+    "Deductions": [
+        {
+            "Title": "TOTAL: Deductions",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Income Tax (TDS)",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Provident Fund",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "Professional Tax",
+            "Text": "Amount Value"
+        }
+    ],
+    "VariableComponents": [
+        {
+            "Title": "TOTAL: Variable Pay",
+            "Text": "Amount Value"
+        }
+    ],
+    "GrossPay": [
+        {
+            "Title": "TOTAL: Gross Pay Yearly",
+            "Text": "Amount Value"
+        },
+        {
+            "Title": "TOTAL: Gross Pay Monthly",
+            "Text": "Amount Value"
+        }
+    ],
+    "Notes": [
+        {
+            "Title": "You're eligible for an joining bonus amount of",
+            "Text": "Amount Value"
+        },
+        {
+            "Sl.No": "1",
+            "Text": "All salary components are governed by the company policies and statutory guidelines."
+        },
+        {
+            "Sl.No": "2",
+            "Text": "This salary sheet is strictly confidential and must not be discussed with anyone other than your Kalpavriksha Reporting Manager and/or your HR Manager."
+        },
+        {
+            "Sl.No": "3",
+            "Text": "Any personal tax liability arising out of compensation on will be borne solely by the ...."
+        },
+        {
+            "Sl.No": "4",
+            "Text": "Gratuity to be payable as per act."
+        }
+    ],
+
+    "TrainingStartDate": "(Training Start Date)",
+    "ReportingManager": "(Name of the Reporting Manager)",
+    "TrainingDuration": "(Training Duration)",
+    "StipendOrFees": null,
+    "StipendSkipLine": null,
+    "TrainingFeesSkipLine": null,
+
+    "AgreementNo": "(Agreement No)",
+    "ContractNo": "(Contract No)",
+    "AgreementDate": "02/04/2025",
+    "AgreementStartDate": "02/04/2025",
+    "AgreementEndDate": "30/09/2025",
+    "ClientCompanyName": "Google Inc.",
+    "ClientCompanyAddress": "No. 3, Old Madras Rd, Sadanandanagar, Bennigana Halli, Bengaluru, Karnataka 560016",
+    "ClientName": "Mr. Sundar Pichai",
+    "ClientRole": "CEO",
+    "AgreementDuration": "12",
+    "PaymentTerms": "1",
+    "PaymentPerc": "(Payment Percentage)",
+    "FirstHalfPerc": "(First Half Percentage)",
+    "SecondHalfPerc": "(Second Half Percentage)",
+    "CandidateWorkingMonths": "(Candidate Working Months)",
+    "LatePaymentThreshold": "(Late Payment Threshold)",
+
+    "SOWCreateDate": "01/04/2025",
+    "SOWStartDate": "02/04/2025",
+    "SOWEndDate": "30/09/2025",
+    "SOWDescription": "(SOWDescription)",
+    "TableData": [
+        {
+            "SlNo": "1",
+            "Name": "John Doe",
+            "Role": "Software Engineer",
+            "StartDate": "02/04/2025",
+            "EndDate": "30/09/2025",
+            "RateCard": "10000 + GST"
+        },
+        {
+            "SlNo": "2",
+            "Name": "Jane Smith",
+            "Role": "Data Analyst",
+            "StartDate": "02/04/2025",
+            "EndDate": "30/09/2025",
+            "RateCard": "12000 + GST"
+        },
+        {
+            "SlNo": "3",
+            "Name": "Alice Johnson",
+            "Role": "Project Manager",
+            "StartDate": "02/04/2025",
+            "EndDate": "30/09/2025",
+            "RateCard": "15000 + GST"
+        }
+    ],
+    
+    "PreviewFlag": false,
+    "RTEText": "<p>Please click on <b>Preview</b> to Preview the Certificate</p>",
+    "CertificateTitle" : "(Certificate Title)",
+    "CertificateSubTitle": "TO WHOMESOEVER IT MAY CONCERN",
+
+    "LocationService": "(LocationService)",
+    "ConsultingService": "(ConsultingService)",
+    "ContractStatus": "(ContractStatus)",
+    "SpecificInsuranceRequirement": "(SpecificInsuranceRequirement)",
+    "ConsultantRate": "(ConsultantRate)",
+    "ExpensesClaim": "(ExpensesClaim)",
+    "ClientReportingName": "(ClientReportingName)",
+
+    "POItems": [
+        {
+            "Description": "Laptop",
+            "Qty": "5",
+            "Amount": "3,00,000",
+            "Currency": "INR"
+        },
+        {
+            "Description": "Keyboard",
+            "Qty": "10",
+            "Amount": "5,000",
+            "Currency": "INR"
+        },
+        {
+            "Description": "Router",
+            "Qty": "2",
+            "Amount": "4,000",
+            "Currency": "INR"
+        }
+    ],
+
+    "TotalPOAmount": "3,09,000 INR",
+    "POAmountInWords": "Three Lakh Nine Thousand Only",
+    "isTypeTrainee": true,
+    "DemoBase64": "../image/SpotAward.png",
+    "KTLogo": "../image/logo.png"
+}

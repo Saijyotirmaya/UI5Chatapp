@@ -1,0 +1,36 @@
+{
+  "bloodgroup": [
+    {
+      "ID": 2,
+      "Code": "A Positive"
+    },
+    {
+      "ID": 3,
+      "Code": "A Negative"
+    },
+    {
+      "ID": 4,
+      "Code": "B Positive"
+    },
+    {
+      "ID": 5,
+      "Code": "B Negative"
+    },
+    {
+      "ID": 6,
+      "Code": "AB Positive"
+    },
+    {
+      "ID": 7,
+      "Code": "AB Negative"
+    },
+    {
+      "ID": 8,
+      "Code": "O Positive"
+    },
+    {
+      "ID": 9,
+      "Code": "O Negative"
+    }
+  ]
+}

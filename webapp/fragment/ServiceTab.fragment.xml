@@ -1,0 +1,97 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.uxap"
+	xmlns:m="sap.m">
+	<ObjectPageLayout id="ObjectPageLayout" upperCaseAnchorBar="false" showHeaderContent="true" alwaysShowContentHeader="true" >
+		<headerTitle>
+			<ObjectPageHeader objectTitle="Our SAP Services"  >
+			</ObjectPageHeader>
+		</headerTitle>
+
+		<headerContent>
+			<m:Text class="service-section-text sapUiTinyMargin" text="We offering a comprehensive suite of SAP solutions to help businesses streamline their operations, enhance productivity, and drive growth. Our team of certified SAP consultants is dedicated to delivering solutions that are tailored to your unique business needs"/>
+		</headerContent>
+
+		<sections>
+           	<ObjectPageSection titleUppercase="false" title="SAP Implementation" >
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Transform your business with our end-to-end SAP implementation services. We guide you through every phase, from initial planning and system design to deployment and go-live. Our expert team ensures a smooth transition, minimizing disruptions and maximizing the value of your SAP investment." />
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+        
+            	<ObjectPageSection titleUppercase="false" title="SAP Consulting">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+                        
+							<m:Text class="service-section-text sapUiTinyMargin" text="Our SAP consultants provide strategic insights and solutions to optimize your SAP systems. Whether you need guidance on best practices, system configuration, or process improvements, our consultants leverage their deep expertise to align SAP solutions with your business goals." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+            	<ObjectPageSection titleUppercase="false" title="SAP Support and Maintenance">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Keep your SAP systems running efficiently with our comprehensive support and maintenance services. We offer proactive monitoring, troubleshooting, and ongoing maintenance to ensure your systems operate smoothly and adapt to changing business needs." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+            	<ObjectPageSection titleUppercase="false" title="SAP Upgrades and Migrations">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Stay ahead with the latest SAP technologies. We assist with SAP upgrades and migrations, ensuring that your systems are up-to-date and leverage the newest features and functionalities. Our experts handle the complexities of upgrading and migrating to minimize downtime and disruption." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+            	<ObjectPageSection titleUppercase="false" title="SAP Integration">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Seamlessly integrate SAP with your existing systems and applications. Our integration services ensure that data flows smoothly between SAP and other enterprise systems, improving accuracy and efficiency across your organization." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+            	<ObjectPageSection titleUppercase="false" title="SAP Analytics and Reporting">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Unlock valuable insights with SAP’s powerful analytics and reporting tools. We help you design and implement custom dashboards and reports that provide actionable insights, support data-driven decision-making, and enhance business performance." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="SAP Cloud Solutions">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Text class="service-section-text sapUiTinyMargin" text="Embrace the flexibility and scalability of SAP Cloud solutions. Our team helps you transition to the cloud, optimize your cloud infrastructure, and fully utilize SAP Cloud capabilities to drive innovation and efficiency." />
+			
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+
+		</sections>
+
+	</ObjectPageLayout>
+</mvc:View>

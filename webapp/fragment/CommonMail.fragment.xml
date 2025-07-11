@@ -1,0 +1,67 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified"
+    xmlns:rich="sap.ui.richtexteditor"
+    xmlns:core="sap.ui.core">
+
+    <Dialog title="{i18n>tileFooter}" contentWidth="60%" draggable="true" resizable="true">
+
+        <MessageStrip visible="{LoginModel>/SimpleForm}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" text="{i18n>sendMailFragMsg}" type="Information" showIcon="true" />
+        <VBox class="sapUiResponsiveMargin">
+            <Table items="{UploaderData>/attachments}" inset="false" mode="Delete" delete="onAttachmentsTableDelete" popinLayout="Block" busyIndicatorDelay="0" width="100%">
+
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <u:FileUploader id="Mail_id_FileUploader" fileType="pdf,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,ppt" name="myFileUpload" multiple="true" uploadUrl="upload/" tooltip="{i18n>toolTipMsgSM}" change="Mail_onUpload" buttonOnly="true" buttonText="{i18n>uploadAttachment}" />
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+                        <Text text="{i18n>filename}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+                        <Text text="{i18n>FileType}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" popinDisplay="Inline">
+                        <Text text="{i18n>FileSize}" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{UploaderData>filename}" />
+                            <Text text="{UploaderData>fileType}" />
+                            <Text text="{path:'UploaderData>size',formatter: '.Formatter.bytesToMB'}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+
+        <!-- 📧 Email Fields -->
+        <f:SimpleForm visible="{LoginModel>/SimpleForm}" id="Mail_id_Form" busyIndicatorDelay="0" editable="true" layout="ResponsiveGridLayout">
+            <f:content>
+                <Label text="{i18n>toMailText}" />
+                <Text id="Mail_id_Text" text="{UploaderData>/ToEmail}" />
+
+                <Label text="{i18n>ccMailText}" required="true" />
+                <TextArea id="CCMail_TextArea" value="{UploaderData>/CCEmail}" maxLength="600" liveChange="Mail_onEmailChange" valueStateText="{i18n>emailValueState}" />
+            </f:content>
+        </f:SimpleForm>
+
+        <!-- ✍️ Rich Text Editor -->
+        <rich:RichTextEditor visible="{LoginModel>/RichText}" value="{UploaderData>/htmlbody}" class="sapUiContentPadding" width="100%" />
+
+        <!-- ✅ Action Buttons -->
+        <beginButton>
+            <Button id="SendMail_Button" text="{i18n>tileFooter}" type="Ghost" press="Mail_onSendEmail" enabled="false" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>close}" width="80px" press="Mail_onPressClose" type="Reject" />
+        </endButton>
+
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,12 @@
+{
+  "grade": [
+    {
+      "ID": 1,
+      "Value": "Percentage"
+    },
+    {
+      "ID": 2,
+      "Value": "CGPA"
+    }
+  ]
+}

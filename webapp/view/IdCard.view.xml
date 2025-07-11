@@ -1,0 +1,83 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.IdCard"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<Page id="IC_id_IDCardPage">
+		<headerContent>
+        <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+        </headerContent>
+		<content>
+			<fb:FilterBar  id="IC_id_CardFilter" persistencyKey="myPersKey" useToolbar="false" clear="onClear" showClearOnFB="true" search=".onSearch" filterChange=".onFilterChange"  showFilterConfiguration="false">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="EmployeeName" label="{i18n>employeeName}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<ComboBox name="EmployeeName" items="{path:'oEmpModel>/results' ,length:1000 , sorter:{path:'Company',descending: false, group:true }}" id="IC_id_EmployeeNameAdmin" showSecondaryValues="true" showClearIcon="true">
+								<core:ListItem key="{oEmpModel>EmployeeID}" text="{oEmpModel>EmployeeName}" additionalText="{oEmpModel>EmployeeID}" />
+							</ComboBox>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<!-- Table -->
+			<Table id="IC_id_CardTable" mode="SingleSelectLeft" selectionChange="onSelectionChange">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="IC_id_Title" text="{i18n>idCardDetails}"/>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" tooltip="{i18n>addCardDetails}" press="IC_onPressIdCardDetails" />
+						<Button icon="sap-icon://edit" tooltip="{i18n>editCardDetails}" press="IC_onPressIdCardDetailsEdit" id="IC_id_EditBtn"/>
+						<Button icon="sap-icon://delete" tooltip="{i18n>deleteCardDetails}" press="IC_onPressIdCardDetailsDelete" id="IC_id_DeleteBtn"/>
+						<Button text="{i18n>GeneratePDF}" press="ID_onPressMerge" id="IC_id_PdfBtn"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="{i18n>employeeID}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>employeeName}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>dateOfBirth}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>bloodGroup}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>mobileNo}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>designation}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>email}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{IdCardModel>EmployeeID}" />
+							<Text text="{IdCardModel>EmployeeName}" />
+							<Text text="{IdCardModel>DOB}" />
+							<Text text="{IdCardModel>BloodGroup}" />
+							<Text text="{IdCardModel>MobileNo}" />
+							<Text text="{IdCardModel>Designation}" />
+							<Text text="{IdCardModel>Email}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+            <Bar>
+                <contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+                </contentLeft>
+                <contentRight>
+				<Button text="{i18n>visit}" press="IC_onPressVisitCard" id="IC_id_VisitfBtn"/>
+                </contentRight>
+            </Bar>
+        </footer>
+	</Page>
+</mvc:View>

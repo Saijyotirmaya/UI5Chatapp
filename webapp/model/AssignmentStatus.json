@@ -1,0 +1,20 @@
+{
+    "assignmentStatus": [
+      {
+        "ID": 1,
+        "Value": "Active"
+      },
+      {
+        "ID": 2,
+        "Value": "Inactive"
+      },
+      {
+        "ID": 3,
+        "Value": "New"
+      },
+      {
+        "ID": 4,
+        "Value": "Renewed"
+      }
+    ]
+  }

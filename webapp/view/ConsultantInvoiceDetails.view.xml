@@ -1,0 +1,394 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.ConsultantInvoiceDetails"
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.uxap"
+	xmlns:core="sap.ui.core"
+	xmlns:m="sap.m">
+	<m:Page title="{i18n>generateConsultantInvoice}" navButtonPress="CI_onPressback" showNavButton="true">
+	<m:headerContent>
+	<m:Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</m:headerContent>
+		<ObjectPageLayout id="CI_id_NavConsultantInvoicePage">
+			<sections>
+				<ObjectPageSection id="CI_id_FirstSection" title="{i18n>invoiceHeaderDetails}">
+					<subSections>
+						<ObjectPageSubSection >
+							<blocks>
+								<m:VBox >
+									<m:HBox justifyContent="Center">
+										<m:FlexBox class="sapUiSmallMarginBegin"
+											alignItems="Start"
+											justifyContent="Start" width="100%">
+											<!-- Copy Button -->
+											<m:Button 
+											visible="{visiablityPlay>/copyBtn}" 
+											class="sendMail" 
+											type="Emphasized" 
+											icon="sap-icon://copy" 
+											text="{i18n>copy}" press="CI_onPressCopyBtn" />
+											<!-- Paste Button -->
+											<!-- <m:Button 
+											visible="{visiablityPlay>/pasteBtn}" 
+											type="Emphasized" 
+											icon="sap-icon://paste" 
+											text="{i18n>paste}" 
+											press="CI_onPressPasteBtn" /> -->
+											<!-- ComboBox -->
+											<m:ComboBox 
+											id="CI_id_Cont" 
+											showSecondaryValues="true" 
+											placeholder="Select Contract ID" 
+											change="CI_onChangeContractDetails" 
+											width="auto"
+											items="{contractModel>/contractDetails}">
+												<core:ListItem 
+												key="{contractModel>ContractNo}" 
+												text="{contractModel>ContractNo} - {contractModel>ConsultantName}" />
+											</m:ComboBox>
+										</m:FlexBox>
+									</m:HBox>
+									<!-- Form Content -->
+									<m:HBox>
+										<f:SimpleForm
+											editable="true"
+											layout="ColumnLayout"
+											labelSpanXL="4"
+											labelSpanL="3"
+											labelSpanM="4"
+											labelSpanS="12"
+											columnsXL="2"
+											columnsL="2"
+											columnsM="1">
+											<f:content>
+												<m:Label text="{i18n>invoiceDate}" required="true" />
+												<m:DatePicker
+													displayFormat="dd/MM/yyyy"
+													valueFormat="dd/MM/yyyy"
+													value="{path:'ConsultantInvoiceModel>/InvoiceDate' ,formatter:'.Formatter.formatDate'}"
+													editable="{visiablityPlay>/editable}"
+													id="CI_id_InDate" change="CID_DateValidate" valueStateText="{i18n>dateValueState}"/>
+												<m:Label text="{i18n>payBy}" required="true" />
+												<m:DatePicker
+													displayFormat="dd/MM/yyyy"
+													valueFormat="dd/MM/yyyy"
+													value="{path:'ConsultantInvoiceModel>/PayBy' ,formatter:'.Formatter.formatDate'}"
+													editable="{visiablityPlay>/editable}"
+													id="CI_id_PaybyInv" change="CID_LastDate" valueStateText="{i18n>dateValueState}"/>
+												<m:Label text="{i18n>invoiceTo}" required="true" />
+												<m:Input
+													value="{ConsultantInvoiceModel>/InvoiceTo}"
+													id="CI_id_InputInvoiceTo"
+													liveChange="CID_ValidateCommonFields" maxLength="50" valueStateText="{i18n>validInvoiceToMsg}"
+													editable="{visiablityPlay>/editable}"
+													 />
+												<m:Label text="{i18n>invoiceAddress}" required="true" />
+												<m:TextArea
+													value="{ConsultantInvoiceModel>/InvoiceAddress}"
+													id="CI_id_InputInvoiceAddress"
+													liveChange="CID_ValidateCommonFields"  maxLength="120" valueStateText="{i18n>addressValueState}"
+													rows="2"
+													editable="{visiablityPlay>/editable}" />
+												<m:Label text="{i18n>gstNo}" />
+												<m:Input
+													value="{ConsultantInvoiceModel>/CompanyGSTNO}"
+													id="CI_id_InputCompGSTNO"
+													 liveChange="CID_ValidateGstNumber" maxLength="15" valueStateText="{i18n>gstNoValueState}"
+													editable="{visiablityPlay>/editable}"
+													/>
+											</f:content>
+										</f:SimpleForm>
+									</m:HBox>
+								</m:VBox>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection title="{i18n>ConsultantHeaderDetails}"  titleUppercase="false">
+					<subSections>
+						<ObjectPageSubSection
+                            titleUppercase="false">
+							<blocks>
+								<f:SimpleForm
+                                    editable="true"
+                                    layout="ColumnLayout"
+                                    labelSpanXL="4"
+                                    labelSpanL="3"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    columnsXL="2"
+                                    columnsL="2"
+                                    columnsM="1">
+									<f:content>
+										<m:Label text="{i18n>consultantName}" required="true" />
+										<m:Input value="{ConsultantInvoiceModel>/ConsultantName}" editable="{visiablityPlay>/editable}" id="CI_id_ConsultantName" liveChange="CID_ValidateCommonFields" maxLength="50" valueStateText="{i18n>validConsultantNameMsg}" />
+										<m:Label text="{i18n>mobileNo}" required="true" />
+										<m:ComboBox selectedKey="{ConsultantInvoiceModel>/STDCode}" showSecondaryValues="true" change="CID_ValidateComboBox"
+                                        id="CI_id_codeModel" items="{codeModel>/}" filterSecondaryValues="true" valueStateText="{i18n>combovalueState}" editable="{visiablityPlay>/editable}">
+											<core:ListItem key="{codeModel>calling_code}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}" />
+										</m:ComboBox>
+										<m:Input value="{ConsultantInvoiceModel>/MobileNo}" id="CI_id_InputMobile" liveChange="CID_ValidateMobileNo" maxLength="10" valueStateText="{i18n>mobileNoValueState}" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>consultantAddress}" required="true" />
+										<m:TextArea value="{ConsultantInvoiceModel>/ConsultantAddress}" maxLength="120" id="CI_id_InputConsultantAddress" liveChange="CID_ValidateCommonFields" valueStateText="{i18n>validConsultantAddressMsg}" rows="3" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>gstNo}"/>
+										<m:Input value="{ConsultantInvoiceModel>/GSTNO}" id="CI_id_InputGSTNO"  liveChange="CID_ValidateConsultantGstNumber" maxLength="15" valueStateText="{i18n>gstNoValueState}"  change="CI_onChangeGstNo" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>type}" required="{ConsultantInvoiceModel>/GSTValid}"/>
+										<m:CheckBox text="{i18n>cgst}" id="CI_id_CheckboxCGST" selected="{ConsultantInvoiceModel>/CGSTSelected}" select="CI_onSelectCGST" editable="false" />
+										<m:CheckBox text="{i18n>igst}" id="CI_id_CheckboxIGST" selected="{ConsultantInvoiceModel>/IGSTSelected}" select="CI_onSelectIGST" editable="false" />
+										<m:Label text="{i18n>percentage}" required="{ConsultantInvoiceModel>/GSTValid}" />
+										<m:Input value="{ConsultantInvoiceModel>/Percentage}" liveChange="CI_onPercentageChange"  editable="{ConsultantInvoiceModel>/GSTValid}" maxLength="10"/>
+										<m:Label text="{i18n>currency}" required="true"/>
+										<m:Select items="{CurrencyModel>/}"
+												selectedKey="{ConsultantInvoiceModel>/Currency}" width="100%" editable="{visiablityPlay>/editable}" id="CI_id_Currency" change="CI_onCurrencyChange">
+											<core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+										</m:Select>
+									</f:content>
+								</f:SimpleForm>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection  title="{i18n>invoiceBankDetails}" titleUppercase="false">
+					<subSections>
+						<ObjectPageSubSection
+                            titleUppercase="false"
+                        >
+							<blocks>
+								<f:SimpleForm
+                                    editable="true"
+                                    layout="ColumnLayout"
+                                    labelSpanXL="4"
+                                    labelSpanL="3"
+                                    labelSpanM="4"
+                                    labelSpanS="12"
+                                    columnsXL="2"
+                                    columnsL="2"
+                                    columnsM="1">
+									<f:content>
+										<m:Label text="{i18n>bankName}" required="true" />
+										<m:Input value="{ConsultantInvoiceModel>/BankName}" id="CI_id_InputBankName" liveChange="CID_ValidateCommonFields" maxLength="50" valueStateText="{i18n>validBankNameMsg}" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>accountHolder}" required="true" />
+										<m:Input value="{ConsultantInvoiceModel>/AccountName}" id="CI_id_InputAccountName" liveChange="CID_ValidateName" maxLength="50" valueStateText="{i18n>validAccountNameMsg}" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>accountNo}" required="true" />
+										<m:Input value="{ConsultantInvoiceModel>/AccountNo}" id="CI_id_InputAccountNo" liveChange="CID_ValidateAccountNo" maxLength="18" valueStateText="{i18n>accountnoValueState}" editable="{visiablityPlay>/editable}"/>
+										<m:Label text="{i18n>ifscCode}" required="true" />
+										<m:Input value="{ConsultantInvoiceModel>/IFSCCode}" id="CI_id_InputIFSCCode" liveChange="CID_ValidateIfscCode" maxLength="11" valueStateText="{i18n>ifcsCodeValueState}" editable="{visiablityPlay>/editable}"/>
+									</f:content>
+								</f:SimpleForm>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection title="{i18n>invoiceItemDetails}" titleUppercase="false">
+					<subSections>
+						<ObjectPageSubSection
+                            titleUppercase="false"
+                        >
+							<blocks>
+								<m:VBox>
+									<!-- Toolbar -->
+									<m:OverflowToolbar>
+										<m:ToolbarSpacer />
+										<m:Button visible="{visiablityPlay>/invBtn}"  text="{i18n>addItem}" tooltip="{i18n>addItem}" press="CI_onPressAddInvoiceDetails" type="Accept" />
+									</m:OverflowToolbar>
+									<m:Table id="CI_id_ConsultantInvoiceDeatailTable"  
+									items="{ConsultantInvoiceModel>/ConsultantInvoiceItem}"
+											mode="Delete" 
+											delete="CI_onPressDelete" 
+											growingThreshold="50" busyIndicatorDelay="0"
+											growingScrollToLoad="true" width="auto" class="sapUiResponsiveMargin">
+										<m:columns>
+											<m:Column width="3rem" minScreenWidth="Tablet" >
+												<m:customData>
+													<core:CustomData key="p13nData" 
+                                                            value='{"columnKey": "SNo", "leadingProperty": "SNo", "sortProperty": "SNo", "filterProperty": "SNo", "columnIndex": 1}' />
+												</m:customData>
+												<m:Text text="{i18n>invoiiceitemsiNo}" />
+											</m:Column>
+											<m:Column width="7rem"  hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData" 
+                                                            value='{"columnKey": "Item", "leadingProperty": "Item", "sortProperty": "Item", "filterProperty": "Item", "columnIndex": 2}' />
+												</m:customData>
+												<m:Text text="{i18n>item}" />
+											</m:Column>
+											<!-- SAC Column -->
+											<m:Column width="7rem" id="CI_id_ColumnGST" hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+												<m:customData >
+													<core:CustomData key="p13nData"
+														value='{"columnKey": "SAC", "leadingProperty": "SAC", "sortProperty": "SAC", "filterProperty": "SAC", "columnIndex": 3 }' />
+												</m:customData>
+												<m:Text text="{i18n>SAC}" />
+											</m:Column>
+											<!-- GSTCalculation Column -->
+											<m:Column  width="7rem" id="CI_id_GSTCalc" hAlign="Left" minScreenWidth="Tablet" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData"
+														value='\{"columnKey": "GSTCalculation", "leadingProperty": "GSTCalculation", "sortProperty": "GSTCalculation", "filterProperty": "GSTCalculation", "columnIndex": 4}' />
+												</m:customData>
+												<m:Text text="{i18n>GSTCalculation}" />
+											</m:Column>
+											<!-- Days -->
+											<m:Column width="7rem" hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData" 
+                                                            value='{"columnKey": "Days", "leadingProperty": "Days", "sortProperty": "Days", "filterProperty": "Days", "columnIndex": 5}' />
+												</m:customData>
+												<m:Text text="{i18n>days}" />
+											</m:Column>
+											<!-- Unit Price -->
+											<m:Column width="7rem" hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData" 
+                                                            value='{"columnKey": "UnitPrice", "leadingProperty": "UnitPrice", "sortProperty": "UnitPrice", "filterProperty": "UnitPrice", "columnIndex": 6}' />
+												</m:customData>
+												<m:Text text="{i18n>unitPrice}" />
+											</m:Column>
+											<!-- Discount Column -->
+											<m:Column width="7rem" hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData"
+														value='\{"columnKey": "Discount", "leadingProperty": "Discount", "sortProperty": "Discount", "filterProperty": "Discount", "columnIndex": 7}' />
+												</m:customData>
+												<m:Text text="{i18n>discount}" />
+											</m:Column>
+											<!-- Total Column -->
+											<m:Column width="7rem" hAlign="Left" minScreenWidth="Desktop" demandPopin="true">
+												<m:customData>
+													<core:CustomData key="p13nData" 
+                                                            value='{"columnKey": "Total", "leadingProperty": "Total", "sortProperty": "Total", "filterProperty": "Total", "columnIndex": 8}' />
+												</m:customData>
+												<m:Text text="{i18n>total}" />
+											</m:Column>
+										</m:columns>
+										<m:items>
+											<m:ColumnListItem >
+												<m:cells>
+												<!-- SNo (Column 1) -->
+												<m:Input value="{ConsultantInvoiceModel>IndexNo}" editable="false" />
+												<!-- Item (Column 2) -->
+													<m:VBox>
+														<m:items>
+															<m:Input value="{ConsultantInvoiceModel>Item}"  editable="{visiablityPlay>/editable}" placeholder="{i18n>itemDescription}" maxLength="200"
+         													 liveChange="CID_onItemDescriptionLiveChange" width="100%" valueStateText="{i18n>itemplaceholder}"/>
+														</m:items>
+													</m:VBox>
+													<!-- SAC (Column 3) -->
+													<m:ComboBox showSecondaryValues="true" items="{InvoiceSAC>/}" editable="{ConsultantInvoiceModel>/GSTValid}"  value="{ConsultantInvoiceModel>SAC}" selectedKey="1">
+													<core:ListItem key="{InvoiceSAC>ID}" additionalText="{InvoiceSAC>Description}" text="{InvoiceSAC>SAC}" />
+													</m:ComboBox>
+													 <!-- GSTCalculation (Column 4) -->
+													<m:ComboBox 
+														value="{ConsultantInvoiceModel>GSTCalculation}" 
+														selectedKey="Yes" 
+														editable="{ConsultantInvoiceModel>/GSTValid}" 
+														change="CI_onChangeGSTCalculation">
+														<core:Item key="{i18n>yes}" text="{i18n>yes}"/>
+														<core:Item key="{i18n>no}" text="{i18n>no}"/>
+													</m:ComboBox>
+													 <!-- Days (Column 5) -->
+													<m:Input value="{ConsultantInvoiceModel>Days}" editable="{visiablityPlay>/editable}" change="CI_onInputChange" maxLength="18" textAlign="End"  valueStateText="{i18n>enterDays}"/>
+													 <!-- UnitPrice (Column 6) -->
+													<m:Input value="{ConsultantInvoiceModel>UnitPrice}" editable="{visiablityPlay>/editable}" change="CI_onInputChange" maxLength="18" textAlign="End"  valueStateText="{i18n>enterUnitPrice}"/>
+													 <!-- Discount (Column 7) -->
+													<m:Input  value="{ConsultantInvoiceModel>Discount}" editable="{visiablityPlay>/editable}" change="CI_onchangeDiscount" maxLength="15" textAlign="End"  showValueHelp="true"
+													valueHelpRequest="CD_onDiscountInfoPress" valueHelpIconSrc="sap-icon://message-information" valueStateText="{i18n>discountInfoText}"/>
+													 <!-- Total (Column 8) -->
+													<m:Input value="{path:'ConsultantInvoiceModel>Total',formatter: '.Formatter.fromatNumber'}" editable="false" textAlign="End" />
+												</m:cells>
+											</m:ColumnListItem>
+										</m:items>
+									</m:Table>
+									<m:FlexBox class="custom-flexbox" direction="Column">
+										<m:VBox class="custom-vbox">
+											<!-- Sub Total(Non-Taxable) -->
+											<m:HBox justifyContent="SpaceBetween">
+												<m:Label text="{i18n>subTotal} ({i18n>NonTaxable}) ({ConsultantInvoiceModel>/Currency}) :" 
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel"
+                visible="{= ${oModelDataPro>/TotalSum} > 0}" />
+												<m:Text text="{path:'oModelDataPro>/SubTotalNotGST',formatter: '.Formatter.fromatNumber'}"
+                id="CI_id_SubTo"
+                class="amountText"
+                textAlign="End"
+                visible="{= ${oModelDataPro>/TotalSum} > 0}" />
+											</m:HBox>
+											<!-- Sub Total(Taxable) -->
+											<m:HBox justifyContent="SpaceBetween" visible="{= ${oModelDataPro>/SubTotal} > 0  }"  >
+												<m:Label text="{i18n>subTotal} ({i18n>Taxable}) ({ConsultantInvoiceModel>/Currency}) :" 
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel"/>
+												<m:Text text="{path:'oModelDataPro>/SubTotal',formatter: '.Formatter.fromatNumber'}"
+                id="CI_id_Subtotal"
+                class="amountText" 
+                textAlign="End"/>
+											</m:HBox>
+											<!-- CGST -->
+											<m:HBox justifyContent="SpaceBetween">
+												<m:Label text="{= 'CGST ( ' + (${oModelDataPro>/CGSTPercentage} || ${ConsultantInvoiceModel>/Percentage}) + ' % ) : '}"
+                visible="{= ${oModelDataPro>/CGSTVisible} === true || ${ConsultantInvoiceModel>/CGSTVisible} === true}"
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel" />
+												<m:Text text="{path:'oModelDataPro>/CGST',formatter: '.Formatter.fromatNumber'}"
+                class="amountText"
+                textAlign="End"
+                visible="{= ${oModelDataPro>/CGSTVisible} === true || ${ConsultantInvoiceModel>/CGSTVisible} === true}" />
+											</m:HBox>
+											<!-- SGST -->
+											<m:HBox justifyContent="SpaceBetween">
+												<m:Label text="{= 'SGST ( ' + (${oModelDataPro>/SGSTPercentage} || ${ConsultantInvoiceModel>/Percentage}) + ' % ) : '}"
+                visible="{= ${oModelDataPro>/SGSTVisible} === true || ${ConsultantInvoiceModel>/SGSTVisible} === true}"
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel" />
+												<m:Text text="{path:'oModelDataPro>/SGST',formatter: '.Formatter.fromatNumber'}"
+                class="amountText"
+                textAlign="End"
+                visible="{= ${oModelDataPro>/SGSTVisible} === true || ${ConsultantInvoiceModel>/SGSTVisible} === true}" />
+											</m:HBox>
+											<!-- IGST -->
+											<m:HBox justifyContent="SpaceBetween">
+												<m:Label text="{= 'IGST ( ' + (${oModelDataPro>/IGSTPercentage} || ${ConsultantInvoiceModel>/Percentage}) + ' % ) : '}"
+                visible="{= ${oModelDataPro>/IGSTVisible} === true || ${ConsultantInvoiceModel>/IGSTVisible} === true}"
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel" />
+												<m:Text text="{path:'oModelDataPro>/IGST',formatter: '.Formatter.fromatNumber'}"
+                class="amountText"
+                textAlign="End"
+                visible="{= ${oModelDataPro>/IGSTVisible} === true || ${ConsultantInvoiceModel>/IGSTVisible} === true}" />
+											</m:HBox>
+											<!-- Total -->
+											<m:HBox justifyContent="SpaceBetween">
+												<m:Label text="{= ${i18n>total} + ' ( ' + ${ConsultantInvoiceModel>/Currency} + ' ) : '}"
+                class="boldBlackText sapUiTinyMarginBottom rightAlignLabel"
+                visible="{= ${oModelDataPro>/TotalSum} > 0}" />
+												<m:Text text="{path:'oModelDataPro>/TotalSum',formatter: '.Formatter.fromatNumber'}"
+                id="CI_id_TotalAmount"
+                class="amountText"
+                textAlign="End"
+                visible="{= ${oModelDataPro>/TotalSum} > 0}" />
+											</m:HBox>
+										</m:VBox>
+									</m:FlexBox>
+								</m:VBox>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+		</ObjectPageLayout>
+		<m:footer>
+			<m:Bar>
+				<m:contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</m:contentLeft>
+				<m:contentRight>
+					<m:Button visible="{visiablityPlay>/createVisi}" text="{i18n>submit}" type="Accept" press="CI_onPressSubmit" class="sendMail" />
+				<m:Button text="{i18n>tileFooter}" id="CI_id_ContractMail" press="CI_onSendEmail" visible="{visiablityPlay>/merge}"
+				type="Ghost"/>
+				<m:Button visible="{visiablityPlay>/editVisi}" text="{= ${visiablityPlay>/editable} === true?'Save':'Edit'}"  press="CI_onPressEdit" class="sendMail" type="{= ${visiablityPlay>/editable} ? 'Accept' : 'Emphasized' }"/>
+				<m:Button text="{i18n>GeneratePDF}" press="CI_onPressGeneratePdf"  visible="{visiablityPlay>/merge}" type="Attention"/>
+				</m:contentRight>
+			</m:Bar>
+			</m:footer>
+	</m:Page>
+</mvc:View>

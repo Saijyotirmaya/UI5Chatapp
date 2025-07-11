@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <HBox class="sapUiTinyMarginTop">
+        <Image
+            src="../image/logo.jpg"
+            width="30px"
+            height="30px"
+            class="companylogo"
+        />
+        <Link
+            class="footer-CoName sapUiTinyMarginBegin"
+            text="{i18n>developedBy}"
+            href="https://www.kalpavrikshatechnologies.com/"
+            target="_blank"
+        />
+    </HBox>
+</core:FragmentDefinition>

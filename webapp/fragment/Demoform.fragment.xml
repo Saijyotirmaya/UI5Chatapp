@@ -1,0 +1,40 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form">
+
+    <l:Grid defaultSpan="L4 M6 S12" vSpacing="2" hSpacing="2" class="sapUiTinyMargin">   
+        <l:content>
+
+                <f:SimpleForm editable="true" layout="ResponsiveGridLayout"
+                    labelSpanXL="3" labelSpanL="3" labelSpanM="3"    singleContainerFullSize="false" backgroundDesign="Transparent" class="formBorder" title="{i18n>demoFormtitle}">
+                    <f:content>
+                        <m:Label text="" />
+                        <m:Input id="idCompanyname" placeholder="{i18n>placeCompany}" liveChange="validateCompnayname" maxLength="50" value="{formData>/CompanyName}" valueStateText="Invalid entry"/>
+                        <m:Label text=""/>
+                        <m:Input id="idcustomername" placeholder="{i18n>placeholderCustName}" liveChange="validateName" maxLength="50" value="{formData>/CustomerName}" valueStateText="Invalid entry"/>
+                        <m:Label text=""/>
+                        <m:Input id="idCustmailid" placeholder="{i18n>placeEmailId}" liveChange="validateEmail" maxLength="50" value="{formData>/Email}" type="Email" valueStateText="Enter Valid Email"/>
+                        <m:Label text=""/>
+                        <m:DateTimePicker id="idtimeslot" placeholder="{i18n>placeholdertimeslote}" liveChange="ValidateCommonFields" value="{formData>/TimeSlot}" valueFormat="yyyy-MM-dd HH:mm"
+                            displayFormat="dd/MM/yyyy HH:mm" valueStateText="Enter Timeslot"/>
+                        <m:Label text=""/>
+                        <m:Input id="idmobilenumber" placeholder="{i18n>placeholderMobileNo}" liveChange="validateMobileNo" maxLength="10" value="{formData>/MobileNo}" valueStateText="Enter Atleast 10 digit number" />
+                        <m:Label text=""/>
+                        <m:TextArea id="idCustaddress" placeholder="{i18n>placeAddress}" liveChange="ValidateCommonFields" maxLength="120" value="{formData>/Address}" rows="2" valueStateText="Invalid entry" />
+                        <m:Label text=""/>
+                        <m:TextArea id="idcomment" placeholder="{i18n>enterComments}" liveChange="ValidateCommonFields" maxLength="120" value="{formData>/Comments}" rows="2" valueStateText="Invalid entry" />
+                        <m:Label text=""/>
+                        <m:Button text="{i18n>savebtn}" type="Accept" press="onDemoformSave" />
+                    </f:content>
+                </f:SimpleForm>
+        </l:content>
+    </l:Grid>
+
+     <l:Grid defaultSpan="L12 M12 S12"  vSpacing="2" hSpacing="2" class="sapUiTinyMargin">
+        <l:content>
+            <m:Carousel id="videoCarousel" showPageIndicator="false" loop="true" class="allvideo"/>
+         </l:content>
+     </l:Grid>
+</mvc:View>

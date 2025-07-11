@@ -1,0 +1,227 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.MSAEdit"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.uxap"
+	xmlns:core="sap.ui.core"
+	xmlns:layout="sap.ui.layout"
+	xmlns:m="sap.m">
+	<m:Page id="MsaE_id_Page" title="{i18n>msaDetails}" navButtonPress="MsaE_onBack" showNavButton="true">
+	<m:headerContent>
+	<m:Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</m:headerContent>
+		<ObjectPageLayout busyIndicatorDelay="0" enableLazyLoading="true" useIconTabBar="true" showTitleInHeaderContent="true" id="MsaE_id_ObjectPageLayout" upperCaseAnchorBar="false">
+			<headerTitle>
+				<ObjectPageDynamicHeaderTitle>
+					<actions>
+						<m:Button text="Edit" type="Emphasized" press="MsaE_onEditOrSavePress" />
+						<!-- <m:Button text="{= ${simpleForm>/editable} ? 'Save' : 'Edit' }" type="{= ${simpleForm>/editable} ? 'Accept' : 'Transparent' }" press="MsaE_onEditOrSavePress" /> -->
+						<m:Button id="MSA" type="Ghost" text="{i18n>msaSendEmail}" enabled="{simpleForm>/isEnabled}" press="MsaE_onSendEmailMSA" />
+						<m:Button type="Attention" text="{i18n>GeneratePDF}" enabled="{simpleForm>/isEnabled}" press="MsaE_onPressMerge" />
+					</actions>
+					<expandedHeading>
+						<m:Title text="{FilteredMsaModel>/0/CompanyName}" wrapping="true" />
+					</expandedHeading>
+					<!-- Snapped Header Title (with Avatar + Title) -->
+					<snappedHeading>
+						<m:FlexBox fitContainer="true" alignItems="Center">
+							<m:Avatar displayShape="Circle" displaySize="M" backgroundColor="Accent1" initials="{= ${FilteredMsaModel>/0/CompanyName} ? ${FilteredMsaModel>/0/CompanyName}.substring(0,2).toUpperCase() : '' }" class="sapUiSmallMarginEnd" />
+							<m:Title text="{FilteredMsaModel>/0/CompanyName}" wrapping="true" />
+						</m:FlexBox>
+					</snappedHeading>
+					<!-- Expanded Content -->
+					<expandedContent>
+						<m:Text text="{FilteredMsaModel>/0/PanCard}" />
+					</expandedContent>
+					<!-- Snapped Content -->
+					<snappedContent>
+						<layout:VerticalLayout>
+							<m:Text text="{FilteredMsaModel>/0/PanCard}" />
+							<layout:HorizontalLayout class="sapUiTinyMarginTop">
+								<m:Label text="{i18n>companyHeadName}" showColon="true" />
+								<m:Text class="sapUiTinyMarginBegin" text="{FilteredMsaModel>/0/Salutation} {FilteredMsaModel>/0/CompanyHeadName}" />
+							</layout:HorizontalLayout>
+						</layout:VerticalLayout>
+					</snappedContent>
+				</ObjectPageDynamicHeaderTitle>
+			</headerTitle>
+			<!-- 3-Column Header Content -->
+			<headerContent>
+    <m:FlexBox
+        id="QF_id_HeaderContent"
+        wrap="Wrap"
+        fitContainer="true"
+        class="sapUiMediumMargin headerContentBox"
+        justifyContent="Start"
+        alignItems="Start"
+        busyIndicatorDelay="0"
+    >
+        <!-- Avatar -->
+        <m:Avatar
+            displayShape="Circle"
+            displaySize="M"
+            backgroundColor="Accent1"
+            initials="{= ${FilteredMsaModel>/0/CompanyName} ? ${FilteredMsaModel>/0/CompanyName}.substring(0,2).toUpperCase() : '' }"
+            class="sapUiLargeMarginEnd"
+        />
+
+        <!-- Company Head Info -->
+        <layout:VerticalLayout class="sapUiSmallMarginBottom sapUiSmallMarginEnd ">
+            <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+                <m:Label showColon="true" text="{i18n>companyHeadName}"  />
+                <m:Text text="{FilteredMsaModel>/0/Salutation} {FilteredMsaModel>/0/CompanyHeadName}" class="sapUiTinyMarginBegin" />
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+                <m:Label showColon="true" text="{i18n>companyHeadPosition}" />
+                <m:Text text="{FilteredMsaModel>/0/CompanyHeadPosition}" class="sapUiTinyMarginBegin"/>
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+                <m:Label showColon="true" text="{i18n>branch}" />
+                <m:Text text="{FilteredMsaModel>/0/BranchCode}" class="sapUiTinyMarginBegin" />
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+                <m:Label showColon="true" text="{i18n>createMSADate}" />
+                <m:Text text="{path:'FilteredMsaModel>/0/CreateMSADate', formatter: '.Formatter.formatDate'}" class="sapUiTinyMarginBegin" />
+            </layout:HorizontalLayout>
+        </layout:VerticalLayout>
+
+        <!-- Contract Info -->
+        <layout:VerticalLayout class="sapUiSmallMarginBeginEnd sapUiMediumMarginEnd sapUiSmallMarginBottom sectionBlock">
+            <layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>paymentterms}" />
+                <m:Text text="{FilteredMsaModel>/0/PaymentTerms}" class="sapUiTinyMarginBegin" />
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>contractPeriod}" />
+                <m:Text text="{FilteredMsaModel>/0/ContractPeriod}"  class="sapUiTinyMarginBegin"/>
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>panCardCommon}" />
+                <m:Text text="{FilteredMsaModel>/0/PanCard}" class="sapUiTinyMarginBegin" />
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>GSTNO}" />
+                <m:Text text="{FilteredMsaModel>/0/GST}" class="sapUiTinyMarginBegin"/>
+            </layout:HorizontalLayout>
+        </layout:VerticalLayout>
+
+        <!-- Address -->
+        <layout:VerticalLayout class="sapUiTinyMarginBottom sapUiSmallMarginBegin ">
+		<layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>msaEndDate}" />
+                <m:Text text="{path:'FilteredMsaModel>/0/MsaContractPeriodEndDate',formatter: '.Formatter.formatDate'}" class="sapUiTinyMarginBegin"/>
+            </layout:HorizontalLayout>
+		<layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>emailId}" />
+                <m:Text text="{FilteredMsaModel>/0/MsaEmail}" class="sapUiTinyMarginBegin"/>
+            </layout:HorizontalLayout>
+		<layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>type}" />
+                <m:Text
+                    text="{FilteredMsaModel>/0/Type}"
+					class="sapUiTinyMarginBegin"
+                />
+				
+            </layout:HorizontalLayout>
+            <layout:HorizontalLayout>
+                <m:Label showColon="true" text="{i18n>Address}" />
+                <m:Text
+                    text="{FilteredMsaModel>/0/Address} {FilteredMsaModel>/0/City} {FilteredMsaModel>/0/Country}"
+                    width="300px"
+                    wrapping="true"
+                    wrappingType="Normal"
+					class="sapUiTinyMarginBegin"
+                />
+				
+            </layout:HorizontalLayout>
+        </layout:VerticalLayout>
+    </m:FlexBox>
+</headerContent>
+
+			<sections>
+				<ObjectPageSection titleUppercase="false" title="Sow Details" showTitle="false" id="MsaE_id_SowDetailsSection">
+					<subSections>
+						<ObjectPageSubSection title=" " titleUppercase="false">
+							<blocks>
+								<m:Table items="{path:'SowReadModel>/',sorter: {path: 'Description',descending: false,group: true}}" busyIndicatorDelay="0" id="Sow_Id_ReadTable" mode="SingleSelectLeft" selectionChange="onPressChangeSow">
+									<m:headerToolbar>
+    <m:OverflowToolbar>
+        <m:Title text="{i18n>sowTitle}">
+           
+        </m:Title>
+
+        <m:ToolbarSpacer />
+
+        <m:ComboBox 
+            id="MsaE_id_SowStatus" 
+            items="{SowStatusModel>/SowStatus}" 
+            width="10%" 
+            change="MsaE_onChangeSowStatus">
+            
+            <core:Item key="{SowStatusModel>ID}" text="{SowStatusModel>Status}" />
+        </m:ComboBox>
+
+        <m:ToolbarSeparator />
+
+        <m:Button 
+            text="{i18n>addSOW}" 
+            type="Accept" 
+            press="MsaE_onPressCreateSow">
+           
+        </m:Button>
+
+        <m:ToolbarSeparator />
+
+        <m:Button 
+            icon="sap-icon://action" 
+            text="Actions" 
+            press="onOpenActionSheet">
+        </m:Button>
+    </m:OverflowToolbar>
+</m:headerToolbar>
+
+									<m:columns>
+										<m:Column demandPopin="true">
+											<m:Text text="{i18n>POConsultantname}" />
+										</m:Column>
+										<m:Column minScreenWidth="Desktop" demandPopin="true">
+											<m:Text text="{i18n>startDate}" />
+										</m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Text text="{i18n>endDate}" />
+										</m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Text text="{i18n>designation}" />
+										</m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Text text="{i18n>rate}" />
+										</m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Text text="{i18n>status}" />
+										</m:Column>
+									</m:columns>
+									<m:items>
+										<m:ColumnListItem >
+											<m:cells>
+												<m:Text text="{SowReadModel>ConsultantName}"/>
+												<m:Text text="{path:'SowReadModel>StartDate',formatter: '.Formatter.formatDate'}"/>
+												<m:Text text="{path:'SowReadModel>EndDate',formatter: '.Formatter.formatDate'}"/>
+												<m:Text text="{SowReadModel>Designation}"/>
+												<m:Text text="{SowReadModel>Rate}"/>
+												<m:ObjectStatus text="{SowReadModel>Status}" inverted="false" state="{path: 'SowReadModel>Status', formatter: '.Formatter.formatObjectStatus'}" />
+											</m:cells>
+										</m:ColumnListItem>
+									</m:items>
+								</m:Table>
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+			</sections>
+		</ObjectPageLayout>
+	</m:Page>
+</mvc:View>

@@ -1,0 +1,171 @@
+<core:FragmentDefinition
+    displayBlock="true"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.uxap"
+	xmlns:m="sap.m"
+	xmlns:core="sap.ui.core">
+	<m:Page id="TUF_id_pageTrainee" title="{i18n>traineeEdit}" showNavButton="true" navButtonPress="TUF_onPressback">
+	<m:headerContent>
+	<m:Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+	</m:headerContent>
+		<ObjectPageLayout
+        showTitleInHeaderContent="true"
+		preserveHeaderStateOnScroll="true"
+        class="sapUiSmallmarginResponsive">
+			<headerTitle>
+				<ObjectPageDynamicHeaderTitle>
+					<!-- Expanded heading to display Consultant Name and Designation -->
+					<expandedHeading>
+						<m:Title text="{oTraineeDetails>/NameSalutation} {oTraineeDetails>/TraineeName}" wrapping="true" width="100%" />
+					</expandedHeading>
+					<expandedContent>
+						<m:ObjectStatus textDirection="LTR" inverted="true" text="{= ${oTraineeDetails>/Status} }"
+                   state="{= ${oTraineeDetails>/Status} === 'Rejected' ? 'Error' :
+                             ${oTraineeDetails>/Status} === 'Saved' ? 'Warning' :
+                             ${oTraineeDetails>/Status} === 'New' ? 'Information' :
+                             ${oTraineeDetails>/Status} === 'Onboarded' ? 'Success' :
+                             ${oTraineeDetails>/Status} === 'Training Completed' ? 'Indication01' :
+                             ${oTraineeDetails>/Status} === 'Offer Sent' ? 'Indication06' : 'None' }" />
+					</expandedContent>
+				</ObjectPageDynamicHeaderTitle>
+			</headerTitle>
+			<sections>
+				<ObjectPageSection showTitle="false" >
+					<subSections>
+						<ObjectPageSubSection   >
+							<blocks>
+								<f:SimpleForm 
+								id="TU_id_SimpleForm"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="3"
+                            labelSpanL="3"
+                            labelSpanM="3"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1"
+                            editable="true"
+							busyIndicatorDelay="0"
+                            singleContainerFullSize="false">
+									<f:content>
+										<m:Label text="{i18n>traineeName}" required="true" />
+										<m:HBox width="100%" justifyContent="Start" alignItems="Center">
+											<m:VBox width="23%">
+												<m:Select change="TU_EditSalutation"
+                                                editable="{viewModel>/editable}"
+                                                selectedKey="{oTraineeDetails>/NameSalutation}"
+                                                items="{Salutation>/salutation}"
+                                                width="100%">
+													<core:Item key="{Salutation>text}" text="{Salutation>text}"/>
+												</m:Select>
+											</m:VBox>
+											<m:VBox width="75%">
+												<m:Input id="TU_id_Name" value="{oTraineeDetails>/TraineeName}" editable="{viewModel>/editable}" maxLength="50" liveChange="TD_validateName" class="sapUiTinyMarginBegin" valueStateText="{i18n>placeTraineeName}"/>
+											</m:VBox>
+										</m:HBox>
+										<m:Label text="{i18n>gender}" required="true"/>
+										<m:Select items="{GenderModel>/}" id="TU_id_Gender" enabled="false" selectedKey="{oTraineeDetails>/Gender}"  editable="{viewModel>/editable}" >
+											<core:Item key="{GenderModel>Value}" text="{GenderModel>Value}" />
+										</m:Select>
+										<m:Label text="{i18n>reportingManager}" required="true" />
+										<m:ComboBox id="TU_id_Manager" showSecondaryValues="true" change="TD_validateName"   value="{oTraineeDetails>/ReportingManager}" items="{empModel>/}"  editable="{viewModel>/editable}" valueStateText="{i18n>reportingManagerVs}">
+											<core:ListItem key="{empModel>EmployeeID}" text="{empModel>EmployeeName}" additionalText="{empModel>EmployeeID}"  />
+										</m:ComboBox>
+										<m:Label text="{i18n>emailId}" required="true" />
+										<m:Input id="TU_id_TraineeMail" value="{oTraineeDetails>/TraineeEmail}" editable="{viewModel>/editable}" maxLength="100" liveChange="TD_validateEmail" valueStateText="{i18n>emailValueState}"/>
+										<m:Label text="{i18n>trainingType}" required="true" />
+										<m:ComboBox  id="TU_id_TrainingType" placeholder="{i18n>selectType}"  value="{oTraineeDetails>/Type}"   selectionChange="onTrainingTypeChange"  editable="{viewModel>/editable}" 	change="TD_validateCombo"  width="100%" valueStateText="{i18n>selectType}">
+											<m:items>
+												<core:Item key="Stipend" text="{i18n>stipend}" />
+												<core:Item key="Paid" text="{i18n>paid}" />
+											</m:items>
+										</m:ComboBox>
+										<m:Label ></m:Label>
+										<m:Label id="TU_id_TrainingAmountLabel" text="{i18n>placeAmount}" required="true" />
+										<m:HBox id="TU_id_TrainingDetailsBox" width="100%" justifyContent="Start" alignItems="Center">
+											<m:VBox width="70%">
+												<m:Input 
+															id="TU_id_TrainingAmount" 
+															value="{oTraineeDetails>/Amount}" 
+															editable="{viewModel>/editable}" 
+															placeholder="{i18n>placeAmount}" 
+															maxLength="15" 
+															liveChange="TD_validateAmount" 
+															valueStateText="{i18n>ammountValuState}" 
+															width="100%" />
+											</m:VBox>
+											<m:VBox width="30%" class="sapUiTinyMarginBegin">
+												<m:Select  editable="{viewModel>/editable}" 
+															id="TU_id_Currency" 
+															items="{CurrencyModel>/}" 
+															selectedKey="{oTraineeDetails>/Currency}" 
+															width="100%">
+													<core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+												</m:Select>
+											</m:VBox>
+										</m:HBox>
+										<m:Label text="{i18n>releaseDateT}" required="true" />
+										<m:DatePicker   id="TU_id_RelDate"   value="{ path: 'oTraineeDetails>/ReleaseDate',formatter:'.Formatter.formatDate' }"  editable="{viewModel>/editable}"  displayFormat="dd/MM/yyyy"     valueFormat="dd/MM/yyyy" 
+
+                                        change="TD_validateDate" valueStateText="{i18n>dateValueState}" />
+										<m:Label text="{i18n>joiningDate}" required="true" />
+										<m:DatePicker   id="TU_id_JoinDate"   value="{ path: 'oTraineeDetails>/JoiningDate',formatter:'.Formatter.formatDate' }"  editable="{viewModel>/editable}"  displayFormat="dd/MM/yyyy"     valueFormat="dd/MM/yyyy" 
+                                         change="TD_validateDate" valueStateText="{i18n>dateValueState}" />
+										<m:Label text="{i18n>traineeDuration}" required="true" />
+										<m:Select  selectedKey="{oTraineeDetails>/TrainingDuration}" items="{DurationTraining>/duration}" id="TU_id_TDuration"  editable="{viewModel>/editable}">
+											<core:Item key="{DurationTraining>Code}" text="{DurationTraining>Code}" />
+										</m:Select>
+										<m:Label text="{i18n>expCountry}" required="true"/>
+				                        <m:ComboBox change="TU_onChangeCountry" valueStateText="{i18n>expValStaCountry}" id="TU_Id_Country" items="{path:'CountryModel>/',length:1000}" value="{oTraineeDetails>/Country}" showSecondaryValues="true" editable="{viewModel>/editable}" >
+										<core:ListItem key="{CountryModel>countryName}" text="{CountryModel>countryName}" additionalText="{CountryModel>code}"/>
+									</m:ComboBox>
+									<m:Label text="{i18n>baseLocation}" required="true" />
+							        <m:ComboBox items="{BaseLocationModel>/}"  showSecondaryValues="true" value="{oTraineeDetails>/BaseLocation}" id="TU_id_Location" valueStateText="{i18n>selectBase}" change="TD_validateCombo"  editable="{viewModel>/editable}" selectedKey="{oTraineeDetails>/BaseLocation}" >
+							        <m:items>
+						            <core:ListItem key="{BaseLocationModel>city}" text="{BaseLocationModel>city}" additionalText="{BaseLocationModel>branchCode}" />
+							        </m:items>
+				                     </m:ComboBox>
+									<!-- <Label text="{i18n>branchCode}" /><Input id="TU_id_BranchCode" value="{oTraineeDetails>BranchCode}"  editable="false" /> -->
+									<m:Label text="{i18n>mobileNo}" required="true" />
+									<m:HBox width="100%" justifyContent="Start" alignItems="Center">
+										<m:VBox width="23%">
+											<m:ComboBox value="{oTraineeDetails>/STDCode}" showSecondaryValues= "true" id="TU_id_STDCode" items="{codeModel>/}" filterSecondaryValues="true" change="TD_validateCombo" valueStateText="{i18n>combovalueState}" editable="{viewModel>/editable}">
+												<core:ListItem key="{codeModel>country}" text="{codeModel>calling_code}" additionalText="{codeModel>country_code}"/>
+											</m:ComboBox>
+										</m:VBox>
+										<m:VBox width="76%">
+											<m:Input value="{oTraineeDetails>/MobileNumber}" placeholder="{i18n>mobileNo}" liveChange="TD_validateMobile" maxLength="10" id="TU_id_Mobile" valueStateText="{i18n>mobileNoValueState}" class="sapUiTinyMarginBegin" editable="{viewModel>/editable}"/>
+										</m:VBox>
+									</m:HBox>
+								</f:content>
+							</f:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+	<m:footer>
+		<m:Bar>
+			<m:contentLeft>
+				<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+			</m:contentLeft>
+			<m:contentRight>
+				<m:Button text="{i18n>tileFooter}" press="TU_onSendEmail"  id="TU_id_Traineemail" visible="{= ${viewModel>/isVisiable} }" enabled="{viewModel>/isEditMode}" type="Ghost"/>
+				<m:Button text="{= ${viewModel>/editable} ? ${i18n>save} : ${i18n>edit} }"
+                     press="TU_onEditOrSavePress"  id="TD_id_Savebtn" visible="{= ${viewModel>/editBut} }" type="{= ${viewModel>/isEditMode} ? 'Emphasized' : 'Accept' }" />
+				<m:Button id="TU_id_Jspdf" text="{i18n>GeneratePDF}" press="TD_onPressMerge" visible="{= ${viewModel>/isVisiable} }" enabled="{viewModel>/isEditMode}" type="Attention"/>
+			</m:contentRight>
+		</m:Bar>
+	</m:footer>
+</m:Page>undefined</core:FragmentDefinition>

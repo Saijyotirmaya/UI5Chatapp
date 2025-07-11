@@ -1,0 +1,133 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:core="sap.ui.core">
+	<Dialog>
+		<customHeader>
+			<Toolbar>
+				<Title text="{i18n>invoicePaymentTitle}" />
+			</Toolbar>
+		</customHeader>
+		<VBox visible="{visiablityPlay>/Form}">
+			<f:SimpleForm   			    
+            editable="true"
+			visible="{VisibleModel>/invoicePaymentTitle}"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1">
+				<f:content>
+					<Label text="{i18n>invoiceTransactionID}" required="true"/>
+					<Input value="{PaymentModel>/TransactionId}" id="idTransactionID" liveChange="onLiveTransactionID" placeholder="Enter transaction Id" valueStateText="{i18n>invoiceTransactionIDValueText}" maxLength="30"/>
+
+					<Label text="{i18n>invoiceReceivedDate}" required="true" />
+					<DatePicker displayFormat="dd/MM/yyyy" id="idReceivedDate" valueFormat="dd/MM/yyyy" value="{PaymentModel>/ReceivedDate}" change="onReceivedDateDatePickerChange" valueStateText="{i18n>dateValueState}" />
+
+					<Label text="{i18n>invoiceReceivedAmount}" required="true"/>
+					<Input value="{PaymentModel>/ReceivedAmount}" id="idReceivedAmount" change="onChangeReceivedAmount" valueStateText="{i18n>invoiceRecievedAmountMessage}" placeholder="Enter received amount" maxLength="15"/>
+
+					<Label text="{i18n>invoiceReceivedTDS}" required="true" visible="{= ${PaymentModel>/Currency} === 'INR'}" />
+					<Input value="{PaymentModel>/ReceivedTDS}" id="idReceivedTDS" change="onChangeReceivedTDS" placeholder="Enter received TDS" maxLength="15" visible="{= ${PaymentModel>/Currency} === 'INR'}" valueStateText="Received TDS is required" />
+
+					<Label text=""/>
+					<HBox width="100%" justifyContent="SpaceBetween" visible="{= ${PaymentModel>/Currency} !== 'INR'}">
+						<VBox width="calc(50% - 10px)">
+						<Label text="{i18n>expConversionRate}" required="true"></Label>
+							<Input value="{PaymentModel>/ConversionRate}" placeholder="{i18n>expenseConversionRatePlaceholder}" id="idFrgConvertionRate" change="onChangePaymentConvertionRate" maxLength="15" valueStateText="{i18n>ammountValuState}"/>
+						</VBox>
+						<VBox width="calc(50% - 10px)">
+							<Label text="{i18n>amountInINR}"></Label>
+							<Input value="{path:'PaymentModel>/AmountInINR', formatter:'.Formatter.numberFormater'}" editable="false"/>
+						</VBox>
+					</HBox>
+					<Label text="{i18n>totalAmount}" required="true"/>
+					<HBox width="100%" justifyContent="SpaceBetween">
+						<VBox width="calc(50% - 10px)">
+							<Input value="{path:'PaymentModel>/TotalAmount', formatter:'.Formatter.numberFormater'}" editable="false"/>
+						</VBox>
+						<VBox width="calc(50% - 10px)">
+							<Input value="{PaymentModel>/Currency}" editable="false" />
+						</VBox>
+					</HBox>
+					
+					<Label text="{i18n>invoiceDueAmount}" required="true"/>
+					<HBox width="100%" justifyContent="SpaceBetween">
+						<VBox width="calc(50% - 10px)">
+							<Input value="{path:'PaymentModel>/DueAmount', formatter:'.Formatter.numberFormater'}" editable="false" />
+						</VBox>
+						<VBox width="calc(50% - 10px)">
+							<Input value="{PaymentModel>/Currency}" editable="false" />
+						</VBox>
+					</HBox>
+
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<VBox visible="{visiablityPlay>/Table}">
+			<Table items="{PaymentDetailModel>/InvoicePaymentDetail}">
+				<columns>
+					<Column minScreenWidth="Tablet">
+						<Text text="{i18n>invoiceTransactionID}" />
+					</Column>
+					<Column minScreenWidth="Tablet">
+						<Text text="{i18n>invoiceReceivedDate}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>totalAmount}" />
+					</Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>invoiceReceivedAmount}" />
+					</Column>
+					<Column visible="{= ${PaymentModel>/Currency} === 'INR'}" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>invoiceReceivedTDS}" />
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>invoiceDueAmount}" />
+					</Column>
+					<Column visible="{= ${PaymentModel>/Currency} !== 'INR'}" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>expConversionRate}" />
+					</Column>
+					<Column visible="{= ${PaymentModel>/Currency} !== 'INR'}" minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>amountInINR}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{PaymentDetailModel>TransactionId}" />
+							<Text text="{PaymentDetailModel>ReceivedDate}" />
+							<Text text="{path:'PaymentDetailModel>TotalAmount',formatter: '.Formatter.fromatNumber'}" />
+							<Text text="{path:'PaymentDetailModel>ReceivedAmount',formatter: '.Formatter.fromatNumber'}" />
+							<Text text="{path:'PaymentDetailModel>ReceivedTDS',formatter: '.Formatter.fromatNumber'}" />
+							<Text text="{path:'PaymentDetailModel>DueAmount',formatter: '.Formatter.fromatNumber'}" />
+							<Text text="{path:'PaymentDetailModel>ConversionRate',formatter: '.Formatter.fromatNumber'}" />
+							<Text text="{path:'PaymentDetailModel>AmountInINR',formatter: '.Formatter.fromatNumber'}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+		<footer >
+			<Toolbar >
+				<VBox alignContent="End" width="100%">
+					<HBox justifyContent="End" width="100%" visible="{visiablityPlay>/Form}">
+						<Button text="{i18n>submit}" class="sendMail" type="Accept" press="onChangePaymentRecived" />
+						<Button text="{i18n>close}" type="Reject" press="onPressInvClose" />
+					</HBox>
+					<HBox justifyContent="End" width="100%"  visible="{visiablityPlay>/Table}">
+						<Button text="{i18n>close}" type="Reject" press="onPressInvClose" />
+					</HBox>
+				</VBox>
+			</Toolbar>
+		</footer>
+	</Dialog>
+</core:FragmentDefinition>

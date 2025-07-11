@@ -1,0 +1,476 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.uxap"
+    xmlns:m="sap.m"
+    xmlns:layout="sap.ui.layout"
+>
+    <ObjectPageLayout
+        upperCaseAnchorBar="false">
+        <headerContent>
+            <m:Text
+                class="products-title sapUiSmallMarginBeginEnd sapUiMediumMarginTopBottom"
+                text="{i18n>pHeadercontent}" />
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection
+                titleUppercase="false"
+                title="{i18n>minihrsolution}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                        <m:VBox>
+                        <m:Text 
+                class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop highlight-text"
+                text="{i18n>minihrsolutionDesc}" />
+                            <m:Text/>
+                            <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
+                            
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerTrainee}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>GeneratePDF}"
+                                        footer="{i18n>SendMail}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://employee-approvals"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerEmployeeOffer}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>GeneratePDF}"
+                                        footer="{i18n>SendMail}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://employee-approvals"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerContractDetails}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>GeneratePDF}"
+                                        footer="{i18n>SendMail}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://decision"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+
+
+                                <m:GenericTile
+                                    id="idGenericTile"
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerListOfHolidays}"
+                                >
+                                    <m:TileContent unit="{i18n>tileLeaveFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://general-leave-request"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerLeave}"
+                                >
+                                    <m:TileContent unit="{i18n>createLeave}">
+                                        <m:ImageContent
+                                            src="sap-icon://time-off"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>expCreateBtn}"
+                                >
+                                    <m:TileContent unit="{i18n>subhead}">
+                                        <m:ImageContent
+                                            src="sap-icon://expense-report"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerInbox}"
+                                >
+                                    <m:TileContent unit="{i18n>tileMyInboxFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://inbox"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                               
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerAssignTask}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>tileAssignmentFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://activity-assigned-to-goal"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerTimesheet}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>tileTimesheetFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://timesheet"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerTimesheetApproval}"
+                                >
+                                    <m:TileContent unit="{i18n>tileMyInboxFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://timesheet"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>HeaderPaySlip}"
+                                >
+                                    <m:TileContent unit="{i18n>tilePaySlipFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://money-bills"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                 <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerSelfService}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>tileSelfSerciceFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://employee-approvals"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerEmpDetails}"
+                                    subheader="{i18n>subheadEmphike}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>tileEmplyeeFooter}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://employee"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                 <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerIdCard}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>tileIdCardFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://business-card"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                            </layout:HorizontalLayout>
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection
+                titleUppercase="false"
+                title="{i18n>invoicsolution}"
+            >
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                        <m:VBox >
+                        <m:Text 
+                class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop highlight-text"
+                text="{i18n>invoicsolutionDesc}" />
+                            <m:Text/>
+                            <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
+                            <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerMSA}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>subheader}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://add-document"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>createSow}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>GeneratePDF}"
+                                        footer="{i18n>SendMail}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://create"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>tilesgeneratePo}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>GeneratePDF}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://add-document"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerQuotation}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>subheader}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://account"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerCustomer}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>custDetails}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://customer"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>invoiceapp}"
+                                >
+                                    <m:TileContent unit="{i18n>tileInvoiceFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://my-sales-order"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerContractorInvoice}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>tileInvoiceFooter}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://monitor-payments"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                            </layout:HorizontalLayout>
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                titleUppercase="false"
+                title="{i18n>assetsolution}"
+            >
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                        <m:VBox>
+                        <m:Text 
+                class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop highlight-text"
+                text="{i18n>assetsolutionDesc}" />
+                            <m:Text/>
+                            <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerIncomeAsset}"
+                                    
+                                >
+                                    <m:TileContent unit="{i18n>createmaintain}">
+                                        <m:ImageContent
+                                            src="sap-icon://time-off"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerAssignment}"
+                                    
+                                >
+                                
+                                    <m:TileContent unit="{i18n>createmaintain}">
+                                        <m:ImageContent
+                                            src="sap-icon://activity-assigned-to-goal"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                            </layout:HorizontalLayout>
+                            </m:VBox>
+                        </blocks>
+
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection
+                titleUppercase="false"
+                title="{i18n>automobilesolution}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                        <m:VBox>
+                        <m:Text 
+                class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop highlight-text"
+                text="{i18n>automobilesolutionDesc}" />
+                            <m:Text/>
+                            <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>schemeupload}"
+                                    subheader="{i18n>uploadscheme}"
+                                >
+                                    <m:TileContent unit="{i18n>createmaintain}">
+                                        <m:ImageContent
+                                            src="sap-icon://time-off"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>createquotation}">
+                                
+                                    <m:TileContent unit="{i18n>subheader}">
+                                        <m:ImageContent
+                                            src="sap-icon://account"/>
+                                    </m:TileContent>
+                                </m:GenericTile>
+                            </layout:HorizontalLayout>
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+
+            <ObjectPageSection
+                titleUppercase="false"
+                title="{i18n>payrollSolution}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                        <m:VBox>
+                        <m:Text 
+                class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop highlight-text"
+                text="{i18n>payrollSolutionDesc}" />
+                            <m:Text/>
+                            <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>generatesalary}"
+                                   
+                                >
+                                    <m:TileContent unit="{i18n>tilePaySlipFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://lead"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                               
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>HeaderPaySlip}"
+                                >
+                                    <m:TileContent unit="{i18n>tilePaySlipFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://money-bills"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                 <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerofferletter}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>subheader}">
+                                        <m:ImageContent
+                                            src="sap-icon://employee-approvals"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                 <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerSelfService}"
+                                    subheader="{i18n>subhead}"
+                                >
+                                    <m:TileContent unit="{i18n>tileSelfSerciceFooter}">
+                                        <m:ImageContent
+                                            src="sap-icon://employee-approvals"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headerEmpDetails}"
+                                    subheader="{i18n>subheadEmphike}"
+                                >
+                                    <m:TileContent
+                                        unit="{i18n>tileEmplyeeFooter}"
+                                    >
+                                        <m:ImageContent
+                                            src="sap-icon://employee"
+                                        />
+                                    </m:TileContent>
+                                </m:GenericTile>
+                                 <m:GenericTile
+                                   class="sapUiTinyMarginBegin sapUiTinyMarginTop sapUiMediumMargin"
+                                    header="{i18n>headmanagepayroll}"
+                                    subheader="{i18n>subheaderpayroll}">
+                                    <m:TileContent
+                                        unit="{i18n>footerpayroll}" >
+                                        <m:ImageContent
+                                            src="sap-icon://payment-approval"/>
+                                    </m:TileContent>
+                                </m:GenericTile>
+                            </layout:HorizontalLayout>
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>

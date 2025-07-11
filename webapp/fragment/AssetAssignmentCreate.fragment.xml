@@ -1,0 +1,153 @@
+<core:FragmentDefinition
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+>
+	<Dialog
+        title="{i18n>assestAssignform}"
+        contentWidth="50%"
+    >
+		<f:SimpleForm
+            id="FAA_id_FormFrag"
+            busyIndicatorDelay="0"
+            editable="true"
+            layout="ColumnLayout"
+            labelSpanXL="4"
+            labelSpanL="4"
+            labelSpanM="12"
+            labelSpanS="12"
+            columnsXL="2"
+            columnsL="2"
+            columnsM="2"
+        >
+			<f:content>
+				<Label text="{i18n>employeeID}" />
+				<ComboBox
+                    required="true"
+                    id="FAA_id_employeeID"
+                    showSecondaryValues="true"
+                    items="{EmpModel>/}"    
+                    change="FAA_onEmpIDChange"
+                    value="{myform>/formData/data/AssignEmployeeID}"
+                    valueStateText="{i18n>selectEmployeeID}"
+                >
+					<core:ListItem
+                        key="{EmpModel>EmployeeID}"
+                        text="{EmpModel>EmployeeID}"
+                        additionalText="{EmpModel>EmployeeName}"
+                    />
+				</ComboBox>
+				<Label text="{i18n>employeeName}" />
+				<Input
+                    editable="false"
+                    id="FAA_id_Name"
+                    value="{myform>/formData/data/AssignEmployeeName}"
+                />
+				<Label text="{i18n>type}" />
+				<ComboBox
+                    id="FAA_id_Type"
+                    items="{typeModel>/}"
+                    change="FAA_onTypeChange"
+                    required="true"
+                    value="{myform>/formData/data/Type}"
+                    valueStateText="{i18n>selectType}"
+                    selectionChange="FAA_onTypeSelectionChange"
+                >
+					<core:ListItem
+                        key="{typeModel>Type}"
+                        text="{typeModel>Type}"
+                    />
+				</ComboBox>
+				<Label text="{i18n>assestAssignModel}" />
+				<Input
+                    busyIndicatorDelay="0"
+                    required="true"
+                    id="FAA_id_Model"
+                    liveChange="FAA_onModelChange"
+                    value="{myform>/formData/data/Model}"
+                    showValueHelp="true"
+                    valueHelpRequest="FAA_onOpenVHD"
+                    valueStateText="{i18n>modelValueState}"
+                />
+				<Label text="{i18n>branch}" />
+				<ComboBox
+                    id="FAA_branch_Id"
+                    showSecondaryValues="true"
+                    change="FAA_onBranchChange"
+                    editable="false"
+                    items="{BaseLocationModel>/}"
+                    value="{myform>/formData/data/AssignBranch}"
+                    valueStateText="{i18n>selectBranch}"
+                >
+					<core:ListItem
+                        key="{BaseLocationModel>city}"
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+				</ComboBox>
+				<Label text="{i18n>assestAssignequipmentNumber}" />
+				<Input
+                    required="true"
+                    editable="false"
+                    id="FAA_id_EquipmentNumber"
+                    value="{myform>/formData/data/EquipmentNumber}"
+                    liveChange="FAA_onEquipmentNumberChange"
+                />
+				<Label text="{i18n>assestAssignserialNumber}" />
+				<Input
+                    required="true"
+                    editable="false"
+                    id="FAA_id_SerialNumber"
+                    value="{myform>/formData/data/SerialNumber}"
+                    liveChange="FAA_onSerialNumberChange"
+                />
+				<Label text="{i18n>assetAssignValue}"/>
+				<Input
+                    required="true"
+                    editable="false"
+                    id="FAA_id_AssetValue"
+                    value="{path:'myform>/formData/data/AssetValue',formatter:'.Formatter.fromatNumber'}"
+                    liveChange="FAA_onAssetValueChange"
+                />
+                <Label text="{i18n>assestAssignassignedBy}" required="true"/>
+				<ComboBox
+                    id="FAA_id_AssignedBy"
+                    items="{AdminModel>/}"
+                    change="FAA_onChangeAssignedBy"
+                    showSecondaryValues="true"
+                    value="{myform>/formData/data/AssignedByEmployeeName}"
+                    editable="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'IT Manager' }"
+                    valueStateText="{i18n>commonNameValueState}"
+                >
+					<core:ListItem
+                        key="{AdminModel>EmployeeName}"
+                        text="{AdminModel>EmployeeName}"
+                        additionalText="{AdminModel>EmployeeID}"
+                    />
+				</ComboBox>
+				<Label text="{i18n>assignedDate}" />
+				<DatePicker
+                    id="FAA_id_AssignedDate"
+                    change="FAA_onAssignedDateChange"
+                    valueFormat="dd/MM/yyyy"
+                    displayFormat="dd/MM/yyyy"
+                    value="{path:'myform>/formData/data/AssignedDate',formatter:'.Formatter.formatDate'}"
+                />
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button
+                text="{i18n>assetAssignmentSave}"
+                press="FAA_onPressSave"
+                type="Accept"
+            />
+		</beginButton>
+		<endButton>
+			<Button
+                text="{i18n>close}"
+                press="FAA_onPressClose"
+                type="Reject"
+            />
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

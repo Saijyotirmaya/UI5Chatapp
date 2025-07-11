@@ -1,0 +1,26 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Button
+        press="onPressback"
+        icon="sap-icon://home"
+        tooltip="{i18n>toolHome}"
+        type="Transparent"
+    />
+    <Text
+        text="{LoginModel>/HeaderName}"
+        class="boldBlackText"
+    />
+    <ToolbarSpacer />
+    <Button
+        press="Tile_NotifictionBTN"
+        icon="sap-icon://bell"
+    />
+    <Button
+        press="onLogout"
+        icon="sap-icon://log"
+        tooltip="{i18n>logoutTooltip}"
+        type="Transparent"
+    />
+</core:FragmentDefinition>

@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+
+		<Table id="AL_id_LeaveTableStandard"
+			mode="SingleSelectLeft"
+			selectionChange="onSelectionChange"
+			 busyIndicatorDelay="0"
+			 width="auto"
+             items="{path: 'LeaveModel>/'}"
+             growing="true"
+             growingThreshold="100"
+            alternateRowColors="true"
+			class="sapUiResponsiveContentPadding centeredTable">
+			<headerToolbar>
+				 <OverflowToolbar >
+				 <Title id="Al_id_Title" text="{i18n>appliedLeave} ({= ${LeaveModel>/}.length })"/>
+					 <ToolbarSpacer/>
+					<Button press="AL_onPressBarChart" text="{i18n>openBarCharts}" type="Ghost" />
+					<Button press="AL_onPressApplyLeave" text="{i18n>applyLeave}"  type="Accept"/>
+					<Button id="AL_id_Updatebtn" text="{i18n>editDetails}" press="AL_onPressUpdate" visible="{= ${LeaveModel>status} === 'Submitted' }" type="Emphasized"/>
+					<Button id="AL_id_Deletebtn" text="{i18n>deleteLeave}" press="AL_onPressDelete" visible="{= ${LeaveModel>status} === 'Submitted' }" type="Reject"/>
+					 </OverflowToolbar>
+            </headerToolbar>
+			<columns>
+				<Column demandPopin="true">
+					<Text text="{i18n>fromDate}" />
+				</Column>
+				<Column demandPopin="true">
+					<Text text="{i18n>toDate}" />
+				</Column>
+				<Column demandPopin="true">
+					<Text text="{i18n>noOfDays}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>typeOfLeave}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>status}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>halfDay}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>comments}" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+					<Text text="{path:'LeaveModel>fromDate' ,formatter:'.Formatter.formatDate'}" />
+					<Text text="{path:'LeaveModel>toDate' ,formatter:'.Formatter.formatDate'}" />
+						<Text text="{LeaveModel>NoofDays}" />
+						<Text text="{LeaveModel>typeOfLeave}" />
+					<ObjectStatus inverted="true" text="{LeaveModel>status}" state="{path: 'LeaveModel>status', formatter: '.Formatter.formatObjectStatus'}" />
+					<CheckBox selected="{= ${LeaveModel>halfDay} === 'true'}" editable="false"/>				
+                    <Button icon="sap-icon://display-more" text="{i18n>View}" press="AL_onShowEmployeeComments" />
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+</core:FragmentDefinition>

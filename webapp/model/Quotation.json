@@ -1,0 +1,29 @@
+{
+    "QTableData": null,
+    "BaseLocationData": null,
+    "CompanyDetailsData": null,
+    "EmployeeData": null,
+    "CompanyCodeData": null,
+    "ModelList":null,
+    "VariantList":null,
+    "allCompanyCodeDetails": null,
+    "QuotationFormData": {},
+
+    "StatusList": [
+        { "key": "New", "text": "New" },
+        { "key": "Booked", "text": "Booked" },
+        { "key": "Cancelled", "text": "Cancelled" }
+    ],
+    
+    "RowCount": 0,
+    "setDefFilter": true,
+    "isEditable": true,
+    "MasterEdit": true,
+    "EnableSubmit": true,
+    "VisibleStatus": false,
+    "ShowCase": true,
+    "AddCase": true,
+
+    "Logo": "../image/logo.png",
+    "QRCode": ""
+}

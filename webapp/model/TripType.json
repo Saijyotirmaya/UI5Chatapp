@@ -1,0 +1,19 @@
+[
+    {
+      "ID": 1,
+      "Name": "Customer Facing"
+    },
+    {
+      "ID": 2,
+      "Name": "Education"
+    },
+    {
+      "ID": 3,
+      "Name": "Internal"
+    },
+    {
+      "ID": 4,
+      "Name": "Others"
+    }
+  ]
+  

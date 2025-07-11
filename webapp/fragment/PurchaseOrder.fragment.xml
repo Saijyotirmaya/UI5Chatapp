@@ -1,0 +1,177 @@
+<c:FragmentDefinition xmlns:richtexteditor="sap.ui.richtexteditor"
+	xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+    xmlns:core="sap.ui.core"
+>
+
+    <Dialog title="PO Creation">
+     <f:SimpleForm
+       id="idsimplePO"
+       busyIndicatorDelay="0"
+        editable="true"
+        layout="ColumnLayout"
+        labelSpanXL="2"
+        labelSpanL="2"
+        labelSpanM="2"
+        labelSpanS="12"
+        adjustLabelSpan="false"
+        emptySpanXL="0"
+        emptySpanL="0"
+        emptySpanM="0"
+        emptySpanS="0"
+        columnsXL="3"
+        columnsL="3"
+        columnsM="2"
+        singleContainerFullSize="false">
+        
+        <f:content> 
+            <Label text="Customer Name" class="oSowFragLabel" required="true"/> 
+         <ComboBox 
+         id="FPO_id_CustomerName"
+         change="PO_onComboBoxChange"
+         placeholder="Select Customer Name"
+         selectedKey="{PurchaseOrderModel>/CustomerName}"
+         items="{ManageCustomerModel>/}"
+         >
+                <core:Item
+                key="{ManageCustomerModel>name}"
+                text="{ManageCustomerModel>name}"
+                 />         
+           </ComboBox>
+            <Label text="Type" class="oSowFragLabel" required="true"/>
+              <Select 
+            
+              id="PO_id_Type"
+              selectedKey="{PurchaseOrderModel>/Type}"
+              >
+                <core:Item key="Internal" text="Internal" />
+                <core:Item key="Fixed" text="Fixed" />
+
+                <core:Item key="Service" text="Service" />
+
+
+              </Select>
+               <Label text="Creation Date" class="oSowFragLabel" required="true"/>
+            <DatePicker 
+             id="FPO_id_Date"
+             change="FPO_onDateChange"
+             value="{PurchaseOrderModel>/CurrentDate}"
+             valueFormat="dd/MM/yyyy" 
+             displayFormat="dd/MM/yyyy"/>
+
+            <Label text="Address" class="oSowFragLabel" required="true"/>
+            <Input
+             id="FPO_id_Address" 
+             value="{PurchaseOrderModel>/Address}"
+             maxLength="250"/>
+
+               <Label text="Start Date" class="oSowFragLabel" required="true"/>
+            <DatePicker
+              id="FPO_id_StartDate"
+             change="FPO_onDateChange"
+             value="{PurchaseOrderModel>/StartDate}"
+              valueFormat="dd/MM/yyyy"
+              displayFormat="dd/MM/yyyy"/>
+
+            <Label text="PAN No" class="oSowFragLabel" required="true"/>
+            <Input
+             id="FPO_id_PanNo" 
+             value="{PurchaseOrderModel>/PAN}" 
+            maxLength="15"/>
+
+
+
+                  <Label text="End Date" class="oSowFragLabel" required="true"/>
+            <DatePicker
+            id="FPO_id_EndDate"
+             change="FPO_onDateChange"
+             value="{PurchaseOrderModel>/EndDate}"
+             valueFormat="dd/MM/yyyy" 
+             displayFormat="dd/MM/yyyy"/>
+            
+        </f:content>
+    </f:SimpleForm>
+     <Table id="idTable" items="{PurchaseOrderModel>/PurchaseOrders}">
+      <headerToolbar>
+        <Toolbar>
+            <Title text="Purchase order Details"  />
+            <ToolbarSpacer />
+        <Button text="Add Item" press="onAddItemButtonPress" />
+        </Toolbar>
+    </headerToolbar>
+    <columns>
+        <Column >
+        <Text text="Description"/>
+        </Column>
+         <Column >
+        <Text text="Unit"/>
+        </Column>
+        <Column >
+        <Text text="Amount"/>
+        </Column>
+        <Column >
+        <Text text="Currency"/>
+        </Column>
+    </columns>
+    <items>
+    <ColumnListItem >
+    <cells>
+
+                <Input
+                id="PO_id_Description"
+                 value="{PurchaseOrderModel>Description}" 
+                 liveChange="onDescriptionInputLiveChange"
+                 valueStateText="Please enter a valid description"
+                 maxLength="250"
+                  width="100%" />
+                <Input 
+                id="PO_id_Unit"
+                type="Number"
+                value="{PurchaseOrderModel>Unit}" 
+                maxLength="10" 
+                width="100%" />
+
+                <Input 
+                id="PO_id_AmountInput"
+                liveChange="PO_onAmountInputChange"
+                valueStateText="Please enter a valid amount"
+                value="{PurchaseOrderModel>Amount}" 
+                maxLength="10"
+                 width="100%" />
+
+                     <Select 
+                            items="{CurrencyModel>/}" 
+                            selectedKey="{PurchaseOrderModel>Currency}" 
+                            width="100%">
+                            <core:Item key="{CurrencyModel>currency}" text="{CurrencyModel>currency}" />
+                        </Select> 
+
+     
+    </cells>
+    </ColumnListItem>
+    </items>
+     </Table>
+      
+
+<VBox>
+    <Toolbar>
+        <Title text="Notes"/>
+        <ToolbarSpacer />
+        <Button text="Clear" press="onClearNotesPress" />
+    </Toolbar>
+
+    <richtexteditor:RichTextEditor 
+        id="FPO_idRichTextEditor" 
+        value="{PurchaseOrderModel>/Notes}"
+        width="100%" 
+        height="300px"
+         />
+</VBox>
+     
+      <FlexBox justifyContent="End" width="100%">
+       <Button text="{i18n>save}" type="Emphasized" press="PO_onsavepress" class="sendMail" />
+       <Button text="{i18n>close}" press="PO_onCloseFrag" class="sendMail" type="Reject"/>
+       </FlexBox>
+    </Dialog>
+</c:FragmentDefinition>

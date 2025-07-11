@@ -1,0 +1,126 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.DetailLeave"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <m:Page id="idDetailLeavePage" title="{i18n>titleInBox}" navButtonPress="DL_onBack" showNavButton="true">
+        <m:headerContent>
+            <m:ToolbarSpacer />
+            <m:Button
+                press="onLogout"
+                icon="sap-icon://log"
+                tooltip="{i18n>logoutTooltip}"
+                type="Transparent" />
+        </m:headerContent>
+
+        <ObjectPageLayout
+            id="ObjectPageLayout"
+            enableLazyLoading="true"
+            beforeNavigate="onBeforeNavigate"
+            useIconTabBar="true"
+            showTitleInHeaderContent="true"
+            upperCaseAnchorBar="false">
+            <headerTitle>
+                <ObjectPageDynamicHeaderTitle>
+                    <expandedHeading>
+                        <m:Title text="{oNavLeaveModel>/EmpName}" wrapping="true"/>
+                    </expandedHeading>
+
+                    <snappedHeading>
+                        <m:FlexBox fitContainer="true" alignItems="Center">
+                            <m:Title text="{oNavLeaveModel>/EmpName}" wrapping="true" />
+                        </m:FlexBox>
+                    </snappedHeading>
+
+                    <expandedContent>
+                        <m:Text text="{oNavLeaveModel>/EmpID}"/>
+                    </expandedContent>
+                
+                    <snappedContent>
+                        <m:Text text="{oNavLeaveModel>/EmpID}"/>
+                    </snappedContent>
+                </ObjectPageDynamicHeaderTitle>
+            </headerTitle>
+
+            <headerContent>
+                <m:VBox fitContainer="true" class="sapUiSmallMargin">
+
+                    <!-- Row 1: Leave Period, Submitted Date, Status -->
+                    <m:FlexBox wrap="Wrap" justifyContent="SpaceBetween" alignItems="Stretch"
+                               class="customRow sapUiSmallMarginBottom" fitContainer="true">
+
+                        <!-- Leave Period -->
+                        <m:VBox class="formBox">
+                            <m:Label text="{i18n>leavePeriod}" design="Bold"/>
+                            <m:Text
+                                wrapping="true"
+                                text="{= ${oNavLeaveModel>/StartDate} + ' to ' + ${oNavLeaveModel>/EndDate} + ' (' + ${oNavLeaveModel>/NoofDays} + ' ' + (${oNavLeaveModel>/NoofDays} === 1 ? 'day' : 'days') + ')' }" class="TextColor"/>
+                        </m:VBox>
+
+                        <!-- Submitted Date -->
+                        <m:VBox class="formBox">
+                            <m:Label text="{i18n>submittedDate}" design="Bold"/>
+                            <m:Text text="{oNavLeaveModel>/SubmittedDate}" wrapping="true"/>
+                        </m:VBox>
+
+                        <!-- Status -->
+                        <m:VBox class="formBox">
+                            <m:Label text="{i18n>status}" design="Bold"/>
+                            <m:ObjectStatus  
+                                text="{oNavLeaveModel>/Status}"
+                                state="{= ${oNavLeaveModel>/Status} === 'Approved' ? 'Success' :
+                                          ${oNavLeaveModel>/Status} === 'Rejected' ? 'Error' :
+                                          ${oNavLeaveModel>/Status} === 'Submitted' ? 'Warning' : 'None'}"/>
+                        </m:VBox>
+
+                    </m:FlexBox>
+
+                    <!-- Row 2: Comments -->
+                    <m:HBox fitContainer="true" alignItems="Start" class="sapUiSmallMarginTop" wrap="NoWrap">
+
+                        <!-- Employee Comment -->
+                        <m:VBox width="50%" class="sapUiSmallMarginEnd">
+                            <m:Label text="{i18n>employeeComment}" design="Bold"/>
+                            <m:ExpandableText
+                                text="{oNavLeaveModel>/EmpComment}"
+                                wrapping="true"
+                                maxCharacters="100"
+                                overflowMode="Button"/>
+                        </m:VBox>
+
+                        <!-- Manager Comment -->
+                        <m:VBox width="50%">
+                            <m:Label text="{i18n>managerComment}" design="Bold"/>
+                            <m:ExpandableText
+                                text="{oNavLeaveModel>/ManagerComment}"
+                                wrapping="true"
+                                maxCharacters="60"
+                                overflowMode="Button"/>
+                        </m:VBox>
+                    </m:HBox>
+                </m:VBox>
+            </headerContent>
+
+            <sections>
+                <ObjectPageSection titleUppercase="false">
+                    <subSections>
+                        <ObjectPageSubSection id="goalsSS1" titleUppercase="false">
+                            <blocks>
+                                <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.LeaveBarChart" type="XML"/>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+        <m:footer>
+            <m:Bar>
+                <m:contentLeft>
+                    <core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML"/>
+                </m:contentLeft>
+            </m:Bar>
+        </m:footer>
+    </m:Page>
+</mvc:View>

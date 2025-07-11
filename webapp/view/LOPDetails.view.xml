@@ -1,0 +1,64 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.LOPDetails"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar">
+	<Page id="LOD_id_LOPDetailsPage" showNavButton="true" navButtonPress="LOD_onBack" title="{i18n>titleInBox}">
+		<content>
+			<fb:FilterBar  class="sapUiTinyMargin" clear="LOD_onClearEmployeeDetails" id="LOD_id_FilterBar" persistencyKey="myPersKey" useToolbar="false" showClearOnFB="true" search="LOD_onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" >
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem name="FromDate" label="{i18n>submittedDate}" groupName="Group1" visibleInFilterBar="true">
+						<fb:control>
+							<DateRangeSelection id="LOD_id_SubmittedDateFilter" valueFormat="MM/dd/yyyy"  displayFormat="MM/dd/yyyy" change="LOD_onDateChangeFilter" />
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="LOD_id_LOPTable" class="sapUiTinyMargin" items="{ path:'LeaveModel>/'}"  busyIndicatorDelay="0"  width="auto"
+                inset="false"   growingScrollToLoad="true" growing="true"  growingThreshold="50"  alternateRowColors="true">
+				<headerToolbar>
+					<OverflowToolbar >
+						<Title id="LOD_id_TitleTable" text="{i18n>lopDetails}"/>
+						<ToolbarSpacer />
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+                <Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>employeeID}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>employeeName}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>fromDate}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>toDate}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>noOfDays}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>typeOfLeave}" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>status}" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+					<Text text="{LeaveModel>employeeID}" />
+					<Text text="{LeaveModel>employeeName}" />
+					<Text text="{path:'LeaveModel>fromDate' ,formatter:'.Formatter.formatDate'}" />
+					<Text text="{path:'LeaveModel>toDate' ,formatter:'.Formatter.formatDate'}" />
+					<Text text="{LeaveModel>NoofDays}" />
+					<Text text="{LeaveModel>typeOfLeave}" />
+					<ObjectStatus inverted="true" text="{LeaveModel>status}" state="{path: 'LeaveModel>status', formatter: '.Formatter.formatObjectStatus'}" />
+					</cells>
+				</ColumnListItem>
+			</items>
+			</Table>
+		</content>
+	</Page>
+</mvc:View>

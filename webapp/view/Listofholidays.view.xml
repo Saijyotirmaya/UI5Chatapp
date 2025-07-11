@@ -1,0 +1,104 @@
+<mvc:View controllerName="sap.kt.com.minihrsolution.controller.Listofholidays"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified"
+	xmlns:filterbar="sap.ui.comp.filterbar">
+	<Page id="LOH_id_ListOfholidays">
+		<headerContent>
+			<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Header" type="XML" />
+		</headerContent>
+		<content>
+			<filterbar:FilterBar id="LOH_id_AdminFilter"
+    useToolbar="false"
+    search="onSearch"
+    showFilterConfiguration="false">
+				<filterbar:filterGroupItems>
+					<filterbar:FilterGroupItem 
+            name="YearPicker" 
+            label="{i18n>year}" 
+            groupName="HolidayGroup"
+            visibleInFilterBar="true">
+						<filterbar:control>
+							<DatePicker 
+                    id="LOH_id_Holidays"
+                   value="{path: '/selectedYear', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy' }}"
+                    displayFormat="yyyy"
+					valueFormat="yyyy"
+                    placeholder="yyyy"/>
+						</filterbar:control>
+					</filterbar:FilterGroupItem>
+				</filterbar:filterGroupItems>
+			</filterbar:FilterBar>
+			<Table
+                 growingScrollToLoad="true"
+                     id="LOH_id_HolidayTable"
+                     width="auto"
+                     items="{path: 'HolidayModel>/'}"
+					 busyIndicatorDelay="0"
+                     growing="true"
+                     growingThreshold="50"
+                     alternateRowColors="true">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title  id="LOH_id_Title" text="{i18n>headerListOfHolidays} ({= ${HolidayModel>/}.length })"/>
+						<ToolbarSpacer />
+						<Button text="{i18n>import}" press="LOH_onOpenImport" type="Accept" visible="{= ${LoginModel>/Role} === 'Admin' }" />
+						<Button text="{i18n>download}"  press="LOH_onExport" type="Ghost"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column demandPopin="true">
+						<Text text="{i18n>holidayName}" textAlign="Center"></Text>
+					</Column>
+					<Column demandPopin="true" >
+						<Text text="{i18n>date}" textAlign="Center"></Text>
+					</Column>
+					<Column demandPopin="true">
+						<Text text="{i18n>day}" textAlign="Center"></Text>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>karnataka}" textAlign="Center"></Text>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>otherStates}" textAlign="Center"></Text>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>maharashtra}" textAlign="Center"></Text>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="{i18n>delhi}" textAlign="Center"></Text>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{HolidayModel>Name}"/>
+							<Text text="{path:'HolidayModel>Date' ,formatter:'.Formatter.formatDate'}" />
+							<Text text="{HolidayModel>Day}"/>
+							<ObjectStatus 
+    state="{= ${HolidayModel>Karnataka} === 'Yes' ? 'Success' : 'Error'}" 
+    icon="{= ${HolidayModel>Karnataka} === 'Yes' ? 'sap-icon://sys-enter-2' : 'sap-icon://error'}" />
+	<ObjectStatus 
+		state="{= ${HolidayModel>OtherStates} === 'Yes' ? 'Success' : 'Error'}" 
+		icon="{= ${HolidayModel>OtherStates} === 'Yes' ? 'sap-icon://sys-enter-2' : 'sap-icon://error'}" />
+	<ObjectStatus 
+		state="{= ${HolidayModel>Maharashtra} === 'Yes' ? 'Success' : 'Error'}" 
+		icon="{= ${HolidayModel>Maharashtra} === 'Yes' ? 'sap-icon://sys-enter-2' : 'sap-icon://error'}" />
+	<ObjectStatus 
+		state="{= ${HolidayModel>Delhi} === 'Yes' ? 'Success' : 'Error'}" 
+		icon="{= ${HolidayModel>Delhi} === 'Yes' ? 'sap-icon://sys-enter-2' : 'sap-icon://error'}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Bar>
+				<contentLeft>
+					<core:Fragment fragmentName="sap.kt.com.minihrsolution.fragment.Footer" type="XML" />
+				</contentLeft>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1,
+    "designationName": "Junior Software Engineer",
+    "department": "IT"
+  },
+  {
+    "id": 10,
+    "designationName": "Principal Software Engineer",
+    "department": "IT"
+  },
+  {
+    "id": 11,
+    "designationName": "Senior Software Engineer",
+    "department": "IT"
+  },
+  {
+    "id": 12,
+    "designationName": "Account Manager",
+    "department": "Accountant"
+  },
+  {
+    "id": 13,
+    "designationName": "Principal Technology Consultant",
+    "department": "IT"
+  },
+  {
+    "id": 14,
+    "designationName": "Senior Technology Consultant",
+    "department": "IT"
+  },
+  {
+    "id": 15,
+    "designationName": "Junior Technology Consultant",
+    "department": "IT"
+  },
+  { "id": 16, "designationName": "Senior HR", "department": "IT" },
+  { "id": 17, "designationName": "Junior HR", "department": "IT" },
+  {
+    "id": 18,
+    "designationName": "Junior Accountant",
+    "department": "Accountant"
+  },
+  {
+    "id": 19,
+    "designationName": "Senior Accountant",
+    "department": "Accountant"
+  },
+  {
+    "id": 20,
+    "designationName": "Senior Sales Consultant",
+    "department": "Sales"
+  },
+  {
+    "id": 21,
+    "designationName": "Junior Sales Consultant",
+    "department": "Sales"
+  },
+  { "id": 22, "designationName": "Project Manager", "department": "IT" },
+  { "id": 3, "designationName": "Product Manager", "department": "IT" },
+  { "id": 4, "designationName": "VP, Marketing", "department": "Sales" },
+  { "id": 5, "designationName": "Chief Architect", "department": "IT" },
+  { "id": 6, "designationName": "Solution Architect", "department": "IT" },
+  { "id": 7, "designationName": "Team Lead", "department": "IT" },
+  { "id": 8, "designationName": "Technical Lead", "department": "IT" },
+  { "id": 9, "designationName": "Engineering Lead", "department": "IT" },
+  { "id": 23, "designationName": "Managing Partner", "department": "IT" },
+  { "id": 24, "designationName": "Manager", "department": "IT" },
+  { "id": 25, "designationName": "Director", "department": "IT" },
+  {
+    "id": 2,
+    "designationName": "Customer Relationship Manager",
+    "department": "IT"
+  }
+]

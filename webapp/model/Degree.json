@@ -1,0 +1,40 @@
+{
+  "degree": [
+    { "ID": 1, "DegreeName": "School/10th" },
+    { "ID": 2, "DegreeName": "PUC/12TH" },
+    
+    { "ID": 3, "DegreeName": "BTech/BE" },
+    { "ID": 4, "DegreeName": "MTech/ME" },
+    { "ID": 5, "DegreeName": "BSc" },
+    { "ID": 6, "DegreeName": "MSc" },
+    { "ID": 7, "DegreeName": "BCom" },
+    { "ID": 8, "DegreeName": "MCom" },
+    { "ID": 9, "DegreeName": "BA" },
+    { "ID": 10, "DegreeName": "MA" },
+    { "ID": 11, "DegreeName": "BBA" },
+    { "ID": 12, "DegreeName": "MBA" },
+    { "ID": 13, "DegreeName": "BCA" },
+    { "ID": 14, "DegreeName": "MCA" },
+    
+    { "ID": 15, "DegreeName": "LLB" },
+    { "ID": 16, "DegreeName": "LLM" },
+    
+    { "ID": 17, "DegreeName": "MBBS" },
+    { "ID": 18, "DegreeName": "BDS" },
+    { "ID": 19, "DegreeName": "BHMS" },
+    { "ID": 20, "DegreeName": "BAMS" },
+    { "ID": 21, "DegreeName": "BUMS" },
+    { "ID": 22, "DegreeName": "MD" },
+    { "ID": 23, "DegreeName": "MS" },
+    { "ID": 24, "DegreeName": "Pharma D" },
+    { "ID": 25, "DegreeName": "BPT" },
+    { "ID": 26, "DegreeName": "MPT" },
+    
+    { "ID": 27, "DegreeName": "Diploma" },
+    { "ID": 28, "DegreeName": "PG Diploma" },
+    
+    { "ID": 29, "DegreeName": "PhD" },
+    { "ID": 30, "DegreeName": "MPhil" },
+    { "ID": 31, "DegreeName": "Other" }
+  ]
+}

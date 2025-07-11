@@ -1,0 +1,35 @@
+[
+    {
+      "ID": 1,
+      "StatusName": "Draft"
+    },
+    {
+      "ID": 2,
+      "StatusName": "Submitted"
+    },
+    {
+      "ID": 3,
+      "StatusName": "Approved"
+    },
+    {
+      "ID": 4,
+      "StatusName": "Rejected"
+    },
+    {
+      "ID": 5,
+      "StatusName": "Revised"
+    },
+    {
+      "ID": 6,
+      "StatusName": "Send back by manager"
+    },
+    {
+      "ID": 7,
+      "StatusName": "Send back by account"
+    },
+    {
+      "ID": 8,
+      "StatusName": "Send to account"
+    }
+  ]
+  

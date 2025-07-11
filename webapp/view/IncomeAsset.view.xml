@@ -1,0 +1,528 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="sap.kt.com.minihrsolution.controller.IncomeAsset"
+    xmlns:fb="sap.ui.comp.filterbar"
+    displayBlock="true"
+>
+    <Page id="IA_id_page">
+        <headerContent>
+            <core:Fragment
+                fragmentName="sap.kt.com.minihrsolution.fragment.Header"
+                type="XML"
+            />
+        </headerContent>
+        <fb:FilterBar
+            id="IA_id_FilterbarEmployee"
+            persistencyKey="myPersKey"
+            useToolbar="false"
+            clear="IA_onPressClear"
+            showClearOnFB="true"
+            search="IA_onSearch"
+            filterChange="IA_.onFilterChange"
+            afterVariantLoad="IA_.onAfterVariantLoad"
+            showFilterConfiguration="false"
+            filterContainerWidth="auto"
+        >
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem
+                    name="SerialNumber"
+                    label="{i18n>slNo}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="IA_id_SlNo"
+                            items="{incomeModel>/}"
+                            showClearIcon="true"
+                        >
+                            <items>
+                                <core:Item
+                                    id="IA_id_SlItem"
+                                    text="{incomeModel>SerialNumber}"
+                                    key="{incomeModel>SerialNumber}"
+                                />
+                            </items>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem
+                    name="EquipmentNumber"
+                    label="{i18n>eqNo}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                    id="filterSlNo"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="IA_id_EqNo"
+                            items="{incomeModel>/}"
+                            showClearIcon="true"
+                        >
+                            <items>
+                                <core:Item
+                                    id="IA_Eqnoitem"
+                                    text="{incomeModel>EquipmentNumber}"
+                                    key="{incomeModel>EquipmentNumber}"
+                                />
+                            </items>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem
+                    name="PikedEmployeeName"
+                    label="{i18n>pickedBy}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                    id="filterPickedBy"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="IA_id_PickedBy"
+                            items="{pickedByModel>/}"
+                            showClearIcon="true"
+                            showSecondaryValues="true"
+                        >
+                            <items>
+                                <core:ListItem
+                                    text="{pickedByModel>EmployeeName}"
+                                    key="{pickedByModel>EmployeeName}"
+                                    additionalText="{pickedByModel>EmployeeID}"
+                                />
+                            </items>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem
+                    name="Date"
+                    label="{i18n>date}"
+                    groupName="Group1"
+                    visibleInFilterBar="true"
+                    id="filterDate"
+                >
+                    <fb:control>
+                        <DateRangeSelection
+                            id="idOdataDateComboBox"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="dd/MM/yyyy"
+                        />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem
+                    name="Status"
+                    label="{i18n>Status}"
+                    groupName="Group"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <ComboBox
+                            id="IA_id_Status"
+                            items="{AssetAssignmentStatus>/}"
+                            showClearIcon="true"
+                        >
+                            <items>
+                                <core:Item
+                                    id="IA_id_Statusitem"
+                                    text="{AssetAssignmentStatus>Value}"
+                                    key="{AssetAssignmentStatus>Value}"
+                                />
+                            </items>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+                 <fb:FilterGroupItem
+                    name="Branch"
+                    label="{i18n>branch}"
+                    groupName="Group"
+                    visibleInFilterBar="true"
+                >
+                    <fb:control>
+                        <!-- <ComboBox
+                            id="IA_id_branch"
+                            showClearIcon="true"
+                             items="{branchModel>/}"
+                        >
+                                 <core:ListItem
+                                  key="{branchModel>city}" 
+                                    text="{branchModel>city}"
+                                />
+                        </ComboBox> -->
+                         <ComboBox
+                    id="IA_id_branch"
+                    showSecondaryValues="true"
+                    items="{BaseLocationModel>/}"
+                    showClearIcon="true"
+
+                >
+                    <core:ListItem
+                        key="{BaseLocationModel>city}" 
+                        text="{BaseLocationModel>city}"
+                        additionalText="{BaseLocationModel>branchCode}"
+                    />
+                </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+        <Table
+            class="sapUiResponsiveMargin"
+            width="auto"
+            alternateRowColors="true"
+            items="{
+                path: 'incomeModel>/',
+                sorter: [{
+                    path: 'Type',
+                    group: true
+                }]
+            }"
+            mode="SingleSelectLeft"
+            updateFinished="onTableColorFormatting"
+            id="IA_id_OdataTable"
+        >
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title
+                        id="IA_TitleID"
+                        text="{i18n>assetDetails} ({=${incomeModel>/}.length})"
+                        level="H1"
+                    />
+                    <ToolbarSpacer />
+                    <Button
+                        text="{i18n>create}"
+                        type="Accept"
+                        press="IA_onCreateButtonPress"
+                        tooltip="Create"
+                    />
+                    <Button
+                    id="idEditButton"
+                        text="{i18n>edit}"
+                        type="Emphasized"
+                        press="IA_onUpadateButtonPress"
+                        tooltip="{i18n>edit}"
+                    />
+                    <Button
+                        text="{i18n>Transferbtn}"
+                        type="Ghost"
+                        press="IA_onTransferButtonPress"
+                        tooltip="Transfer"
+                    />
+                    <Button
+                       id="idTrashButton"
+                        text="{i18n>trash}"
+                        type="Ghost"
+                        press="IA_onTrashButtonPress"
+                        tooltip="Trash"
+                        visible="{= ${LoginModel>/Role} === 'Admin' || ${LoginModel>/Role} === 'IT Manager'}"
+                    />
+                    <Button
+                        id="IA_id_Export"
+                        text="{i18n>download}"
+                        press="IA_onExport"
+                        type="Ghost"
+                        tooltip="Download"
+                    />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>vehicleModel}" 
+                    tooltip="{i18n>vehicleModel}"/>
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>assetdetails}" 
+                    tooltip="{i18n>assetdetails}"/>
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Assetdate}" 
+                    tooltip="{i18n>Assetdate}"/>
+                </Column>
+                <!-- <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Pickeddetails}" />
+                </Column> -->
+                <!-- <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="Sl No/Eq No" />
+                </Column> -->
+                <!-- <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="{i18n>eqNo}"/>
+                </Column> -->
+                <!-- <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>Assetdate}" />
+                </Column> -->
+                <Column>
+                    <Text text="{i18n>transferdetails}" 
+                    tooltip="{i18n>transferdetails}"/>
+                </Column>
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>trashby}" 
+                    tooltip="{i18n>trashby}"/>
+                </Column>
+                <!-- <Column>
+                    <Text text="{i18n>transferdetails}" />
+                </Column> -->
+                <!-- <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="{i18n>creationbranch}"/>
+                </Column> -->
+                <!-- <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>pickedbranch}" />
+                </Column> -->
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                    hAlign="Center"
+                >
+                    <Text text="{i18n>status}" 
+                    tooltip="{i18n>status}"
+                    textAlign="Center"/>
+                </Column>
+                <!-- <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="{i18n>trashDate}"/>
+
+                </Column> -->
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>assetvalue}"
+                    tooltip="{i18n>assetvalue}" />
+                </Column>
+                <!-- <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="{i18n>Transferdate}"/>
+                </Column> 
+                      <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="{i18n>Tranferbranch}"/>
+                </Column>  -->
+                <Column
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                >
+                    <Text text="{i18n>return}" 
+                    tooltip="{i18n>return}"/>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                    type="Navigation"
+                    press="onColumnListItemPress"
+                >
+                    <cells>
+                        <ObjectIdentifier
+                            title="{incomeModel>Model}"
+                            text="{incomeModel>Description}"
+                        />
+                        <ObjectIdentifier
+                            title="{= 'Sl No: ' + ${incomeModel>SerialNumber}}"
+                            text="{='Eq No: '+ ${incomeModel>EquipmentNumber}}"
+                        />
+                        <VBox>
+                        <Text text="{=${incomeModel>PickedEmployeeName}?'Name: '+${incomeModel>PickedEmployeeName}:''}"                     
+                         class="sapUiTinyMarginBottom"
+                                />
+                             <Text text="{=${incomeModel>PickedEmployeeID}?'ID: '+${incomeModel>PickedEmployeeID}:''}"
+                              class="sapUiTinyMarginBottom"                        
+                                  />
+                            <Text text="{= ${incomeModel>Status} !== 'Transferred' ? 'Branch: ' + ${incomeModel>PickedBranch} : ''} {= ${incomeModel>Status} === 'Transferred' ? 'Branch: ' + ${incomeModel>TransferBranch} : ''}"                
+                                            class="sapUiTinyMarginBottom"
+
+                             />
+                              <!-- <Text text="{=${incomeModel>PickedBranch}?'Branch: '+${incomeModel>PickedBranch}:''}"
+                              class="sapUiTinyMarginBottom"                        
+                                  /> -->
+                            <Text text="{= ${incomeModel>AssetCreationDate} ? 'Date: ' + ${
+                                path: 'incomeModel>AssetCreationDate',
+                                formatter: '.Formatter.formatDate'
+                            } : ''}"
+                            />
+                        </VBox>
+                        <!-- <ObjectIdentifier
+                            title="{incomeModel>PickedEmployeeName}"
+                            text="{incomeModel>PickedEmployeeID}"
+                        /> -->
+                        <!-- <ObjectIdentifier
+                            title="{=${incomeModel>PickedEmployeeName}?'By: '+${incomeModel>PickedEmployeeName}+''+${incomeModel>PickedEmployeeID}:''}"
+                        /> -->
+                        <!-- <ObjectIdentifier
+                             title="{=${incomeModel>PickedEmployeeName}?'By: '+${incomeModel>PickedEmployeeName}:''}"
+                            text="{incomeModel>PickedEmployeeID}"
+                        /> -->
+                        <!-- <Text text="{incomeModel>SerialNumber}"/>
+                        <Text text="{incomeModel>EquipmentNumber}"/> -->
+                        <!-- <ObjectIdentifier
+                            title="{incomeModel>SerialNumber}"
+                            text="{incomeModel>EquipmentNumber}"
+                        /> -->
+                        <!-- <ObjectIdentifier
+                            title="{
+                                path: 'incomeModel>AssetCreationDate',
+                                formatter: '.Formatter.formatDate'
+                            }"
+                            text="{incomeModel>AssignBranch}"
+                        /> -->
+                        <VBox>
+                            <Text text="{= ${incomeModel>Status} === 'Transferred' ? 'By: ' + ${incomeModel>TransferByName} : ''}" 
+                                    class="sapUiTinyMarginBottom"
+                            />
+                             <Text text="{= ${incomeModel>Status} === 'Transferred' ?'ID: '+${incomeModel>TransferByID}:''}"
+                              class="sapUiTinyMarginBottom"                        
+                                  />
+
+                            <!-- <Text text="{= ${incomeModel>TransferBranch} ? 'From: ' + ${incomeModel>TransferBranch} : ''}"
+                                    class="sapUiTinyMarginBottom"
+                             /> -->
+                             <Text text="{= ${incomeModel>Status} === 'Transferred' ? 'From: ' + ${incomeModel>PickedBranch} : ''}"                
+                                            class="sapUiTinyMarginBottom"
+
+                             />
+
+                            <Text text="{= ${incomeModel>Status} === 'Transferred' &amp;&amp; ${incomeModel>TransferDate} !== '1899-11-30T00:00:00.000Z' ? 'Date: ' + ${
+                                path: 'incomeModel>TransferDate',
+                                formatter: '.Formatter.formatDate'
+                            } : ''}" />
+                        </VBox>                    
+                                <VBox>
+                                    <Text text="{= ${incomeModel>TrashByEmployeeName} ? 'By: ' + ${incomeModel>TrashByEmployeeName}: ''}"
+                                        class="sapUiTinyMarginBottom"
+                                    />
+                                     <Text text="{=${incomeModel>TrashByEmployeeID}?'ID: '+${incomeModel>TrashByEmployeeID}:''}"
+                                    class="sapUiTinyMarginBottom"                        
+                                  />
+                                     <Text text="{=${incomeModel>TrashBranch}?'Branch: '+${incomeModel>TrashBranch}:''}"
+                                    class="sapUiTinyMarginBottom"
+
+                                  />
+                                    <Text text="{= ${incomeModel>TrashDate} ? 'Date: ' + ${
+                                            path: 'incomeModel>TrashDate',
+                                            formatter: '.Formatter.formatDate'
+                                        } : ''}"
+                                    />
+                                </VBox>                        <!-- <Text text="{
+                            path: 'incomeModel>TrashDate',
+                            formatter: '.Formatter.formatDate'
+                        }" /> -->
+                        <!-- <ObjectIdentifier
+                            title="{= ${incomeModel>TransferDate} === '1899-11-30T00:00:00.000Z' ? ''
+                                : ${
+                                    path: 'incomeModel>TransferDate',
+                                    formatter: '.Formatter.formatDate'
+                                }}"
+                            text="{incomeModel>TransferBranch}"
+                        /> -->
+                        <!-- <Text text="{
+                            path: 'incomeModel>AssetCreationDate',
+                            formatter: '.Formatter.formatDate'
+                        }"/>
+                        <Text text="{incomeModel>AssignBranch}"/> -->
+                        <!-- <Text text="{incomeModel>PickedBranch}"/> -->
+                        <VBox
+                            alignItems="Center"
+                            justifyContent="Center"
+                        >
+                            <ObjectStatus
+                                inverted="false"
+                                text="{incomeModel>Status}"
+                                state="{
+                                    path: 'incomeModel>Status',
+                                    formatter: '.Formatter.formatObjectStatus'
+                                }"
+                                    class="sapUiTinyMarginBottom"
+
+                            />
+                            <Button
+                                id="IA_pickButton"
+                                text="{i18n>pickedBtn}"
+                                visible="{incomeModel>showPickButton}"            
+                                tooltip="{i18n>pickedBtn}"
+                                type="Ghost"
+                                class="sapUiTinyMarginBegin"
+                                press="IA_onPickedButtonPress"
+                            />
+                        </VBox>
+                        <!-- <Text text="{
+                        path:'incomeModel>TrashDate',
+                        formatter: '.Formatter.formatDate'
+                        }"/> -->
+                        <!-- <ObjectNumber
+							number="{
+								parts:[{path:'incomeModel>AssetValue'},{path:'incomeModel>Currency'}],
+								type: 'sap.ui.model.type.Currency',
+								formatOptions: {showMeasure: false}
+							}"
+							unit="{incomeModel>Currency}" /> -->
+                        <!-- <Text text="{
+                        path:'incomeModel>Currency',
+                        formatter: '.Formatter.formatCurrency'
+                        }"/> -->
+                        <Text
+                            text="{incomeModel>Currency} {
+                            path: 'incomeModel>AssetValue',
+                            formatter: '.Formatter.formatCurrency'
+                        }"
+                        />
+                        <VBox  >
+                            <Text
+                                text="{= ${incomeModel>ReturnEmpName} ? 'To: ' + ${incomeModel>ReturnEmpName}: ''}"
+                                    class="sapUiTinyMarginBottom"
+                            />
+                              <Text text="{=${incomeModel>ReturnEmpID}?'ID: '+${incomeModel>ReturnEmpID}:''}"
+                              class="sapUiTinyMarginBottom"                        
+                                  />
+                            <Text
+                                text="{= ${incomeModel>ReturnBranch} ? 'Branch: ' + ${incomeModel>ReturnBranch} : ''}"
+                                    class="sapUiTinyMarginBottom"
+                            />
+                            <Text text="{= ${incomeModel>ReturnDate} === '1899-11-30T00:00:00.000Z' || ${incomeModel>ReturnDate} === null ? '' : 'Date: ' + ${
+                                path: 'incomeModel>ReturnDate',
+                                formatter: '.Formatter.formatDate'
+                            }}" 
+                            />
+                           <!-- <Text
+                               text="{= ${incomeModel>ReturnDate} ? 'Date: ' + ${
+                                   path: 'incomeModel>ReturnDate',
+                                   formatter: '.Formatter.formatDate'
+                               } : ''}"        
+                           /> -->
+                        </VBox>
+
+                        <!-- <Text text="{incomeModel>TransferDate}"/>
+                            <Text text="{incomeModel>TransferBranch}"/> -->
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <footer>
+            <Bar id="IA_id_FooterBar">
+                <contentLeft>
+                    <core:Fragment
+                        fragmentName="sap.kt.com.minihrsolution.fragment.Footer"
+                        type="XML"
+                    />
+                </contentLeft>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>
