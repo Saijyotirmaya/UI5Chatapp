@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Popover
+    id="myPopover"
+    showHeader="false"
+    contentWidth="320px"
+    contentHeight="500px"
+    placement="Bottom"
+    ariaLabelledBy="master-title" resizable="true">
+    
+    <VBox class="sapUiSmallMargin">
+      <Text text="Select Employees for Group" class="sapUiTinyMarginBottom" />
+      
+      <!-- MultiComboBox for multiple employee selection -->
+      <MultiComboBox 
+        id="multiEmployeeSelect"
+        items="{path: 'chat>/filteredEmployees'}"
+        selectionChange="onMultiEmployeeSelectionChange"
+        width="100%"
+        placeholder="Select employees...">
+        <core:Item key="{chat>EmployeeID}"  text="{chat>EmployeeName}" />
+      </MultiComboBox>
+     <Input
+  id="groupNameInput"
+  placeholder="Group Name"
+  visible="{= ${chat>/selectedEmployees}.length > 0 }"
+  value="{chat>/groupName}" />
+
+      <!-- Selected Employees will be shown in this list -->
+      <List id="groupsList" items="{chat>/selectedEmployees}" class="sapUiResponsivePadding">
+        <StandardListItem
+          title="{chat>EmployeeName}"
+          icon="{path:'chat>ProfilePhoto', formatter: '.Formatter.getImageSrc'}"
+          class="roundIcon" />
+      </List>
+      <Button
+  text="Create Group"
+  type="Emphasized"
+  press="onCreateGroupConfirm"
+  class="sapUiSmallMarginTop" />
+    </VBox>
+
+  </Popover>
+</core:FragmentDefinition>

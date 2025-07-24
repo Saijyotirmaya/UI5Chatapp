@@ -1,101 +1,262 @@
 <core:FragmentDefinition
-  xmlns="sap.m"
-  xmlns:core="sap.ui.core"
-  xmlns:suite="sap.suite.ui.commons"
-  xmlns:form="sap.ui.layout.form"
-  xmlns:l="sap.ui.layout"
-  xmlns:f="sap.ui.layout.form"
-  xmlns:mvc="sap.ui.core.mvc"
-  xmlns:u="sap.ui.unified">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:suite="sap.suite.ui.commons"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+>
+    <Dialog
+        id="chatDialog"
+        class="sapUiResponsivePadding"
+        stretch="true"
+        draggable="true"
+        resizable="true"
+        contentWidth="600px"
+        contentHeight="500px"
+        showHeader="false"
+    >
+        <SplitApp id="splitApp">
+            <!-- Master Page -->
+            <masterPages>
+                <Page id="masterPage1">
+                    <content>
+             
+                        <VBox
+                            class="sapUiSmallMargin sapUiResponsiveMargin"
+                            width="100%"
+                        >
+                            <HBox
+                                class="sapUiSmallMarginBottom"
+                                alignItems="Center"
+                                justifyContent="Start"
+                            >
+                                <Input
+                                    placeholder="Search Name's"
+                                    submit="changeName"
+                                    width="100%"
+                                    class="sapUiTinyMargin Groupclass"
+                                />
 
-<Dialog id="chatDialog"  class="sapUiResponsivePadding" stretch="true" draggable="true" resizable="true"  showHeader="false">
+                                <Button
+                                    icon="sap-icon://collaborate"
+                                    text="Group"
+                                    press="onOpenGroupChatDialog"
+                                    class="sapUiTinyMargin"
+                                />
+                            </HBox>
 
-  <SplitApp id="splitApp">
+                            <List
+                                id="groupsList1"
+                                items="{chat>/combinedList}"
+                                class="sapUiResponsivePadding"
+                            >
+                                <StandardListItem
+                                    title="{chat>title}"
+                                    icon="{path:'chat>icon' , formatter: '.Formatter.getImageSrc'}"
+                                    type="Navigation"
+                                    press="onListItemPress"
+                                    class="roundIcon"
+                                />
+                            </List>
+                        </VBox>
+                    </content>
+                </Page>
+            </masterPages>
 
-    <!-- Master Page -->
-    <masterPages>
-      <Page id="masterPage1">
-        <content>
-          <Input
-            placeholder="Enter your name and Press ↵ to submit."
-            submit="changeName"
-            width="100%"
-            class="Groupclass" />
+            <!-- Detail Page -->
+           <detailPages>
+                <Page id="detailPage">
+                    <customHeader>
+                        <Bar>
+                              <contentMiddle>
+                                  <HBox alignItems="Center" renderType="Bare">
+      <Image
+        id="receiverPic"
+        src="{path:'chat>/currentReceiverPic' ,formatter: '.Formatter.getImageSrc'}"
+       class="sapUiTinyMarginEnd roundIcon"
+      />
+    <Link id="headerTitle" text="{chat>/currentReceiverName}" class="Receivername customLinkStyle" press="On_OpenOverview" />
 
-          <List id="groupsList1" items="{chat>/filteredEmployees}">
-            <StandardListItem
-              title="{chat>EmployeeName}"
-              icon="{path:'chat>ProfilePhoto', formatter: '.Formatter.getImageSrc'}"
-              type="Navigation"
-              press=".onPressGoToMaster" />
-          </List>
-        </content>
-      </Page>
-    </masterPages>
+    </HBox>
+                              </contentMiddle>
+                            <contentRight>
+                                <Button
+                                    icon="sap-icon://menu"
+                                    press="onMenuPress"
+                                    tooltip="Menu"
+                                />
+                                <Button
+                                    icon="sap-icon://video"
+                                    press="onVideoCallPress"
+                                    tooltip="Make a Video call"
+                                />
+                                <Button
+                                    icon="sap-icon://call"
+                                    press="onCallPress"
+                                    tooltip="Make a call"
+                                />
+                                <Button
+                                    icon="sap-icon://decline"
+                                    press="onCloseDialog"
+                                    tooltip="Close"
+                                />
+                            </contentRight>
+                        </Bar>
+                    </customHeader>
 
-    <!-- Detail Page -->
-    <detailPages>
-      <Page id="detailPage">
-        <customHeader>
-          <Bar>
-            <contentMiddle>
-              <Title id="headerTitle" text="Chat App" />
-            </contentMiddle>
-            <contentRight>
-              <Button  
-                icon="sap-icon://decline"
-                press=".onCloseDialog"
-                tooltip="Close" />
-            </contentRight>
-          </Bar>
-        </customHeader>
-        <content>
-          <ScrollContainer
-            width="100%"
-            height="90%"
-            id="chatScrollContainer"
-            horizontal="false"
-            vertical="true">
-           <List
-  id="chatList"
-  items="{chat>/messages}"
-  showSeparators="None"
-  width="100%">
-  <CustomListItem>
-    <VBox width="100%">
-      <HBox justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}" width="100%">
-        <VBox
-          class="chatBubble"
-          alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
-          width="auto"
-         >
-          <Text text="{chat>text}" />
-          <Text text="{chat>time}" class="sapUiTinyMarginTop sapUiSmallText" />
-        </VBox>
-      </HBox>
-    </VBox>
-  </CustomListItem>
-</List>
+                    <content>
+                        <ScrollContainer
+                            id="chatScrollContainer"
+                            width="100%"
+                            height="90%"
+                            horizontal="false"
+                            vertical="true"
+                            class="sapUiTinyMarginBottom"
+                        >
+                            <List
+                                id="chatList"
+                                items="{chat>/messages}"
+                                showSeparators="None"
+                                width="100%"
+                            >
+                                <CustomListItem>
+                                    <VBox
+                                        width="100%"
+                                        class="sapUiSmallMarginBottom"
+                                    >
+                                        <HBox
+                                            justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+                                            width="100%"
+                                        >
+                                            <VBox
+                                                class="chatBubble "
+                                                alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+                                                width="auto"
+                                            >
+                                                <core:HTML
+                                                    content="{path: 'chat>attachment', formatter: '.formatAttachmentHTML'}"
+                                                    visible="{= !!${chat>attachment/preview} }"
+                                                />
 
-          </ScrollContainer>
-      
-         <HBox alignItems="Center" justifyContent="Start" >
-        <u:FileUploader id="Mail_id_FileUploader1" fileType="pdf,jpg,jpeg,png,doc,docx,xls,xlsx,ppt,pptx,txt,ppt" name="myFileUpload" multiple="true" uploadUrl="upload/" tooltip="{i18n>toolTipMsgSM}" change="" buttonOnly="true" buttonText=" " icon="sap-icon://attachment"  />
-    
-          <Input
-            id="messageInput1"
-            placeholder="Enter your message and Press ↵ to submit."
-            submit="sendMessage"
-            enabled="{= !!${chat>/current_room}}"
-            width="800px"
-            class="Groupclass" />
-           </HBox>
+                                                <HBox
+                                                    visible="{= !!${chat>attachment} }"
+                                                    class="sapUiTinyMarginTop "
+                                                >
+                                                    <Image
+                                                        src="{chat>attachment/preview}"
+                                                        visible="{= Boolean(${chat>attachment/type} || ${chat>attachment/type}.startsWith('image/')) }"
+                                                        class="chatImagePreview"
+                                                        press="onAttachmentPress"
+                                                    >
+                                                        <customData>
+                                                            <core:CustomData
+                                                                key="url"
+                                                                value="{chat>attachment/preview}"
+                                                                writeToDom="false"
+                                                            />
+                                                            <core:CustomData
+                                                                key="name"
+                                                                value="{chat>attachment/name}"
+                                                                writeToDom="false"
+                                                            />
+                                                        </customData>
+                                                    </Image>
+                                                </HBox>
+                                                <Text text="{chat>text}" />
 
-          <!-- <HBox /> -->
-        </content>
-      </Page>
-    </detailPages>
+                                                <Text
+                                                    text="{chat>time}"
+                                                    class="sapUiTinyMarginTop sapUiSmallText"
+                                                />
+                                            </VBox>
+                                        </HBox>
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </ScrollContainer>
 
-  </SplitApp>
-  </Dialog>
+                        <!-- Message Input and File Upload -->
+                        <Toolbar
+                            width="100%"
+                            class="messageInputToolbar sapUiTinyMarginBottom"
+                            xmlns:core="sap.ui.core"
+                            xmlns:u="sap.ui.unified"
+                        >
+                            <u:FileUploader
+                                id="attachmentUploader"
+                                fileType="pdf,jpg,jpeg,mp4,svg,png,doc,docx,xls,xlsx,ppt,pptx,txt"
+                                multiple="false"
+                                tooltip="Attach file"
+                                buttonOnly="true"
+                                icon="sap-icon://attachment"
+                                iconOnly="true"
+                                change="onFileChange"
+                            />
+
+                          
+                            <Button
+                                icon="sap-icon://add"
+                                tooltip="Insert Emoji"
+                                press="onEmojiPress"
+                            />
+
+                            <TextArea
+                                id="messageInput1"
+                                growing="true"
+                                growingMaxLines="4"
+                                rows="2"
+                                placeholder="Type your message..."
+                                value="{chat>/currentMessage}"
+                                enabled="{= !!${chat>/current_room}}"
+                                width="100%"
+                                class="sapUiSmallMarginBegin"
+                            />
+
+                            <Button
+                                icon="sap-icon://paper-plane"
+                                tooltip="Send message"
+                                press="sendMessage"
+                                type="Emphasized"
+                                class="sapUiSmallMarginBegin"
+                            />
+                        </Toolbar>
+
+                        <!-- Attachment Preview -->
+                        <HBox
+                            id="attachmentPreview"
+                            visible="{= !!${chat>/pendingAttachment} }"
+                            class="sapUiTinyMarginBottom sapUiTinyMarginTop sapUiSmallMargin"
+                        >
+                            <core:Icon
+                                src="sap-icon://attachment"
+                                class="sapUiTinyMarginEnd"
+                            />
+                            <Text
+                                text="{chat>/pendingAttachment/name}"
+                                class="sapUiTinyMarginEnd sapUiSmallText"
+                            />
+                            <Button
+                                icon="sap-icon://decline"
+                                type="Transparent"
+                                tooltip="Remove attachment"
+                                press="onRemoveAttachment"
+                                class="sapUiTinyMarginBegin"
+                            />
+                            <Image
+                                src="{chat>/pendingAttachment/preview}"
+                                visible="{= ${chat>/pendingAttachment/type}.startsWith('image/') }"
+                                width="3rem"
+                                height="3rem"
+                                class="sapUiTinyMarginEnd sapUiSmallMarginBegin"
+                            />
+                        </HBox>
+                    </content>
+                </Page>
+            </detailPages>
+        </SplitApp>
+        
+    </Dialog>
 </core:FragmentDefinition>

@@ -42,7 +42,7 @@
 				</fb:filterGroupItems>
 			</fb:FilterBar>
 			<Table  id="EO_id_TableEOffer" busyIndicatorDelay="0" mode="SingleSelectLeft" selectionChange="EO_onSelectionRadRowE" class="sapUiResponsiveMargin" items="{
-                path: 'EmployeeOfferModel>/', sorter: {path: 'Status',descending: false,group: true}}" growingScrollToLoad="true" width="auto"  growing="true"  growingThreshold="50"  alternateRowColors="true">
+                path: 'EmployeeOfferModel>/', sorter: {path: 'Status',group: true}, groupHeaderFactory: '.getGroupHeader'}" growingScrollToLoad="true" 	width="auto"  growing="true"  growingThreshold="50"  alternateRowColors="true">
 			 <headerToolbar>
                 <OverflowToolbar >
                     <Title text="{i18n>headerEmpDetails} ({= ${EmployeeOfferModel>/}.length})" />

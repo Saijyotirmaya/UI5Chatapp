@@ -3,16 +3,19 @@ sap.ui.define(
     "./BaseController",
     "sap/m/MessageToast",
     "../utils/validation",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "../model/formatter",
+    "sap/m/MessageBox"
   ],
   function (BaseController,
     MessageToast,
     utils,
-    JSONModel) {
+    JSONModel, Formatter, MessageBox) {
     "use strict";
     return BaseController.extend(
       "sap.kt.com.minihrsolution.controller.TilePage",
       {
+        Formatter: Formatter,
         onInit: function () {
           this._autoScrollTimer = null;
           this.getRouter()
@@ -21,27 +24,18 @@ sap.ui.define(
         },
 
         onExit: function () {
-          // 3. Final, essential cleanup
           if (this._autoScrollTimer) {
             clearInterval(this._autoScrollTimer);
           }
         },
-
         _onRouteMatched: async function () {
           if (!this.that) this.that = this.getOwnerComponent().getModel("ThisModel")?.getData().that;
           var LoginFunction = await this.commonLoginFunction("TilePage");
           if (!LoginFunction) return;
-          this.scrollToSection("id_ObjectPageLayoutTile", "id_Sectiontile");
-          this.getBusyDialog();
           this.i18nModel = this.getView().getModel("i18n").getResourceBundle();
-          await this._fetchCommonData("getCompanyInvoice", "CompanyInvoiceModelData");
-          this.getView().getModel("CompanyInvoiceModelData").setProperty("/length", this.getView().getModel("CompanyInvoiceModelData").getData().length);
-          await this._fetchCommonData("getMSAEndingSoon", "MSASOWModel");
-          this.getView().getModel("MSASOWModel").setProperty("/length", this.getView().getModel("MSASOWModel").getData().length);
-          this.AppVisibilityReadCall();
+          this.getBusyDialog()
           await this._fetchCommonData("AllLoginDetails", "EmpModel");
           await this._fetchCommonData("EmployeeDetails", "EmpDetails");
-          // await this._fetchCommonData("getMessagesBetweenUsers", "MessageModel");
           var oChatModel = new JSONModel({
             messages: [],
             messageText: "",
@@ -49,11 +43,12 @@ sap.ui.define(
           });
           this.getView().setModel(oChatModel);
           var oData = {
-            messages: [],         // For the input box chat bubbles
+            messages: [],
             current_chat: [],
-            current_room: "",     // ReceiverID
+            current_room: "",
             username: "",
-            filteredEmployees: []
+            filteredEmployees: [],
+            groups: []
           };
 
           var oModel = new JSONModel(oData);
@@ -62,29 +57,54 @@ sap.ui.define(
           const oLoginModel = this.getView().getModel("LoginModel");
           const sCurrentUserID = oLoginModel.getProperty("/EmployeeID");
 
-          // Get original employee data
           const oEmpModel = this.getView().getModel("EmpDetails");
           const aAllEmployees = oEmpModel.getData();
-
-          // Filter out current user
           const aFilteredEmployees = aAllEmployees.filter(function (oEmployee) {
             return oEmployee.EmployeeID !== sCurrentUserID;
-
-            // read all messages
-    
           });
-
-          // Update model with filtered list
           this.getView().getModel("chat").setProperty("/filteredEmployees", aFilteredEmployees);
+          this.closeBusyDialog();
+          try {
+            const response = await this.ajaxReadWithJQuery("Groups", {
+              EmployeeID: sCurrentUserID
+            });
 
+            const aGroups = response.groups || [];
+            this.getView().getModel("chat").setProperty("/groups", aGroups);
+
+            const oModel = new JSONModel({
+              groupInfoSections: [
+                { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
+                { title: "Members", icon: "sap-icon://group", content: "Member list goes here." },
+                { title: "Media", icon: "sap-icon://media-pause", content: "Media shared in this group." },
+                { title: "Files", icon: "sap-icon://course-program", content: "Files shared in this group." },
+                { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
+                { title: "Event", icon: "sap-icon://appointment-2", content: "Group events appear here." },
+                { title: "Groups", icon: "sap-icon://company-view", content: "Sub-groups or linked groups." }
+              ]
+            });
+            this.getView().setModel(oModel);
+
+          } catch (err) {
+            this.closeBusyDialog();
+            console.error("Failed to fetch filtered employees:", err);
+            MessageToast.show("Could not load your contacts");
+          }
           this.CreateEmployeeModel();
-          this.initializeBirthdayCarousel();
+          this._updateCombinedContacts()
         },
 
         onPressCC: function () {
           MessageToast.show("Implementation in progress");
         },
-
+        TileV_Quotation: function () {
+          this.getRouter().navTo("RouteHrQuotation");
+        },
+        TileV_EmployeeOffer: function () {
+          this.getRouter().navTo("RouteEmployeeOffer", {
+            valueEmp: "EmployeeOffer",
+          });
+        },
 
         CreateEmployeeModel: function () {
           var empData = this.getView().getModel("EmpModel").getData() || [];
@@ -95,338 +115,8 @@ sap.ui.define(
           this.getOwnerComponent().setModel(oFilteredModel, "EmployeeModel");
         },
 
-        AppVisibilityReadCall: async function () {
-          try {
-            const oLoginModel = this.getView().getModel("LoginModel");
-            if (!oLoginModel) return;
 
-            const { Role } = oLoginModel.getData();
-            const oData = await this.ajaxReadWithJQuery(
-              "AppVisibility",
-              { Role },
-              []
-            );
-            this.closeBusyDialog();
-
-            const firstEntry = Array.isArray(oData.data)
-              ? oData.data[0]
-              : oData.data;
-            this.getOwnerComponent().setModel(
-              new JSONModel(firstEntry),
-              "AppVisibilityModel"
-            );
-
-            const tileNames = ["Home", "Timesheet", "Payslip", "OfferGeneration", "Invoice", "Quotation", "Expense", "ManageAsset", "Recruitment"];
-
-            const tileKeys = firstEntry.TileKey?.split(",") || [];
-            const tileMapping = tileNames.reduce((map, name, i) => {
-              map[name] = tileKeys[i] || "0";
-              return map;
-            }, {});
-
-            this.getView().setModel(new JSONModel(tileMapping), "TileAccessModel");
-          } catch (oError) {
-            MessageToast.show("Error in AppVisibilityReadCall");
-          }
-        },
-
-        RP_onUseridpress: function (oEvent) {
-          utils._LCvalidateMandatoryField(oEvent);
-        },
-        RP_onUsername: function (oEvent) {
-          utils._LCvalidateName(oEvent);
-        },
-        RP_onChangnewpass: function (oEvent) {
-          utils._LCvalidatePassword(oEvent);
-        },
-        RP_onChangcomfirmpass: function (oEvent) {
-          utils._LCvalidateMandatoryField(oEvent);
-        },
-
-        RP_onSelectUser: function () {
-          var that = this;
-          var oEmpCombo = sap.ui.getCore().byId("RP_id_userid"); // User ID input field
-          var selectedKey = oEmpCombo.getSelectedKey(); // Get selected user ID
-
-          if (!selectedKey) {
-            oEmpCombo.setValueState("Error");
-            return;
-          } else {
-            oEmpCombo.setValueState("None");
-          }
-          var oEmpModel = this.getView().getModel("EmpModel"); // Fetch employee model
-          if (!oEmpModel) {
-            MessageToast.show(that.i18nModel.getText("noemp"));
-            return;
-          }
-          var aEmployees = oEmpModel.getProperty("/"); // Get employee data array
-          // Find selected employee by EmployeeID
-          var selectedEmployee = aEmployees.find(function (emp) {
-            return emp.EmployeeID === selectedKey;
-          });
-          if (selectedEmployee) {
-            // Ensure FragmentModel exists
-            var oFragmentModel = this.getView().getModel("FragmentModel");
-            if (!oFragmentModel) {
-              oFragmentModel = new JSONModel({});
-              this.getView().setModel(oFragmentModel, "FragmentModel");
-            }
-            // Set EmployeeID and EmployeeName in the model
-            oFragmentModel.setProperty(
-              "/EmployeeID",
-              selectedEmployee.EmployeeID
-            );
-            oFragmentModel.setProperty(
-              "/EmployeeName",
-              selectedEmployee.EmployeeName
-            );
-            // Automatically populate the username field
-            var oUserNameInput = sap.ui.getCore().byId("RP_id_userName");
-            oUserNameInput.setValue(selectedEmployee.EmployeeName);
-            oUserNameInput.setValueState("None");
-            // Clear password fields
-            sap.ui
-              .getCore()
-              .byId("RP_id_NewPW")
-              .setValue("")
-              .setValueState("None");
-            sap.ui
-              .getCore()
-              .byId("RP_id_ConfirmPW")
-              .setValue("")
-              .setValueState("None");
-          } else {
-            MessageToast.show(that.i18nModel.getText("empnotfound"));
-          }
-        },
-        TP_onupdatepress: function () {
-          var oView = this.getView();
-          // Ensure user selection is reset before opening
-          var oFragmentModel = this.getView().getModel("FragmentModel");
-          if (oFragmentModel) {
-            oFragmentModel.setData({ EmployeeID: "", EmployeeName: "" });
-          }
-          if (!this.oUpdatePass) {
-            sap.ui.core.Fragment.load({
-              name: "sap.kt.com.minihrsolution.fragment.ResetPassword",
-              controller: this,
-            }).then(
-              function (oUpdatePass) {
-                this.oUpdatePass = oUpdatePass;
-                oView.addDependent(this.oUpdatePass);
-                this.oUpdatePass.open();
-              }.bind(this)
-            );
-          } else {
-            this.oUpdatePass.open();
-          }
-        },
-        RP_onPressCanclePW: function () {
-          sap.ui
-            .getCore().byId("RP_id_userid").setValue("").setSelectedKey("").setValueState("None");
-          sap.ui.getCore().byId("RP_id_userid").setSelectedKey(null);
-          var oUserNameInput = sap.ui.getCore().byId("RP_id_userName");
-          // Reset all input fields
-          oUserNameInput.setValue("");
-          oUserNameInput.setValueState("None");
-          sap.ui.getCore().byId("RP_id_NewPW").setValue("").setValueState("None");
-          sap.ui.getCore().byId("RP_id_ConfirmPW").setValue("").setValueState("None");
-          // Close dialog
-          if (this.oUpdatePass) {
-            this.oUpdatePass.close();
-          }
-        },
-        RP_onPressSetSave: async function () {
-          const oUserIdInput = sap.ui.getCore().byId("RP_id_userid");
-          const oUserNameInput = sap.ui.getCore().byId("RP_id_userName");
-          const oNewPwInput = sap.ui.getCore().byId("RP_id_NewPW");
-          const oConfirmPwInput = sap.ui.getCore().byId("RP_id_ConfirmPW");
-          const frgUserId = oUserIdInput.getValue();
-          const newPassword = oNewPwInput.getValue();
-          const confirmPassword = oConfirmPwInput.getValue();
-          // Validate inputs
-          if (
-            !utils._LCvalidateMandatoryField(oUserIdInput, "ID") ||
-            !utils._LCvalidateName(oUserNameInput, "ID") ||
-            !utils._LCvalidatePassword(oNewPwInput, "ID") ||
-            !utils._LCvalidateMandatoryField(oConfirmPwInput, "ID")
-          ) {
-            MessageToast.show(this.i18nModel.getText("mandetoryFields"));
-            return;
-          }
-          if (newPassword !== confirmPassword) {
-            sap.ui.getCore().byId("RP_id_ConfirmPW").setValueState("Error");
-            MessageToast.show(this.i18nModel.getText("misPasswords"));
-            return;
-          }
-          try {
-            this.getBusyDialog();
-            const response = await this.ajaxUpdateWithJQuery("LoginDetails", {
-              data: {
-                Password: btoa(newPassword),
-              },
-              filters: {
-                EmployeeID: frgUserId,
-              },
-            });
-            if (response.success === true) {
-              this.closeBusyDialog();
-              sap.ui.getCore().byId("RP_id_userid").setSelectedKey(null);
-              sap.ui.getCore().byId("RP_id_ConfirmPW").setValueState("None");
-              oUserIdInput.setValue("");
-              oUserNameInput.setValue("");
-              oNewPwInput.setValue("");
-              oConfirmPwInput.setValue("");
-              const oModel = this.getView().getModel("EmpModel");
-              if (oModel) {
-                oModel.refresh(true);
-              }
-              if (this.oUpdatePass) {
-                this.oUpdatePass.close();
-              }
-
-              MessageToast.show(this.i18nModel.getText("updatepassword"));
-            } else {
-              MessageToast.show("Failed to update password.");
-            }
-          } catch (err) {
-            MessageToast.show("An error occurred: " + err.message);
-          }
-        },
-        RP_onComPass: function () {
-          const oNewPwInput = sap.ui.getCore().byId("RP_id_NewPW");
-          const oConfirmPwInput = sap.ui.getCore().byId("RP_id_ConfirmPW");
-          const newPassword = oNewPwInput.getValue();
-          const confirmPassword = oConfirmPwInput.getValue();
-          if (newPassword !== confirmPassword) {
-            sap.ui.getCore().byId("RP_id_ConfirmPW").setValueState("Error");
-            MessageToast.show(this.i18nModel.getText("misPasswords"));
-            return;
-          } else {
-            sap.ui.getCore().byId("RP_id_ConfirmPW").setValueState("None");
-          }
-        },
-        //password visibility change
-        RP_onTogglePasswordVisibility: function (oEvent) {
-          var oInput = oEvent.getSource();
-          var sType = oInput.getType() === "Password" ? "Text" : "Password";
-          oInput.setType(sType);
-
-          // Toggle the value help icon properly without losing the value
-          var sIcon =
-            sType === "Password" ? "sap-icon://show" : "sap-icon://hide";
-          oInput.setValueHelpIconSrc(sIcon);
-
-          // Ensure the current value of the password is retained
-          var sCurrentValue = oInput.getValue(); // Get the current value before toggling
-          oInput.setValue(sCurrentValue);
-        },
-
-        TileV_onpressTrainee: function () {
-          this.getRouter().navTo("RouteTrainee", { value: "Trainee" });
-        },
-        TileV_onPressOffer: function () {
-          //this.getBusyDialog();
-          this.getRouter().navTo("RouteEmployeeOffer", {
-            valueEmp: "EmployeeOffer",
-          });
-        },
-        TileV_onpresslistofholidays: function () {
-          this.getRouter().navTo("RouteListofholidays");
-        },
-        TileV_onpressIDCARD: function () {
-          this.getRouter().navTo("RouteIDCardApplication");
-        },
-        TileV_onpressLeave: function () {
-          this.getRouter().navTo("RouteAdminApplyLeave");
-        },
-        TileV_onpressConsultantInvoice: function () {
-          this.getRouter().navTo("RouteConsultantInvoiceApplication");
-        },
-        TileV_onpressContract: function () {
-          this.getRouter().navTo("RouteContract", { valueEmp: "Contract" });
-        },
-        TileV_onPressAdminPaySlip: function () {
-          this.that.getBusyDialog();
-          this.getRouter().navTo("RouteAdminPaySlip");
-        },
-        TileV_onpressSelfservice: function () {
-          this.getRouter().navTo("SelfService", { sPath: "SelfService", Role: "Role" });
-        },
-        TileV_onpressInbox: function () {
-          this.getRouter().navTo("RouteMyInbox", { sMyInBox: "MyInboxView" });
-        },
-        TileV_onpressInvoiceApp: function () {
-          this.getRouter().navTo("RouteCompanyInvoice");
-        },
-        TileV_onpressQuotation: function () {
-          sap.ui.core.BusyIndicator.show(0);
-          this.getRouter().navTo("RouteQuotation");
-        },
-        TileV_onpressAssignment: function () {
-          this.getRouter().navTo("RouteManageAssignment");
-        }, TileV_onpresstimesheet: function () {
-          this.getRouter().navTo("RouteTimesheet");
-        },
-        TileV_onPressTimesheetApp: function () {
-          this.getRouter().navTo("RouteTimesheetApproval");
-        },
-        TileV_onPressGenerateSalary: function () {
-
-          this.getRouter().navTo("RouteGenerateSalary");
-        },
-        TileV_onPressManagePayroll: function () {
-
-          this.getRouter().navTo("RouteManagePayroll");
-        },
-        TileV_onpressEmployeeDetails: function () {
-          this.getRouter().navTo("RouteEmployeeDetails", {
-            sPath: "EmployeeDetails",
-          });
-        },
-        TileV_onBackPress: function () {
-          this.CommonLogoutFunction();
-        },
-        TileV_onpressAddCustomer: function () {
-          this.getRouter().navTo("RouteManageCustomer", {
-            value: "ManageCustomer",
-          });
-        },
-        TileV_onpressMSA: function () {
-          this.getRouter().navTo("RouteMSA");
-        },
-        TileV_onpressExpenseApp: function () {
-          // this.getBusyDialog();
-          this.getRouter().navTo("RouteExpensePage");
-        },
-        TileV_onPressManageSchemeUpload: function () {
-          this.getRouter().navTo("RouteSchemeUpload", {
-            value: "SchemeUpload",
-          });
-        },
-        TileV_onPressIncomeAsset: function () {
-          this.getRouter().navTo("RouteIncomeAsset");
-        },
-        TileV_onPressAssetAssignment: function () {
-          this.getRouter().navTo("RouteAssetAssignment");
-        },
-        TileV_onPressHrQuotation: function () {
-          this.getRouter().navTo("RouteHrQuotation");
-        },
-        TileV_MyAsset: function () {
-          this.getRouter().navTo("MyAsset");
-
-        },
-        TileV_onpressPoApp: function () {
-          this.getRouter().navTo("PurchaseOrder");
-        },
-        TileV_Recruitment: function () {
-          this.getRouter().navTo("Recruitment");
-        },
-        TileV_RecruitementDashbord: function () {
-          this.getRouter().navTo("AppliedCandidates");
-        },
-        onFloatingButtonPress: function () {
+        TileV_ChatApp: function () {
           // this.getRouter().navTo("RouteKTChat");
           var oView = this.getView();
           // Ensure user selection is reset before opening
@@ -434,6 +124,7 @@ sap.ui.define(
             sap.ui.core.Fragment.load({
               name: "sap.kt.com.minihrsolution.fragment.KTChatApp",
               controller: this,
+
             }).then(
               function (Chatapp) {
                 this.Chatapp = Chatapp;
@@ -445,21 +136,14 @@ sap.ui.define(
             this.Chatapp.open();
           }
         },
+
         onCloseDialog: function () {
           if (this.Chatapp) {
             this.Chatapp.close();
           }
+          if (this.messagePollInterval) clearInterval(this.messagePollInterval)
         },
 
-        OnPressNavigationMsaDet: function (oEvent) {
-          var MsaID = oEvent.getSource().getBindingContext("MSASOWModel").getProperty("MsaID");
-          this.getRouter().navTo("RouteMSAEdit", { sPath: MsaID })
-        },
-
-        CI_onPressInvoiceRow: function (oEvent) {
-          var Path = encodeURIComponent(oEvent.getSource().getBindingContext("CompanyInvoiceModelData").getObject().InvNo);
-          this.getRouter().navTo("RouteCompanyInvoiceDetails", { sPath: Path });
-        },
         changeName: function (oEvent) {
           var sName = oEvent.getSource().getValue();
           if (!sName.trim()) {
@@ -471,103 +155,779 @@ sap.ui.define(
           oChatModel.setProperty("/username", sName);
           MessageToast.show("Name set to: " + sName);
         },
+
+        // For encoding and decoding base64 strings
+        utf8ToBase64: function (str) {
+          return btoa(new TextEncoder().encode(str).reduce((data, byte) => data + String.fromCharCode(byte), ""));
+        },
+
+
+        base64ToUtf8: function (b64) {
+          const binaryStr = atob(b64);
+          const bytes = new Uint8Array([...binaryStr].map(char => char.charCodeAt(0)));
+          return new TextDecoder().decode(bytes);
+        },
+
         sendMessage: function () {
+
           const oInput = sap.ui.getCore().byId("messageInput1");
           const sText = oInput.getValue().trim();
-          if (!sText) return;
 
           const oChatModel = this.getView().getModel("chat");
           const oLoginModel = this.getView().getModel("LoginModel");
 
           const sSenderID = oLoginModel.getProperty("/EmployeeID");
           const sSenderName = oLoginModel.getProperty("/EmployeeName");
-          const sReceiverID = oChatModel.getProperty("/current_room");
+          const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
+          const bIsGroup = oChatModel.getProperty("/isGroupChat");
+
+          const oAttachment = oChatModel.getProperty("/pendingAttachment");
+
+          if (!sText && !oAttachment) {
+            MessageToast.show("Please enter a message or attach a file.");
+            return;
+          }
 
           if (!sSenderID || !sReceiverID) {
             MessageToast.show("Please select a recipient first.");
             return;
           }
 
+          //  Build the payload conditionally based on chat type
           const oPayload = {
             data: {
               SenderID: sSenderID,
-              ReceiverID: sReceiverID,
-              MessageText: btoa(sText)// Proper encoding
+              MessageText: sText ? this.utf8ToBase64(sText) : "",
+
+              Attachment: oAttachment ? oAttachment.preview : "",
+              AttachmentName: oAttachment ? oAttachment.name : "",
+              AttachmentType: oAttachment ? oAttachment.type : ""
             }
           };
 
+          if (bIsGroup) {
+            oPayload.data.GroupID = sReceiverID;
+          } else {
+            oPayload.data.ReceiverID = sReceiverID;
+          }
+
+          // Send and update UI
+          this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
+        },
+
+
+        _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
           this.ajaxCreateWithJQuery("ChatApplication", oPayload)
             .then(() => {
-              // Update List model for chat bubble display
               const aMsgList = oChatModel.getProperty("/messages") || [];
-              aMsgList.push({
-                text: sText,
+              const oNewMessage = {
+                text: sText.trim(),
                 sender: "me",
                 time: new Date().toLocaleTimeString()
-              });
+              };
+
+              // Add attachment if available
+              if (oPayload.data.Attachment) {
+                oNewMessage.attachment = {
+                  preview: oPayload.data.Attachment,
+                  name: oPayload.data.AttachmentName || "Attachment",
+                  type: oPayload.data.AttachmentType || "application/octet-stream"
+                };
+              }
+
+              aMsgList.push(oNewMessage);
               oChatModel.setProperty("/messages", aMsgList);
+
+              setTimeout(() => {
+                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+                if (oScrollContainer) {
+                  oScrollContainer.scrollTo(0, 999999, 300);
+                }
+              }, 150);
+
+              // Clear input fields
               oInput.setValue("");
+              oChatModel.setProperty("/pendingAttachment", null);
+
+              //  Play sound after sending
+              this._playSentSound();
             })
-            .catch(function (err) {
+            .catch((err) => {
               MessageToast.show("Failed to send message.");
               console.error(err);
             });
         },
+        _playSentSound: function () {
+          const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/KT_Message.mp3"));
+          oAudio.play().catch((error) => {
+            console.warn("Sound test failed:", error);
+          });
+        },
+        _playReceiveSound: function () {
+          const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/Receive message.mp3"));
+          oAudio.play().catch((error) => {
+            console.warn("Receive sound failed:", error);
+          });
+        },
+
+        onFileChange: function (oEvent) {
+          const oFile = oEvent.getParameter("files")?.[0];
+          if (!oFile) return;
+
+          const oChatModel = this.getView().getModel("chat");
+
+          const oAttachmentData = {
+            file: oFile,
+            name: oFile.name,
+            type: oFile.type,
+            preview: "" // Will be filled by FileReader
+          };
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            oAttachmentData.preview = e.target.result; // Always base64 string with Data URI
+            oChatModel.setProperty("/pendingAttachment", oAttachmentData);
+          };
+
+          // Read all files as DataURL, not just images
+          reader.readAsDataURL(oFile);
+        },
+
         onPressGoToMaster: function (oEvent) {
           const oSelected = oEvent.getSource().getBindingContext("chat").getObject();
           const sReceiverID = oSelected.EmployeeID;
           const sReceiverName = oSelected.EmployeeName;
+          var busylist = sap.ui.getCore().byId("chatList");
 
           const oChatModel = this.getView().getModel("chat");
           const oLoginModel = this.getView().getModel("LoginModel");
-
           const sSenderID = oLoginModel.getProperty("/EmployeeID");
+          oChatModel.setProperty("/isGroupChat", false);
+          const sReceiverPic = oSelected.ProfilePhoto.startsWith("data:")
+            ? oSelected.ProfilePic
+            : `data:image/jpeg;base64,${oSelected.ProfilePhoto}`;
+
 
           oChatModel.setProperty("/current_room", sReceiverID);
           oChatModel.setProperty("/currentReceiverName", sReceiverName);
+          oChatModel.setProperty("/currentReceiverPic", sReceiverPic);
           oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
-          oChatModel.setProperty("/messages", []); // Clear old
-            // var oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
-            //   oScrollContainer.scrollTo(0, 9999999999999);
+          oChatModel.setProperty("/messages", []);
 
-          // Function to fetch messages
+
+
+
+          oChatModel.setProperty("/current_room", sReceiverID);
+          oChatModel.setProperty("/currentReceiverPic", sReceiverPic || "images/default-avatar.png");
+
+          oChatModel.setProperty("/currentReceiverName", sReceiverName);
+          oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
+          oChatModel.setProperty("/messages", []); // Clear previous messages
+
           const fetchMessages = () => {
+            busylist.setBusy(true);
+
+            oChatModel.setProperty("/currentReceiverIsGroup", true);
+
+            // Get old messages to compare
+            const aOldMessages = oChatModel.getProperty("/messages") || [];
+
             this.ajaxReadWithJQuery("getMessagesBetweenUsers", {
               SenderID: sSenderID,
               ReceiverID: sReceiverID
             }).then((response) => {
+              busylist.setBusy(false);
               const aServerMessages = response.results || [];
+              const aMessages = [];
 
-              const sSenderName = oLoginModel.getProperty("/EmployeeName"); // Logged-in user's name
+              aServerMessages.forEach((msg) => {
+                const decodedText = this.base64ToUtf8(msg.MessageText || "");
 
-              const aMessages = aServerMessages.map((msg) => {
-                const decodedText = atob(msg.MessageText);
-                const isMine = msg.Sender === sSenderName; // Now comparing names
-                return {
+                const isMine = msg.Sender === oLoginModel.getProperty("/EmployeeName");
+
+                const base64Decoded = atob(msg.Attachment || "");
+                const isFullDataURL = base64Decoded.startsWith("data:");
+
+                const sMimeType = msg.AttachmentType || "image/jpeg";
+
+                const sPreview = msg.Attachment
+                  ? (isFullDataURL
+                    ? base64Decoded
+                    : `data:${sMimeType};base64,${msg.Attachment}`)
+                  : "";
+
+                const oMessage = {
                   text: decodedText,
                   sender: isMine ? "me" : "them",
-                  time: new Date(msg.SentAt).toLocaleTimeString()
+                  time: new Date(msg.SentAt).toLocaleTimeString(),
+                  attachment: msg.Attachment ? {
+                    preview: sPreview,
+                    name: msg.AttachmentName || "Attachment",
+                    type: sMimeType
+                  } : null
                 };
+                aMessages.push(oMessage);
               });
 
-              const oTitle = sap.ui.getCore().byId("headerTitle");
-              if (oTitle) oTitle.setText(sReceiverName);
+              //  Play receive sound if new message from "them" is found
+              const oldLength = aOldMessages.length;
+              const newLength = aMessages.length;
+
+              if (newLength > oldLength) {
+                const newMessages = aMessages.slice(oldLength);
+                const hasNewIncoming = newMessages.some(msg => msg.sender === "them");
+
+                if (hasNewIncoming) {
+                  this._playReceiveSound();
+                }
+              }
 
               oChatModel.setProperty("/messages", aMessages);
 
-            
+              setTimeout(() => {
+                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+                if (oScrollContainer) {
+                  oScrollContainer.scrollTo(0, 999999, 300);
+                }
+              }, 150);
+
+              const oTitle = sap.ui.getCore().byId("headerTitle");
+              if (oTitle) {
+                oTitle.setText(sReceiverName);
+              }
+
             }).catch((err) => {
+              busylist.setBusy(false);
               MessageToast.show("Failed to load messages");
               console.error(err);
             });
           };
+
           fetchMessages();
-          if (this.messagePollInterval) {
-            clearInterval(this.messagePollInterval);
+
+          if (this.messagePollInterval) clearInterval(this.messagePollInterval);
+          this.messagePollInterval = setInterval(fetchMessages, 15000);
+        },
+
+        formatAttachmentHTML: function (oAttachment) {
+          if (!oAttachment || !oAttachment.preview || !oAttachment.type) {
+            return "";
           }
-          // Set new  interval 
-          this.messagePollInterval = setInterval(fetchMessages, 1000);
+          const sPreview = oAttachment.preview;
+          const sName = oAttachment.name || "Attachment";
+          const sMimeType = oAttachment.type;
+
+          // If it's an image, don't render download link here
+          if (sMimeType.startsWith("image/")) {
+            return "";
+          }
+
+          // Render HTML download link for non-image files
+          return `
+          <a 
+            href="${sPreview}" 
+            download="${sName}" 
+            target="_blank"
+            style="color: #0a6ed1; text-decoration: underline;">
+            📎 ${sName}
+          </a>
+        `;
         }
+        ,
+        onAttachmentPress: function (oEvent) {
+          const oSource = oEvent.getSource();
+          const sUrl = oSource.data("url");
+          const sName = oSource.data("name") || "image.jpg";
+
+          // Create an invisible download link and trigger it
+          const link = document.createElement("a");
+          link.href = sUrl;
+          link.download = sName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },
+
+
+        onRemoveAttachment: function () {
+          const oChatModel = this.getView().getModel("chat");
+          oChatModel.setProperty("/pendingAttachment", {});
+        },
+        onEmojiPress: function (oEvent) {
+          if (!this._oEmojiPopover) {
+            sap.ui.core.Fragment.load({
+              name: "sap.kt.com.minihrsolution.fragment.Emoji",
+              controller: this
+            }).then((oPopover) => {
+              this._oEmojiPopover = oPopover;
+              this.getView().addDependent(this._oEmojiPopover);
+              this._oEmojiPopover.openBy(oEvent.getSource());
+            });
+          } else {
+            this._oEmojiPopover.openBy(oEvent.getSource());
+          }
+        }
+        ,
+        onEmojiSelect: function (oEvent) {
+          const sEmoji = oEvent.getSource().getText();
+          const oInput = sap.ui.getCore().byId("messageInput1");
+          const currentText = oInput.getValue() || "";
+
+          // Append emoji at the end
+          oInput.setValue(currentText + sEmoji);
+
+          // Close the popover
+          if (this._oEmojiPopover) {
+            this._oEmojiPopover.close();
+          }
+        }
+        ,
+        closeCall: async function (oEvent) {
+          var that = this;
+          var date = new Date();
+          var endTime = date.getTime();
+          if (that.rtc) {
+            that.rtc.localAudioTrack.close();
+            // that.rtc.localVideoTrack.stop();
+            that.rtc.localVideoTrack.close();
+            // Traverse all remote users.
+            // Destroy the dynamically created DIV containers.
+            const playerContainer = document.getElementById('div2');
+            playerContainer && playerContainer.remove();
+            // Leave the channel.
+            await that.client.leave();
+          }
+        },
+        alertFunc: function () {
+          var that = this;
+          var countDownDate = that.appointmentURL.startTime;
+          var now = new Date().getTime();
+          var endTime = "10-22-05";
+
+          var distance = now - countDownDate;
+
+          var hours = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+          var minutes = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+          var seconds = that.doubleDigit(Math.floor((distance % (1000 * 60)) / 1000));
+
+          var timeRemaining =
+            new Date('01/01/2007 ' + endTime.split('-')[1] + ':00').getTime() -
+            new Date('01/01/2007 ' + endTime.split('-')[0] + ':00').getTime();
+
+          var diff = Math.abs(
+            Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
+          );
+          //  Correct usage here
+          var oRemaining = sap.ui.getCore().byId("idRemaining");
+          if (oRemaining) {
+            oRemaining.setText(hours + ':' + minutes + ':' + seconds);
+
+            if (parseInt(minutes) > diff) {
+              oRemaining.setType("Critical");
+            }
+          }
+        }
+        ,
+        doubleDigit: function (time) {
+          return ("0" + time).slice(-2);
+        },
+        onVideoCallPress: async function (oEvent) {
+          var oButton = oEvent.getSource(),
+            oView = this.getView();
+          // Ensure user selection is reset before opening
+          if (!this._pPopover_video) {
+            this._pPopover_video = sap.ui.core.Fragment.load({
+              id: oView.getId(),
+              name: "sap.kt.com.minihrsolution.fragment.Videocall",
+              controller: this
+            }).then(function (oPopover) {
+              oView.addDependent(oPopover);
+              return oPopover;
+            });
+          }
+          this._pPopover_video.then(function (oPopover) {
+            oPopover.openBy(oButton);
+          });
+          var that = this;
+          this.flag = 0;
+          try {
+            var that = this;
+            var date = new Date();
+            var startTime = date.getTime();
+            this.appointmentURL = {
+              startTime: startTime,
+              channel: "Sapui5",
+              token: "007eJxTYEhT+33n95rf8x2iBIxWROrsz7ZzX2Cg7iMkGXqFa887lyMKDClpBqmpSRapZokGKSZpZgYWiaZmBuYWlqYGluaGJmmWNQsaMhoCGRlmNPmwMDJAIIjPxhCcWFCaacrAAABVYx7m"
+            };
+            this.timeOut = setInterval(function () {
+              that.alertFunc()
+            }.bind(that), 1000);
+            that.rtc = {
+              // For the local audio and video tracks.
+              localAudioTrack: null,
+              localVideoTrack: null,
+            };
+            if (this.appointmentURL) {
+              var options = {
+                // Pass your app ID here.
+                appId: "df0eeb8e6a0d4f608a560789509714f9",
+                // Set the channel name.
+                channel: this.appointmentURL.channel,
+                // Set the user role in the channel.
+                role: "host"
+              };
+              var token = this.appointmentURL.token;
+            }
+            that.client = AgoraRTC.createClient({
+              mode: "rtc",
+              codec: "vp8"
+            });
+            var uid = "doctor";
+            var div = document.createElement("div");
+            div.id = uid;
+            div.className = "zoomOut"
+            that.client.on("user-left", async (user, mediaType) => {
+              var elem = document.getElementById("id" + user.uid);
+              elem.parentElement.removeChild(elem);
+              console.log("left");
+            });
+            that.client.on("user-published", async (user, mediaType) => {
+              await that.client.subscribe(user, mediaType);
+              console.log("subscribe success");
+              var uuid = "id" + user.uid;
+              if (document.getElementById(uuid) == undefined) {
+                var div = document.createElement("div");
+                div.id = uuid;
+                if (that.flag === 0) {
+                  div.className = "zoomIn"
+                } else {
+                  div.className = "zoomOut"
+                }
+                that.buttonUID = uuid;
+                var button = document.createElement("button");
+                if (that.flag === 0) {
+                  button.innerHTML = "Unpin";
+                } else {
+                  button.innerHTML = "Pin";
+                }
+                button.className = "zoomButton";
+                that.flag = 1;
+                button.addEventListener("click", function (oEvent) {
+                  var a = document.getElementById(uuid).className;
+                  if (a == "zoomOut") {
+                    if (document.getElementsByClassName("zoomIn").length > 0) {
+                      document.getElementsByClassName("zoomIn")[0].className = "zoomOut";
+                    }
+                    document.getElementById(uuid).className = "zoomIn";
+                    oEvent.currentTarget.innerHTML = "Unpin";
+                    var allButtons = document.getElementsByClassName("zoomOut");
+                    for (var i = 1; i < allButtons.length; i++) {
+                      var reqButton = allButtons[i].getElementsByClassName("zoomButton");
+                      if (reqButton.length > 0) {
+                        reqButton[0].style.display = "none";
+                      }
+                    }
+                  } else {
+                    document.getElementById(uuid).className = "zoomOut";
+                    oEvent.currentTarget.innerHTML = "Pin";
+                    var allButtons = document.getElementsByClassName("zoomOut");
+                    for (var i = 1; i < allButtons.length; i++) {
+                      var reqButton = allButtons[i].getElementsByClassName("zoomButton");
+                      if (reqButton.length > 0) {
+                        reqButton[0].style.display = "block";
+                      }
+                    }
+                  }
+                });
+                div.appendChild(button);
+                document.getElementById("participant").appendChild(div);
+              }
+              const remoteVideoTrack = user.videoTrack;
+              that.remotePlayerContainer = document.getElementById(uuid);
+              remoteVideoTrack.play(that.remotePlayerContainer);
+              if (mediaType === "audio") {
+                const remoteAudioTrack = user.audioTrack;
+                remoteAudioTrack.play();
+              }
+            });
+            document.getElementById("participant").appendChild(div);
+            // that.client.setClientRole(options.role);
+            await that.client.join(options.appId, options.channel, token, 0);
+            that.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            that.rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+            await that.client.publish([that.rtc.localAudioTrack, that.rtc.localVideoTrack]);
+            that.localPlayerContainer = document.getElementById(uid);
+            that.rtc.localVideoTrack.play(that.localPlayerContainer);
+            // Users joins for the first time
+          } catch (error) {
+            console.log(error);
+            var errorMessage;
+            // Handle Errors here.
+            if (error && error.message) {
+              errorMessage = error.message;
+              if (error.code == 'CAN_NOT_GET_GATEWAY_SERVER') {
+                errorMessage = "The meeting session is no longer valid. Contact Admin";
+              }
+            } else {
+              errorMessage = "Something went wrong, contact Admin if the error persists";
+            }
+            MessageBox.error(errorMessage, {
+              actions: [MessageBox.Action.CLOSE],
+              onClose: function (sAction) {
+                if (sAction == 'CLOSE') {
+                  // Write close operation
+                }
+              }
+            });
+          };
+        },
+        // group chat creation
+        onOpenGroupChatDialog: function (oEvent) {
+          var oButton = oEvent.getSource(),
+            oView = this.getView();
+          this.getView().getModel("chat").setProperty("/selectedEmployees", []);
+
+          // Ensure user selection is reset before opening
+          if (!this._pPopover) {
+            this._pPopover = sap.ui.core.Fragment.load({
+              id: oView.getId(),
+              name: "sap.kt.com.minihrsolution.fragment.Groupchat",
+              controller: this
+            }).then(function (oPopover) {
+              oView.addDependent(oPopover);
+              return oPopover;
+            });
+          }
+          this._pPopover.then(function (oPopover) {
+            oPopover.openBy(oButton);
+          });
+        },
+        onMultiEmployeeSelectionChange: function (oEvent) {
+          const aSelectedItems = oEvent.getSource().getSelectedItems();
+          const oChatModel = this.getView().getModel("chat");
+
+          // Get all employees from model
+          const aAllEmployees = oChatModel.getProperty("/filteredEmployees");
+
+          // Get selected employee IDs
+          const aSelectedIds = aSelectedItems.map(item => item.getKey());
+
+          // Filter full employee list based on selected IDs
+          const aSelectedEmployees = aAllEmployees.filter(emp => aSelectedIds.includes(emp.EmployeeID));
+
+          // Set selected employees to a new model path
+          oChatModel.setProperty("/selectedEmployees", aSelectedEmployees);
+        }
+        ,
+        onCreateGroupConfirm: function () {
+          const oChatModel = this.getView().getModel("chat");
+          const selectedEmployees = oChatModel.getProperty("/selectedEmployees");
+          const groupName = oChatModel.getProperty("/groupName");
+
+          if (!selectedEmployees || selectedEmployees.length === 0) {
+            sap.m.MessageToast.show("Please select at least one employee");
+            return;
+          }
+
+          if (!groupName || groupName.trim() === "") {
+            sap.m.MessageToast.show("Please enter a group name");
+            return;
+          }
+
+          const participantIDs = selectedEmployees.map(emp => emp.EmployeeID);
+
+          const payload = {
+            data: {
+              GroupName: groupName,
+              Participants: participantIDs
+            }
+          };
+
+          this.getBusyDialog();
+
+          this.ajaxCreateWithJQuery("Groups", payload).then((response) => {
+            this.closeBusyDialog();
+
+            const newGroup = {
+              GroupID: response.GroupID || "group_" + new Date().getTime(), // fallback
+              GroupName: groupName,
+              Members: selectedEmployees,
+              isGroup: true,
+              icon: "sap-icon://group"
+            };
+
+            // Add group to chat>/groups
+            const existingGroups = oChatModel.getProperty("/groups") || [];
+            existingGroups.push(newGroup);
+            oChatModel.setProperty("/groups", existingGroups);
+
+            // Clear UI
+            oChatModel.setProperty("/selectedEmployees", []);
+            oChatModel.setProperty("/groupName", "");
+            this._updateCombinedContacts();
+            this.byId("multiEmployeeSelect").removeAllSelectedItems();
+            this.byId("myPopover").close();
+
+            sap.m.MessageToast.show("Group created successfully!");
+          }).catch((err) => {
+            this.closeBusyDialog();
+            console.error(err);
+            sap.m.MessageToast.show("Failed to create group");
+          });
+        },
+
+        onListItemPress: function (oEvent) {
+          const oContext = oEvent.getSource().getBindingContext("chat");
+          const oSelected = oContext.getObject();
+
+          if (oSelected.isGroup) {
+            this._openGroupChat(oSelected);
+          } else {
+            this.onPressGoToMaster(oEvent); // existing single chat function
+          }
+        },
+
+        _updateCombinedContacts: function () {
+          const oChatModel = this.getView().getModel("chat");
+          const aGroups = oChatModel.getProperty("/groups") || [];
+          const aEmployees = oChatModel.getProperty("/filteredEmployees") || [];
+
+          const aGroupsFormatted = aGroups.map(group => ({
+            ...group,
+            isGroup: true,
+            title: group.GroupName,
+            icon: "sap-icon://group"
+          }));
+
+          const aEmployeesFormatted = aEmployees.map(emp => ({
+            ...emp,
+            isGroup: false,
+            title: emp.EmployeeName,
+            icon: emp.ProfilePhoto || "sap-icon://employee"
+          }));
+
+          const aCombined = aGroupsFormatted.concat(aEmployeesFormatted);
+          oChatModel.setProperty("/combinedList", aCombined);
+        }
+        ,
+        _openGroupChat: function (oGroup) {
+          const oChatModel = this.getView().getModel("chat");
+          const oLoginModel = this.getView().getModel("LoginModel");
+          const sSenderID = oLoginModel.getProperty("/EmployeeID");
+          oChatModel.setProperty("/isGroupChat", true);
+
+
+          oChatModel.setProperty("/current_room", oGroup.GroupID);
+          oChatModel.setProperty("/currentReceiverName", oGroup.GroupName);
+          oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
+          oChatModel.setProperty("/messages", []);
+
+          oChatModel.setProperty("/selectedGroup", oGroup);
+
+          const fetchGroupMessages = () => {
+            this.ajaxReadWithJQuery("Groups", {
+              EmployeeID: sSenderID
+            }).then((response) => {
+              const aMessages = (response.results || []).map(msg => {
+                const decodedText = atob(msg.MessageText || "");
+                const isMine = msg.Sender === oLoginModel.getProperty("/EmployeeName");
+
+                const base64Decoded = atob(msg.Attachment || "");
+                const isFullDataURL = base64Decoded.startsWith("data:");
+                const sMimeType = msg.AttachmentType || "image/jpeg";
+
+                const sPreview = msg.Attachment
+                  ? (isFullDataURL
+                    ? base64Decoded
+                    : `data:${sMimeType};base64,${msg.Attachment}`)
+                  : "";
+
+                return {
+                  text: decodedText,
+                  sender: isMine ? "me" : "them",
+                  time: new Date(msg.SentAt).toLocaleTimeString(),
+                  attachment: msg.Attachment ? {
+                    preview: sPreview,
+                    name: msg.AttachmentName || "Attachment",
+                    type: sMimeType
+                  } : null
+                };
+              });
+
+              oChatModel.setProperty("/messages", aMessages);
+              const oTitle = sap.ui.getCore().byId("headerTitle");
+              if (oTitle) {
+                oTitle.setText(oGroup.GroupName);
+              }
+            }).catch(err => {
+              sap.m.MessageToast.show("Failed to load group messages");
+              console.error(err);
+            });
+          };
+
+          fetchGroupMessages();
+          if (this.messagePollInterval) clearInterval(this.messagePollInterval);
+          this.messagePollInterval = setInterval(fetchGroupMessages, 12000);
+        },
+
+        On_OpenOverview: function (oEvent) {
+          if (!this._oEmojiPopover) {
+            sap.ui.core.Fragment.load({
+              name: "sap.kt.com.minihrsolution.fragment.information",
+              controller: this
+            }).then((oPopover) => {
+              this._oEmojiPopover = oPopover;
+              this.getView().addDependent(this._oEmojiPopover);
+              this._oEmojiPopover.openBy(oEvent.getSource());
+            });
+          } else {
+            this._oEmojiPopover.openBy(oEvent.getSource());
+          }
+        },
+        onGroupSectionPress: function (oEvent) {
+          const oSelectedItem = oEvent.getParameter("listItem");
+          const oContext = oSelectedItem.getBindingContext();
+          const oSectionData = oContext.getObject();
+
+          const oDetailBox = sap.ui.getCore().byId("infoDetailBox");
+          oDetailBox.removeAllItems();
+
+          if (oSectionData.title === "Members") {
+            //  Get selected group from chat model
+            const oGroup = this.getView().getModel("chat").getProperty("/selectedGroup");
+            const aMembers = oGroup?.Participants || [];
+
+            if (aMembers.length > 0) {
+              const oList = new sap.m.List();
+
+              aMembers.forEach(member => {
+                oList.addItem(new sap.m.StandardListItem({
+                  title: member.EmployeeName,
+                  description: member.Designation || member.EmployeeID,
+                  icon: "sap-icon://employee"
+                }));
+              });
+
+              oDetailBox.addItem(oList);
+            } else {
+              oDetailBox.addItem(new sap.m.Text({
+                text: "No members available for this group."
+              }));
+            }
+          } else {
+            oDetailBox.addItem(new sap.m.Text({
+              text: oSectionData.content || "No content available."
+            }));
+          }
+        }
+
+
+
+
+
+        //     onAfterRendering: function () {
+        //   Formatter.resetDateTracker(); // Very important!
+        // }
 
       }
     );

@@ -18,7 +18,7 @@
             <Button press="Tile_NotifictionBTN" icon="sap-icon://bell"/>
             <Button press="TileV_onBackPress" icon="sap-icon://log" />
         </headerContent>
-        <!-- The Splitter's orientation and pane sizes will now dynamically adjust based on device -->
+       
         <l:ResponsiveSplitter height="100%">
             <l:PaneContainer orientation="Horizontal">
             <l:SplitPane requiredParentWidth="300" id="default" demandPane="true" >
@@ -27,247 +27,39 @@
 				</l:layoutData>
 				<ux:ObjectPageLayout upperCaseAnchorBar="false" id="id_ObjectPageLayoutTile">
                     <ux:sections>
-                        <ux:ObjectPageSection id="id_Sectiontile" titleUppercase="false" title="Home" visible="{= ${TileAccessModel>/Home} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/MyInbox} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerInbox}" press="TileV_onpressInbox">
-                                                <TileContent unit="{i18n>tileMyInboxFooter}">
-                                                    <ImageContent src="sap-icon://inbox" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/SelfService} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerSelfService}" press="TileV_onpressSelfservice" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileSelfSerciceFooter}">
-                                                    <ImageContent src="sap-icon://form" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/EmployeeDetail} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerEmpDetails}" press="TileV_onpressEmployeeDetails" subheader="{i18n>subheadEmphike}">
-                                                <TileContent unit="{i18n>tileEmplyeeFooter}">
-                                                    <ImageContent src="sap-icon://employee" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/ApplyLeave} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerLeave}" press="TileV_onpressLeave" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>createLeave}">
-                                                    <ImageContent src="sap-icon://time-off" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/ListOfHolidays} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerListOfHolidays}" press="TileV_onpresslistofholidays">
-                                                <TileContent unit="{i18n>tileLeaveFooter}">
-                                                    <ImageContent src="sap-icon://general-leave-request" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Timesheet" visible="{= ${TileAccessModel>/Timesheet} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/Timesheet} === '1' ? true : false}" class="sapUiMediumMargin" subheader="{i18n>subhead}" header="{i18n>headerTimesheet}" press="TileV_onpresstimesheet">
-                                                <TileContent unit="{i18n>tileTimesheetFooter}">
-                                                    <ImageContent src="sap-icon://timesheet" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/AssignmentTask} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerAssignTask}" subheader="{i18n>subhead}" press="TileV_onpressAssignment">
-                                                <TileContent unit="{i18n>tileAssignmentFooter}">
-                                                    <ImageContent src="sap-icon://activity-assigned-to-goal" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/TimeSheetApproval} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerTimesheetApproval}" press="TileV_onPressTimesheetApp">
-                                                <TileContent unit="{i18n>tileMyInboxFooter}">
-                                                    <ImageContent src="sap-icon://timesheet" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Payslip" visible="{= ${TileAccessModel>/Payslip} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/PaySlip} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>HeaderPaySlip}" press="TileV_onPressAdminPaySlip">
-                                                <TileContent unit="{i18n>tilePaySlipFooter}">
-                                                    <ImageContent src="sap-icon://money-bills" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/GenerateSalary} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerGenerateSalary}" press="TileV_onPressGenerateSalary">
-                                                <TileContent unit="{i18n>tilePaySlipFooter}">
-                                                    <ImageContent src="sap-icon://money-bills" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/ManagePayroll} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerManagePayroll}" press="TileV_onPressManagePayroll">
-                                                <TileContent unit="{i18n>tilePaySlipFooter}">
-                                                    <ImageContent src="sap-icon://money-bills" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Offer Generation" visible="{= ${TileAccessModel>/OfferGeneration} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/GenerateTraineeOffer} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerTrainee}" press="TileV_onpressTrainee" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileUnit}">
-                                                    <ImageContent src="sap-icon://account" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/GenerateEmployeeOffer} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerEmployeeOffer}" press="TileV_onPressOffer" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileUnit}">
-                                                    <ImageContent src="sap-icon://employee-approvals" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/GenerateContract} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerContractDetails}" press="TileV_onpressContract" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileUnit}">
-                                                    <ImageContent src="sap-icon://decision" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Invoice" visible="{= ${TileAccessModel>/Invoice} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/GenerateMsaNda} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerMSA}" press="TileV_onpressMSA" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileUnit}" footer="{i18n>SendMail}">
-                                                    <ImageContent src="sap-icon://add-document" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/AddCustomer} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerCustomer}" press="TileV_onpressAddCustomer" subheader="{i18n>subhead}">
-                                                <TileContent unit="{i18n>tileManagecustFooter}">
-                                                    <ImageContent src="sap-icon://customer" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/InvoiceApp} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerCompanyInvoice}" press="TileV_onpressInvoiceApp">
-                                                <TileContent unit="{i18n>tileInvoiceFooter}">
-                                                    <ImageContent src="sap-icon://my-sales-order" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/ConsultantInvoice} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerContractorInvoice}" press="TileV_onpressConsultantInvoice">
-                                                <TileContent unit="{i18n>tileInvoiceFooter}">
-                                                    <ImageContent src="sap-icon://monitor-payments" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/PurchaseOrder} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerPoGenarate}" press="TileV_onpressPoApp">
-                                                <TileContent unit="{i18n>tilePotitle}">
-                                                    <ImageContent src="sap-icon://my-sales-order" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Quotation" visible="{= ${TileAccessModel>/Quotation} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/A_Quotations} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerQuotation}" press="TileV_onpressQuotation">
-                                                <TileContent unit="{i18n>subheader}">
-                                                    <ImageContent src="sap-icon://my-sales-order" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/QuotationApp} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>hrQuotation}" press="TileV_onPressHrQuotation">
-                                                <TileContent unit="{i18n>createmaintain}">
-                                                    <ImageContent src="sap-icon://activity-assigned-to-goal" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/SchemeUpload} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>schemeupload}" press="TileV_onPressManageSchemeUpload">
-                                                <TileContent unit="{i18n>createmaintain}">
-                                                    <ImageContent src="sap-icon://time-off" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Expense" visible="{= ${TileAccessModel>/Expense} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/ExpenseApp} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>expCreateBtn}" press="TileV_onpressExpenseApp">
-                                                <TileContent unit="{i18n>subhead}">
-                                                    <ImageContent src="sap-icon://expense-report" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
-                        <ux:ObjectPageSection titleUppercase="false" title="Asset" visible="{= ${TileAccessModel>/ManageAsset} === '1' ? true : false}">
-                            <ux:subSections>
-                                <ux:ObjectPageSubSection titleUppercase="false">
-                                    <ux:blocks>
-                                        <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <GenericTile visible="{= ${AppVisibilityModel>/MyAsset} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>MyAssetTitle}" press="TileV_MyAsset">
-                                                <TileContent unit="{i18n>assetFooter}">
-                                                    <ImageContent src="sap-icon://my-view" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/IncomeAsset} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerIncomeAsset}" press="TileV_onPressIncomeAsset">
-                                                <TileContent unit="{i18n>createmaintain}">
-                                                    <ImageContent src="sap-icon://time-off" />
-                                                </TileContent>
-                                            </GenericTile>
-                                            <GenericTile visible="{= ${AppVisibilityModel>/AssetAssignment} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerAssignment}" press="TileV_onPressAssetAssignment">
-                                                <TileContent unit="{i18n>createmaintain}">
-                                                    <ImageContent src="sap-icon://activity-assigned-to-goal" />
-                                                </TileContent>
-                                            </GenericTile>
-                                        </layout:HorizontalLayout>
-                                    </ux:blocks>
-                                </ux:ObjectPageSubSection>
-                            </ux:subSections>
-                        </ux:ObjectPageSection>
-
                         <ux:ObjectPageSection titleUppercase="false" title="{i18n>recruitment}" visible="{= ${TileAccessModel>/Recruitment} === '1' ? true : false}">
                             <ux:subSections>
                                 <ux:ObjectPageSubSection titleUppercase="false">
                                     <ux:blocks>
                                         <layout:HorizontalLayout allowWrapping="true" class="sapUiTinyMargin">
-                                            <!-- <GenericTile visible="{= ${AppVisibilityModel>/RecruitmentApp} === '1' ? true : false}" class="sapUiMediumMargin" header="{i18n>headerrecruitment}" press="TileV_Recruitment">
-                                                <TileContent unit="{i18n>assetFooter}">
-                                                    <ImageContent src="sap-icon://add-employee" />
-                                                </TileContent>
-                                            </GenericTile> -->
-                                            <!-- <GenericTile header="Chat App" class="sapUiMediumMargin" press="Tile_ChatApp">
-                                                <TileContent unit="{i18n>assetFooter}">
-                                                    <ImageContent src="sap-icon://message-popup" />
-                                                </TileContent>
-                                            </GenericTile> -->
-
                                              <GenericTile
-                                    visible="{= ${AppVisibilityModel>/RecruitmentApp} === '1' ? true : false}"
                                     class="sapUiMediumMargin"
-                                    header="{i18n>RecruitementDashbord}"
-                                    press="TileV_RecruitementDashbord"
+                                    header="ChatApp"
+                                    press="TileV_ChatApp"
                                 >
                                     <TileContent unit="{i18n>assetFooter}">
+                                        <ImageContent
+                                            src="sap-icon://add-employee"
+                                        />
+                                    </TileContent>
+                                </GenericTile>
+                                <!-- <GenericTile
+                                    class="sapUiMediumMargin"
+                                    header="Quotaion"
+                                    press="TileV_Quotation"
+                                >
+                                    <TileContent unit="{i18n>assetFooter}">
+                                        <ImageContent
+                                            src="sap-icon://add-employee"
+                                        />
+                                    </TileContent>
+                                </GenericTile> -->
+                                <GenericTile
+                                    class="sapUiMediumMargin"
+                                    header="Emploee Offer"
+                                    press="TileV_EmployeeOffer"
+                                >
+                                    <TileContent unit="">
                                         <ImageContent
                                             src="sap-icon://add-employee"
                                         />
@@ -281,130 +73,16 @@
                     </ux:sections>
                 </ux:ObjectPageLayout>
 			</l:SplitPane>
-            <!-- <l:SplitPane requiredParentWidth="1000">
-					<l:layoutData>
-						<l:SplitterLayoutData size="50%" />
-					</l:layoutData>
-                    <VBox>
-                        <Carousel id="TP_id_Carousel" visible="{= ${BirthdayModel>/}.length > 0 }" backgroundDesign="Transparent" height="auto" width="auto" loop="true" showPageIndicator="false" pages="{path: 'BirthdayModel>/'}">
-                        <pages>
-                            <f:Card class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop" width="auto">
-                                <f:header>
-                                    <card:Header title="{BirthdayModel>EmployeeName}" subtitle="{BirthdayModel>Role}" iconSrc="data:image/png;base64,{BirthdayModel>ProfilePhoto}" iconDisplayShape="Circle" iconFitType="Cover">
-                                    </card:Header>
-                                </f:header>
-                                <f:content>
-                                    <VBox class="sapUiContentPadding sapUiMediumMarginBeginEnd" width="100%" renderType="Bare">
-                                        <Title level="H3" text="Happy Birthday!! 🎉" titleStyle="H3" class="sapUiSmallMarginBottom" />
-                                        <Text text="Wishing you a day filled with happiness and a year filled with joy. We hope you have a wonderful birthday and a great year ahead." class="sapUiSmallMarginBottom" />
-                                        <HBox justifyContent="End" class="sapUiSmallMarginBottom">
-                                            <Button text="Send Wishes" type="Emphasized" press="onPressCC" />
-                                        </HBox>
-                                    </VBox>
-                                </f:content>
-                            </f:Card>
-                        </pages>
-                    </Carousel>
-                    <f:Card width="auto" class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop" visible="{= ${MSASOWModel>/length} > 0
-      &amp;&amp; (
-        ${LoginModel>/Role} === 'Admin' ||
-        ${LoginModel>/Role} === 'Demo' ||
-        ${LoginModel>/Role} === 'AccountManage' ||
-        ${LoginModel>/Role} === 'HR Manager'
-      )}">
-                    <f:content>
-                        <Table items="{MSASOWModel>/}" id="MSATableCard">
-                        <headerToolbar>
-                                    <OverflowToolbar>
-                                        <Title
-                                            text="{i18n>msaDetails}"
-                                            level="H1"
-                                        />
-                                    </OverflowToolbar>
-                                </headerToolbar>
-                                <columns>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>companyName}"/>
-                                    </Column>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>companyHeadName}" />
-                                    </Column>
-                                    <Column minScreenWidth="Desktop" demandPopin="true">
-                                        <Text text="{i18n>companyHeadPosition}" />
-                                    </Column>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>paymentterms}" />
-                                    </Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem type="Navigation" press="OnPressNavigationMsaDet">
-                                        <cells>
-                                            <Text text="{MSASOWModel>CompanyName}"/>
-                                            <Text text="{MSASOWModel>CompanyHeadName}"/>
-                                            <Text text="{MSASOWModel>CompanyHeadPosition}"/>
-                                            <ObjectStatus class="PayByDateClass" text="{path: 'MSASOWModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatDate'}" inverted="false" state="{path: 'MSASOWModel>MsaContractPeriodEndDate', formatter: '.Formatter.formatContractEndState'}" />
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
-                    </f:content>
-                    </f:Card>
-                    
-                    <f:Card width="auto" class="sapUiSmallMargin" visible="{= ${CompanyInvoiceModelData>/length} > 0
-      &amp;&amp; (
-        ${LoginModel>/Role} === 'Admin' ||
-        ${LoginModel>/Role} === 'Demo' ||
-        ${LoginModel>/Role} === 'AccountManage' ||
-        ${LoginModel>/Role} === 'HR Manager'
-      )}">
-                    <f:content>
-                        <Table items="{CompanyInvoiceModelData>/}">
-                        <headerToolbar>
-                                    <OverflowToolbar>
-                                        <Title
-                                            text="{i18n>invoiceDetails}"
-                                            level="H1"
-                                        />
-                                    </OverflowToolbar>
-                                </headerToolbar>
-                                <columns>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>invoiceNo}" />
-                                    </Column>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>customerName}" />
-                                    </Column>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>invoiceDate}" />
-                                    </Column>
-                                    <Column minScreenWidth="Tablet" demandPopin="true">
-                                        <Text text="{i18n>PayByDate}" />
-                                    </Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem type="Navigation" press="CI_onPressInvoiceRow">
-                                        <cells>
-                                            <Text text="{CompanyInvoiceModelData>InvNo}" />
-                                            <Text text="{CompanyInvoiceModelData>CustomerName}" />
-                                            <Text text="{path:'CompanyInvoiceModelData>InvoiceDate',formatter: '.Formatter.formatDate'}" />
-                                            <ObjectStatus class="PayByDateClass" text="{path:'CompanyInvoiceModelData>PayByDate',formatter:'.Formatter.formatDate'}" inverted="false" state="{ parts: [{path: 'CompanyInvoiceModelData>PayByDate'},{path: 'CompanyInvoiceModelData>Status'}], formatter: '.Formatter.companyInvoicePayByDate'}" />
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
-                    </f:content>
-                    </f:Card>
-                </VBox>
-				</l:SplitPane> -->
+          
             </l:PaneContainer>
         </l:ResponsiveSplitter>
-             <Button
+             <!-- <Button
             icon="sap-icon://message-popup"
             text="Chat with me"
             press="onFloatingButtonPress"
             class="floatingButton"
             type="Emphasized"
-        />
+        /> -->
         <footer>
             <Bar>
                 <contentLeft>

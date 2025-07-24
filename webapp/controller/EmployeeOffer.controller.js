@@ -36,6 +36,7 @@ sap.ui.define([
                 else {
                     this.EO_onSearch();
                 }
+
                 this._makeDatePickersReadOnly(["EO_id_JoiningDate"]);
                 var oRoleModel = this.getView().getModel("RoleModel");
                 if (oRoleModel) {
@@ -52,6 +53,89 @@ sap.ui.define([
                 }
                 this.initializeBirthdayCarousel();
             },
+           getGroupHeader: function (oGroup) {
+  const groupStyles = {
+    "Onboarded": {
+      background: "linear-gradient(to bottom right, rgba(141, 239, 226, 0.6), rgba(129, 179, 240, 0.6))",
+      textColor: "#000000"
+    },
+    "Saved": {
+      background: "linear-gradient(to bottom right, rgba(96, 249, 193, 0.6), rgba(122, 247, 247, 0.6))",
+      textColor: "#000000"
+    },
+    "Rejected": {
+      background: "linear-gradient(to bottom right, rgba(235, 115, 115, 0.6), rgba(199, 108, 108, 0.6))",
+      textColor: "#ffffff"
+    },
+    "Offer Sent": {
+      background: "linear-gradient(to bottom right, rgba(87, 208, 229, 0.6), rgba(109, 187, 251, 0.6))",
+      textColor: "#000000"
+    },
+    "New": {
+      background: "linear-gradient(to bottom right, rgba(64, 77, 80, 0.6), rgba(90, 100, 110, 0.6))",
+      textColor: "#ffffff"
+    }
+  };
+
+  const defaultStyle = {
+    background: "linear-gradient(to bottom right, rgba(200, 200, 200, 0.4), rgba(220, 220, 220, 0.4))",
+    textColor: "#000000"
+  };
+
+  const currentStyle = groupStyles[oGroup.key] || defaultStyle;
+
+  const oHeader = new sap.m.GroupHeaderListItem({
+    title: oGroup.key
+  });
+
+  oHeader._customBackground = currentStyle.background;
+  oHeader._customTextColor = currentStyle.textColor;
+
+  oHeader.addEventDelegate({
+    onAfterRendering: function () {
+      this.$().css("background", this._customBackground);
+      this.$().css("color", this._customTextColor);
+    }
+  }, oHeader);
+
+  return oHeader;
+}
+,
+            
+            // onAfterRendering: function () {
+            //     var oTable = this.byId("EO_id_TableEOffer");
+
+            //     setTimeout(function () {
+            //         // Get all group headers
+            //         var $groupHeaders = oTable.$().find(".sapMGHLI");
+
+            //         $groupHeaders.each(function () {
+            //             var $header = $(this);
+            //             var titleText = $header.text().toLowerCase();
+
+            //             // Remove all existing group styles
+            //             $header.removeClass(function (index, className) {
+            //                 return (className.match(/(^|\s)group-\S+/g) || []).join(' ');
+            //             });
+
+            //             // Add class based on title
+            //             if (titleText.includes("active")) {
+            //                 $header.addClass("group-active");
+            //             } else if (titleText.includes("inactive")) {
+            //                 $header.addClass("group-inactive");
+            //             } else if (titleText.includes("onboard")) {
+            //                 $header.addClass("group-onboarded");
+            //             } else if (titleText.includes("reject")) {
+            //                 $header.addClass("group-rejected");
+            //             } else if (titleText.includes("new")) {
+            //                 $header.addClass("group-new");
+            //             } else {
+            //                 $header.addClass("group-default");
+            //             }
+            //         });
+            //     }, 0);
+            // }
+            // ,
             // Read call for employee offer data
             readCallForEmployeeOffer: async function (filter) {
                 try {

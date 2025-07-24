@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Popover
+    id="VideoPopover"
+    showHeader="false"
+    contentWidth="320px"
+    contentHeight="500px"
+    placement="Bottom"
+    ariaLabelledBy="master-title" resizable="true">
+    <content>
+    <VBox class="sapUiSmallMargin">
+            <core:HTML class="sapUiLargeMargin"
+                            content='&lt;div class=&quot;container&quot;&gt; &lt;div class=&quot;participant&quot; id=&quot;participant&quot;&gt;&lt;/div&gt; &lt;div class=&quot;fs&quot; id=&quot;fs&quot;&gt;&lt;/div&gt; &lt;/div&gt;'></core:HTML>
+    </VBox>
+</content>
+<footer >
+                        <OverflowToolbar>
+                            <Button id="idRemaining" type="Emphasized"/>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://popup-window" class="sapUiTinyMarginBeginEnd" text="Share Screen" press="onShareScreen"/>
+                            <Button id="idMute" icon="sap-icon://sound-off" class="sapUiTinyMarginEnd" text="Mute" press="onPressMute"/>
+                            <Button id="idUnmute" visible="false" class="sapUiTinyMarginEnd" icon="sap-icon://sound-loud" text="Unmute" press="onPressUnmute"/>
+                            <Button type="Reject" text="Close Call" press="closeCall">
+                                <layoutData><OverflowToolbarLayoutData priority="NeverOverflow"/></layoutData>
+                            </Button>
+                        </OverflowToolbar>
+                    </footer>
+  </Popover>
+</core:FragmentDefinition>
