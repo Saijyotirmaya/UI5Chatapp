@@ -61,21 +61,21 @@ sap.ui.define(
             "frgConfirmPasswordVisible": false
           });
           this.getView().setModel(oLoginModel, "LoginViewModel");
-          this.bypass();
+          // this.bypass();
         },
-        bypass: function () { 
-          const oLoginModel = this.getView().getModel("LoginModel");
-          oLoginModel.setProperty("/EmployeeID", "KT002");
-          oLoginModel.setProperty("/EmployeeName", "Bhagyesh Shah");
-          oLoginModel.setProperty("/EmailID", "admin@mail.com");
-          oLoginModel.setProperty("/Role", "Admin");
-          oLoginModel.setProperty("/FolderID", "283gdeb3d3");
-          oLoginModel.setProperty("/EducationalandDocumentsDetailFolderID", "eh373be");
-          oLoginModel.setProperty("/EmploymentDetailFolderID", "dei3h 32");
-          oLoginModel.setProperty("/BranchCode", "KLB01");
-          oLoginModel.setProperty("/MobileNo", "3826761829");
-          this.getRouter().navTo("RouteTilePage");
-        },
+        // bypass: function () { 
+        //   const oLoginModel = this.getView().getModel("LoginModel");
+        //   oLoginModel.setProperty("/EmployeeID", "KT002");
+        //   oLoginModel.setProperty("/EmployeeName", "Bhagyesh Shah");
+        //   oLoginModel.setProperty("/EmailID", "admin@mail.com");
+        //   oLoginModel.setProperty("/Role", "Admin");
+        //   oLoginModel.setProperty("/FolderID", "283gdeb3d3");
+        //   oLoginModel.setProperty("/EducationalandDocumentsDetailFolderID", "eh373be");
+        //   oLoginModel.setProperty("/EmploymentDetailFolderID", "dei3h 32");
+        //   oLoginModel.setProperty("/BranchCode", "KLB01");
+        //   oLoginModel.setProperty("/MobileNo", "3826761829");
+        //   this.getRouter().navTo("RouteTilePage");
+        // },
         onpresshome: function () {
           this.getRouter().navTo("RouteHomePage");
         },

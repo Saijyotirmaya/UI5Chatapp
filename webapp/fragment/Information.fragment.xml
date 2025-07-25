@@ -10,6 +10,7 @@
       itemPress="onGroupSectionPress"
       growing="true"
       width="100%"
+      showSeparators="None"
     >
      <items>
       <CustomListItem class="sapUiTinyMarginBottom" type="Active">
@@ -22,9 +23,10 @@
   </VBox>
 
   <!-- Detail Section -->
-  <VBox id="infoDetailBox" width="60%" class="sapUiSmallMargin" height="100%">
-    <Text id="infoDetailText" text="Select a section to view details." />
-  </VBox>
+<VBox id="infoDetailBox" width="60%" class="sapUiSmallMargin" height="100%">
+  <Text id="infoDetailHeader" text="Select a section to view details." />
+  <!-- <Text id="infoDetailText" text="" /> -->
+</VBox>
 </HBox>
 
   </Popover>

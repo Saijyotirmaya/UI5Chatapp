@@ -52,6 +52,7 @@
                                 id="groupsList1"
                                 items="{chat>/combinedList}"
                                 class="sapUiResponsivePadding"
+                                showSeparators="None"
                             >
                                 <StandardListItem
                                     title="{chat>title}"

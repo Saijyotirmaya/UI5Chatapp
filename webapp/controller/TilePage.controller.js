@@ -72,18 +72,18 @@ sap.ui.define(
             const aGroups = response.groups || [];
             this.getView().getModel("chat").setProperty("/groups", aGroups);
 
-            const oModel = new JSONModel({
-              groupInfoSections: [
-                { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
-                { title: "Members", icon: "sap-icon://group", content: "Member list goes here." },
-                { title: "Media", icon: "sap-icon://media-pause", content: "Media shared in this group." },
-                { title: "Files", icon: "sap-icon://course-program", content: "Files shared in this group." },
-                { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
-                { title: "Event", icon: "sap-icon://appointment-2", content: "Group events appear here." },
-                { title: "Groups", icon: "sap-icon://company-view", content: "Sub-groups or linked groups." }
-              ]
-            });
-            this.getView().setModel(oModel);
+            // const oModel = new JSONModel({
+            //   groupInfoSections: [
+            //     { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
+            //     { title: "Members", icon: "sap-icon://group", content: "Member list goes here." },
+            //     { title: "Media", icon: "sap-icon://media-pause", content: "Media shared in this group." },
+            //     { title: "Files", icon: "sap-icon://course-program", content: "Files shared in this group." },
+            //     { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
+            //     { title: "Event", icon: "sap-icon://appointment-2", content: "Group events appear here." },
+            //     { title: "Groups", icon: "sap-icon://company-view", content: "Sub-groups or linked groups." }
+            //   ]
+            // });
+            // this.getView().setModel(oModel);
 
           } catch (err) {
             this.closeBusyDialog();
@@ -721,6 +721,8 @@ sap.ui.define(
         ,
         onCreateGroupConfirm: function () {
           const oChatModel = this.getView().getModel("chat");
+          const oLoginModel = this.getView().getModel("LoginModel");
+
           const selectedEmployees = oChatModel.getProperty("/selectedEmployees");
           const groupName = oChatModel.getProperty("/groupName");
 
@@ -734,7 +736,21 @@ sap.ui.define(
             return;
           }
 
+          const creatorID = oLoginModel.getProperty("/EmployeeID");
+          const creatorName = oLoginModel.getProperty("/EmployeeName");
+          const creatorDesignation = oLoginModel.getProperty("/Designation");
+
           const participantIDs = selectedEmployees.map(emp => emp.EmployeeID);
+
+          //  Ensure creator is included
+          if (!participantIDs.includes(creatorID)) {
+            participantIDs.push(creatorID);
+            selectedEmployees.push({
+              EmployeeID: creatorID,
+              EmployeeName: creatorName,
+              Designation: creatorDesignation
+            });
+          }
 
           const payload = {
             data: {
@@ -756,12 +772,12 @@ sap.ui.define(
               icon: "sap-icon://group"
             };
 
-            // Add group to chat>/groups
+            // Add to chat model
             const existingGroups = oChatModel.getProperty("/groups") || [];
             existingGroups.push(newGroup);
             oChatModel.setProperty("/groups", existingGroups);
 
-            // Clear UI
+            // Reset UI
             oChatModel.setProperty("/selectedEmployees", []);
             oChatModel.setProperty("/groupName", "");
             this._updateCombinedContacts();
@@ -774,7 +790,8 @@ sap.ui.define(
             console.error(err);
             sap.m.MessageToast.show("Failed to create group");
           });
-        },
+        }
+        ,
 
         onListItemPress: function (oEvent) {
           const oContext = oEvent.getSource().getBindingContext("chat");
@@ -815,7 +832,9 @@ sap.ui.define(
           const oLoginModel = this.getView().getModel("LoginModel");
           const sSenderID = oLoginModel.getProperty("/EmployeeID");
           oChatModel.setProperty("/isGroupChat", true);
-
+          oChatModel.setProperty("/currentReceiverIsGroup", oGroup.IsGroup === true);
+          // flipped
+          // true if it's a group
 
           oChatModel.setProperty("/current_room", oGroup.GroupID);
           oChatModel.setProperty("/currentReceiverName", oGroup.GroupName);
@@ -871,35 +890,76 @@ sap.ui.define(
         },
 
         On_OpenOverview: function (oEvent) {
-          if (!this._oEmojiPopover) {
+          const oChatModel = this.getView().getModel("chat");
+          const bIsGroup = oChatModel.getProperty("/currentReceiverIsGroup"); // assume this boolean is set when selecting a contact
+
+          // Filter out section based on whether the receiver is a group or not
+          const aOriginalSections = [
+            { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
+            { title: "Members", icon: "sap-icon://collaborate", content: "Member list goes here." },
+            { title: "Media", icon: "sap-icon://media-pause", content: "Media shared in this group." },
+            { title: "Files", icon: "sap-icon://document", content: "Files shared in this group." },
+            { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
+            { title: "Event", icon: "sap-icon://calendar", content: "Group events appear here." },
+            { title: "Groups", icon: "sap-icon://group", content: "Sub-groups or linked groups." }
+          ];
+
+          // Apply condition remove "Groups" if user, "Members" if group
+
+
+          const aFilteredSections = aOriginalSections.filter(section => {
+            if (!bIsGroup && section.title === "Groups") return false;
+            if (bIsGroup && section.title === "Members") return false;
+            return true;
+          });
+
+
+          // Set filtered sections to a temporary model
+          const oInfoModel = new JSONModel({
+            groupInfoSections: aFilteredSections
+          });
+          this.getView().setModel(oInfoModel);
+
+          // Load and open popover
+          if (!this._OverViewPopover) {
             sap.ui.core.Fragment.load({
               name: "sap.kt.com.minihrsolution.fragment.information",
               controller: this
             }).then((oPopover) => {
-              this._oEmojiPopover = oPopover;
-              this.getView().addDependent(this._oEmojiPopover);
-              this._oEmojiPopover.openBy(oEvent.getSource());
+              this._OverViewPopover = oPopover;
+              this.getView().addDependent(this._OverViewPopover);
+              this._OverViewPopover.openBy(oEvent.getSource());
             });
           } else {
-            this._oEmojiPopover.openBy(oEvent.getSource());
+            this._OverViewPopover.openBy(oEvent.getSource());
           }
-        },
+        }
+        ,
         onGroupSectionPress: function (oEvent) {
           const oSelectedItem = oEvent.getParameter("listItem");
           const oContext = oSelectedItem.getBindingContext();
           const oSectionData = oContext.getObject();
 
           const oDetailBox = sap.ui.getCore().byId("infoDetailBox");
+          const oHeaderText = sap.ui.getCore().byId("infoDetailHeader");
+          // const oDetailText = sap.ui.getCore().byId("infoDetailText");
+
+          // Set header title
+          oHeaderText.setText(oSectionData.title);
+
+          // Clear existing items (except header & text placeholders)
           oDetailBox.removeAllItems();
+          oDetailBox.addItem(oHeaderText); // re-add header
+          // oDetailBox.addItem(oDetailText); // re-add placeholder or actual content
 
           if (oSectionData.title === "Members") {
-            //  Get selected group from chat model
             const oGroup = this.getView().getModel("chat").getProperty("/selectedGroup");
             const aMembers = oGroup?.Participants || [];
 
+            oHeaderText.setText(`Members (${aMembers.length})`);
+
             if (aMembers.length > 0) {
               const oList = new sap.m.List();
-
               aMembers.forEach(member => {
                 oList.addItem(new sap.m.StandardListItem({
                   title: member.EmployeeName,
@@ -907,19 +967,16 @@ sap.ui.define(
                   icon: "sap-icon://employee"
                 }));
               });
-
               oDetailBox.addItem(oList);
+              // oDetailText.setText(""); // Clear fallback text
             } else {
-              oDetailBox.addItem(new sap.m.Text({
-                text: "No members available for this group."
-              }));
+              oDetailText.setText("No members available for this group.");
             }
           } else {
-            oDetailBox.addItem(new sap.m.Text({
-              text: oSectionData.content || "No content available."
-            }));
+            oDetailText.setText(oSectionData.content || "No content available.");
           }
         }
+
 
 
 
