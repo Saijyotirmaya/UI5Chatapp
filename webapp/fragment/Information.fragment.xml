@@ -24,6 +24,30 @@
 
   <!-- Detail Section -->
 <VBox id="infoDetailBox" width="60%" class="sapUiSmallMargin" height="100%">
+<!-- Inside VBox id="infoDetailBox" -->
+<HBox id="groupPicBox" class="sapUiSmallMargin" visible="false" alignItems="Center">
+  <Image
+    id="groupProfileImage"
+    src="images/default-group.png"
+    width="4rem"
+    height="4rem"
+    class="roundIcon sapUiSmallMarginEnd"
+    press="onGroupImagePress"
+    tooltip="Click to upload profile image"
+  />
+  <Text text="Click to change group profile picture" />
+  <unified:FileUploader
+    id="groupImageUploader"
+    visible="false"
+    change="onGroupImageUpload"
+    sameFilenameAllowed="true"
+    fileType="jpg,jpeg,png,gif"
+    maximumFileSize="5"
+    xmlns:unified="sap.ui.unified"
+/>
+
+</HBox>
+
   <Text id="infoDetailHeader" text="Select a section to view details." />
   <!-- <Text id="infoDetailText" text="" /> -->
 </VBox>

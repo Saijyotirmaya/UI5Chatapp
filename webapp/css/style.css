@@ -814,9 +814,9 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
   right: 100px;
   cursor: pointer;
   z-index: 1000;
-  border-radius: 50%;
+
   height: 80px;
-  width: 110px;
+  width: 80px;
   padding: 0;
 }
 .responsiveCard {
@@ -890,11 +890,10 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
   justify-content: center !important;
   align-items: center !important;
 }
-
 .myCustomIconBtn .sapMBtnIcon {
   color: #141f7d !important;
   font-size: 30px !important;
-  margin-left: -12px !important;
+  margin-left: -12px !important;  
   margin-top: 4px !important;
 }
 

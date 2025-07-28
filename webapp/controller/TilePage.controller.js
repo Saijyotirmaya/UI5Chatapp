@@ -115,8 +115,7 @@ sap.ui.define(
           this.getOwnerComponent().setModel(oFilteredModel, "EmployeeModel");
         },
 
-
-        TileV_ChatApp: function () {
+        onFloatingButtonPress: function () {
           // this.getRouter().navTo("RouteKTChat");
           var oView = this.getView();
           // Ensure user selection is reset before opening
@@ -168,95 +167,99 @@ sap.ui.define(
           return new TextDecoder().decode(bytes);
         },
 
-        sendMessage: function () {
+          sendMessage: function () {
 
-          const oInput = sap.ui.getCore().byId("messageInput1");
-          const sText = oInput.getValue().trim();
+            const oInput = sap.ui.getCore().byId("messageInput1");
+            const sText = oInput.getValue().trim();
 
-          const oChatModel = this.getView().getModel("chat");
-          const oLoginModel = this.getView().getModel("LoginModel");
+            const oChatModel = this.getView().getModel("chat");
+            const oLoginModel = this.getView().getModel("LoginModel");
 
-          const sSenderID = oLoginModel.getProperty("/EmployeeID");
-          const sSenderName = oLoginModel.getProperty("/EmployeeName");
-          const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
-          const bIsGroup = oChatModel.getProperty("/isGroupChat");
+            const sSenderID = oLoginModel.getProperty("/EmployeeID");
+            const sSenderName = oLoginModel.getProperty("/EmployeeName");
+            const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
+            const bIsGroup = oChatModel.getProperty("/isGroupChat");
 
-          const oAttachment = oChatModel.getProperty("/pendingAttachment");
+            const oAttachment = oChatModel.getProperty("/pendingAttachment");
 
-          if (!sText && !oAttachment) {
-            MessageToast.show("Please enter a message or attach a file.");
-            return;
-          }
-
-          if (!sSenderID || !sReceiverID) {
-            MessageToast.show("Please select a recipient first.");
-            return;
-          }
-
-          //  Build the payload conditionally based on chat type
-          const oPayload = {
-            data: {
-              SenderID: sSenderID,
-              MessageText: sText ? this.utf8ToBase64(sText) : "",
-
-              Attachment: oAttachment ? oAttachment.preview : "",
-              AttachmentName: oAttachment ? oAttachment.name : "",
-              AttachmentType: oAttachment ? oAttachment.type : ""
+            if (!sText && !oAttachment) {
+              MessageToast.show("Please enter a message or attach a file.");
+              return;
             }
-          };
 
-          if (bIsGroup) {
-            oPayload.data.GroupID = sReceiverID;
-          } else {
-            oPayload.data.ReceiverID = sReceiverID;
-          }
+            if (!sSenderID || !sReceiverID) {
+              MessageToast.show("Please select a recipient first.");
+              return;
+            }
+            if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
+              MessageToast.show("Attachment size must be less than 10MB.");
+              return;
+            }
 
-          // Send and update UI
-          this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
-        },
+            //  Build the payload conditionally based on chat type
+            const oPayload = {
+              data: {
+                SenderID: sSenderID,
+                MessageText: sText ? this.utf8ToBase64(sText) : "",
 
-
-        _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
-          this.ajaxCreateWithJQuery("ChatApplication", oPayload)
-            .then(() => {
-              const aMsgList = oChatModel.getProperty("/messages") || [];
-              const oNewMessage = {
-                text: sText.trim(),
-                sender: "me",
-                time: new Date().toLocaleTimeString()
-              };
-
-              // Add attachment if available
-              if (oPayload.data.Attachment) {
-                oNewMessage.attachment = {
-                  preview: oPayload.data.Attachment,
-                  name: oPayload.data.AttachmentName || "Attachment",
-                  type: oPayload.data.AttachmentType || "application/octet-stream"
-                };
+                Attachment: oAttachment ? oAttachment.preview : "",
+                AttachmentName: oAttachment ? oAttachment.name : "",
+                AttachmentType: oAttachment ? oAttachment.type : ""
               }
+            };
 
-              aMsgList.push(oNewMessage);
-              oChatModel.setProperty("/messages", aMsgList);
+            if (bIsGroup) {
+              oPayload.data.GroupID = sReceiverID;
+            } else {
+              oPayload.data.ReceiverID = sReceiverID;
+            }
 
-              setTimeout(() => {
-                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
-                if (oScrollContainer) {
-                  oScrollContainer.scrollTo(0, 999999, 300);
+            // Send and update UI
+            this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
+          },
+
+
+          _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
+            this.ajaxCreateWithJQuery("ChatApplication", oPayload)
+              .then(() => {
+                const aMsgList = oChatModel.getProperty("/messages") || [];
+                const oNewMessage = {
+                  text: sText.trim(),
+                  sender: "me",
+                  time: new Date().toLocaleTimeString()
+                };
+
+                // Add attachment if available
+                if (oPayload.data.Attachment) {
+                  oNewMessage.attachment = {
+                    preview: oPayload.data.Attachment,
+                    name: oPayload.data.AttachmentName || "Attachment",
+                    type: oPayload.data.AttachmentType || "application/octet-stream"
+                  };
                 }
-              }, 150);
 
-              // Clear input fields
-              oInput.setValue("");
-              oChatModel.setProperty("/pendingAttachment", null);
+                aMsgList.push(oNewMessage);
+                oChatModel.setProperty("/messages", aMsgList);
 
-              //  Play sound after sending
-              this._playSentSound();
-            })
-            .catch((err) => {
-              MessageToast.show("Failed to send message.");
-              console.error(err);
-            });
-        },
+                setTimeout(() => {
+                  const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+                  if (oScrollContainer) {
+                    oScrollContainer.scrollTo(0, 999999, 300);
+                  }
+                }, 150);
+
+                // Clear input fields
+                oInput.setValue("");
+                oChatModel.setProperty("/pendingAttachment", null);
+
+                //  Play sound after sending
+                this._playSentSound();
+              })
+              .catch((err) => {
+                MessageToast.show("Failed to send message.");
+                console.error(err);
+              });
+          },
         _playSentSound: function () {
           const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/KT_Message.mp3"));
           oAudio.play().catch((error) => {
@@ -303,9 +306,10 @@ sap.ui.define(
           const oLoginModel = this.getView().getModel("LoginModel");
           const sSenderID = oLoginModel.getProperty("/EmployeeID");
           oChatModel.setProperty("/isGroupChat", false);
-          const sReceiverPic = oSelected.ProfilePhoto.startsWith("data:")
-            ? oSelected.ProfilePic
+          const sReceiverPic = oSelected.ProfilePhoto?.startsWith("data:")
+            ? oSelected.ProfilePhoto
             : `data:image/jpeg;base64,${oSelected.ProfilePhoto}`;
+
 
 
           oChatModel.setProperty("/current_room", sReceiverID);
@@ -313,9 +317,6 @@ sap.ui.define(
           oChatModel.setProperty("/currentReceiverPic", sReceiverPic);
           oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
           oChatModel.setProperty("/messages", []);
-
-
-
 
           oChatModel.setProperty("/current_room", sReceiverID);
           oChatModel.setProperty("/currentReceiverPic", sReceiverPic || "images/default-avatar.png");
@@ -498,189 +499,189 @@ sap.ui.define(
             await that.client.leave();
           }
         },
-        alertFunc: function () {
-          var that = this;
-          var countDownDate = that.appointmentURL.startTime;
-          var now = new Date().getTime();
-          var endTime = "10-22-05";
+        // alertFunc: function () {
+        //   var that = this;
+        //   var countDownDate = that.appointmentURL.startTime;
+        //   var now = new Date().getTime();
+        //   var endTime = "10-22-05";
 
-          var distance = now - countDownDate;
+        //   var distance = now - countDownDate;
 
-          var hours = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-          var minutes = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
-          var seconds = that.doubleDigit(Math.floor((distance % (1000 * 60)) / 1000));
+        //   var hours = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        //   var minutes = that.doubleDigit(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+        //   var seconds = that.doubleDigit(Math.floor((distance % (1000 * 60)) / 1000));
 
-          var timeRemaining =
-            new Date('01/01/2007 ' + endTime.split('-')[1] + ':00').getTime() -
-            new Date('01/01/2007 ' + endTime.split('-')[0] + ':00').getTime();
+        //   var timeRemaining =
+        //     new Date('01/01/2007 ' + endTime.split('-')[1] + ':00').getTime() -
+        //     new Date('01/01/2007 ' + endTime.split('-')[0] + ':00').getTime();
 
-          var diff = Math.abs(
-            Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
-          );
-          //  Correct usage here
-          var oRemaining = sap.ui.getCore().byId("idRemaining");
-          if (oRemaining) {
-            oRemaining.setText(hours + ':' + minutes + ':' + seconds);
+        //   var diff = Math.abs(
+        //     Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
+        //   );
+        //   //  Correct usage here
+        //   var oRemaining = sap.ui.getCore().byId("idRemaining");
+        //   if (oRemaining) {
+        //     oRemaining.setText(hours + ':' + minutes + ':' + seconds);
 
-            if (parseInt(minutes) > diff) {
-              oRemaining.setType("Critical");
-            }
-          }
-        }
-        ,
-        doubleDigit: function (time) {
-          return ("0" + time).slice(-2);
-        },
-        onVideoCallPress: async function (oEvent) {
-          var oButton = oEvent.getSource(),
-            oView = this.getView();
-          // Ensure user selection is reset before opening
-          if (!this._pPopover_video) {
-            this._pPopover_video = sap.ui.core.Fragment.load({
-              id: oView.getId(),
-              name: "sap.kt.com.minihrsolution.fragment.Videocall",
-              controller: this
-            }).then(function (oPopover) {
-              oView.addDependent(oPopover);
-              return oPopover;
-            });
-          }
-          this._pPopover_video.then(function (oPopover) {
-            oPopover.openBy(oButton);
-          });
-          var that = this;
-          this.flag = 0;
-          try {
-            var that = this;
-            var date = new Date();
-            var startTime = date.getTime();
-            this.appointmentURL = {
-              startTime: startTime,
-              channel: "Sapui5",
-              token: "007eJxTYEhT+33n95rf8x2iBIxWROrsz7ZzX2Cg7iMkGXqFa887lyMKDClpBqmpSRapZokGKSZpZgYWiaZmBuYWlqYGluaGJmmWNQsaMhoCGRlmNPmwMDJAIIjPxhCcWFCaacrAAABVYx7m"
-            };
-            this.timeOut = setInterval(function () {
-              that.alertFunc()
-            }.bind(that), 1000);
-            that.rtc = {
-              // For the local audio and video tracks.
-              localAudioTrack: null,
-              localVideoTrack: null,
-            };
-            if (this.appointmentURL) {
-              var options = {
-                // Pass your app ID here.
-                appId: "df0eeb8e6a0d4f608a560789509714f9",
-                // Set the channel name.
-                channel: this.appointmentURL.channel,
-                // Set the user role in the channel.
-                role: "host"
-              };
-              var token = this.appointmentURL.token;
-            }
-            that.client = AgoraRTC.createClient({
-              mode: "rtc",
-              codec: "vp8"
-            });
-            var uid = "doctor";
-            var div = document.createElement("div");
-            div.id = uid;
-            div.className = "zoomOut"
-            that.client.on("user-left", async (user, mediaType) => {
-              var elem = document.getElementById("id" + user.uid);
-              elem.parentElement.removeChild(elem);
-              console.log("left");
-            });
-            that.client.on("user-published", async (user, mediaType) => {
-              await that.client.subscribe(user, mediaType);
-              console.log("subscribe success");
-              var uuid = "id" + user.uid;
-              if (document.getElementById(uuid) == undefined) {
-                var div = document.createElement("div");
-                div.id = uuid;
-                if (that.flag === 0) {
-                  div.className = "zoomIn"
-                } else {
-                  div.className = "zoomOut"
-                }
-                that.buttonUID = uuid;
-                var button = document.createElement("button");
-                if (that.flag === 0) {
-                  button.innerHTML = "Unpin";
-                } else {
-                  button.innerHTML = "Pin";
-                }
-                button.className = "zoomButton";
-                that.flag = 1;
-                button.addEventListener("click", function (oEvent) {
-                  var a = document.getElementById(uuid).className;
-                  if (a == "zoomOut") {
-                    if (document.getElementsByClassName("zoomIn").length > 0) {
-                      document.getElementsByClassName("zoomIn")[0].className = "zoomOut";
-                    }
-                    document.getElementById(uuid).className = "zoomIn";
-                    oEvent.currentTarget.innerHTML = "Unpin";
-                    var allButtons = document.getElementsByClassName("zoomOut");
-                    for (var i = 1; i < allButtons.length; i++) {
-                      var reqButton = allButtons[i].getElementsByClassName("zoomButton");
-                      if (reqButton.length > 0) {
-                        reqButton[0].style.display = "none";
-                      }
-                    }
-                  } else {
-                    document.getElementById(uuid).className = "zoomOut";
-                    oEvent.currentTarget.innerHTML = "Pin";
-                    var allButtons = document.getElementsByClassName("zoomOut");
-                    for (var i = 1; i < allButtons.length; i++) {
-                      var reqButton = allButtons[i].getElementsByClassName("zoomButton");
-                      if (reqButton.length > 0) {
-                        reqButton[0].style.display = "block";
-                      }
-                    }
-                  }
-                });
-                div.appendChild(button);
-                document.getElementById("participant").appendChild(div);
-              }
-              const remoteVideoTrack = user.videoTrack;
-              that.remotePlayerContainer = document.getElementById(uuid);
-              remoteVideoTrack.play(that.remotePlayerContainer);
-              if (mediaType === "audio") {
-                const remoteAudioTrack = user.audioTrack;
-                remoteAudioTrack.play();
-              }
-            });
-            document.getElementById("participant").appendChild(div);
-            // that.client.setClientRole(options.role);
-            await that.client.join(options.appId, options.channel, token, 0);
-            that.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-            that.rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-            await that.client.publish([that.rtc.localAudioTrack, that.rtc.localVideoTrack]);
-            that.localPlayerContainer = document.getElementById(uid);
-            that.rtc.localVideoTrack.play(that.localPlayerContainer);
-            // Users joins for the first time
-          } catch (error) {
-            console.log(error);
-            var errorMessage;
-            // Handle Errors here.
-            if (error && error.message) {
-              errorMessage = error.message;
-              if (error.code == 'CAN_NOT_GET_GATEWAY_SERVER') {
-                errorMessage = "The meeting session is no longer valid. Contact Admin";
-              }
-            } else {
-              errorMessage = "Something went wrong, contact Admin if the error persists";
-            }
-            MessageBox.error(errorMessage, {
-              actions: [MessageBox.Action.CLOSE],
-              onClose: function (sAction) {
-                if (sAction == 'CLOSE') {
-                  // Write close operation
-                }
-              }
-            });
-          };
-        },
+        //     if (parseInt(minutes) > diff) {
+        //       oRemaining.setType("Critical");
+        //     }
+        //   }
+        // }
+        // ,
+        // doubleDigit: function (time) {
+        //   return ("0" + time).slice(-2);
+        // },
+        // onVideoCallPress: async function (oEvent) {
+        //   var oButton = oEvent.getSource(),
+        //     oView = this.getView();
+        //   // Ensure user selection is reset before opening
+        //   if (!this._pPopover_video) {
+        //     this._pPopover_video = sap.ui.core.Fragment.load({
+        //       id: oView.getId(),
+        //       name: "sap.kt.com.minihrsolution.fragment.Videocall",
+        //       controller: this
+        //     }).then(function (oPopover) {
+        //       oView.addDependent(oPopover);
+        //       return oPopover;
+        //     });
+        //   }
+        //   this._pPopover_video.then(function (oPopover) {
+        //     oPopover.openBy(oButton);
+        //   });
+        //   var that = this;
+        //   this.flag = 0;
+        //   try {
+        //     var that = this;
+        //     var date = new Date();
+        //     var startTime = date.getTime();
+        //     this.appointmentURL = {
+        //       startTime: startTime,
+        //       channel: "Sapui5",
+        //       token: "007eJxTYEhT+33n95rf8x2iBIxWROrsz7ZzX2Cg7iMkGXqFa887lyMKDClpBqmpSRapZokGKSZpZgYWiaZmBuYWlqYGluaGJmmWNQsaMhoCGRlmNPmwMDJAIIjPxhCcWFCaacrAAABVYx7m"
+        //     };
+        //     this.timeOut = setInterval(function () {
+        //       that.alertFunc()
+        //     }.bind(that), 1000);
+        //     that.rtc = {
+        //       // For the local audio and video tracks.
+        //       localAudioTrack: null,
+        //       localVideoTrack: null,
+        //     };
+        //     if (this.appointmentURL) {
+        //       var options = {
+        //         // Pass your app ID here.
+        //         appId: "df0eeb8e6a0d4f608a560789509714f9",
+        //         // Set the channel name.
+        //         channel: this.appointmentURL.channel,
+        //         // Set the user role in the channel.
+        //         role: "host"
+        //       };
+        //       var token = this.appointmentURL.token;
+        //     }
+        //     that.client = AgoraRTC.createClient({
+        //       mode: "rtc",
+        //       codec: "vp8"
+        //     });
+        //     var uid = "doctor";
+        //     var div = document.createElement("div");
+        //     div.id = uid;
+        //     div.className = "zoomOut"
+        //     that.client.on("user-left", async (user, mediaType) => {
+        //       var elem = document.getElementById("id" + user.uid);
+        //       elem.parentElement.removeChild(elem);
+        //       console.log("left");
+        //     });
+        //     that.client.on("user-published", async (user, mediaType) => {
+        //       await that.client.subscribe(user, mediaType);
+        //       console.log("subscribe success");
+        //       var uuid = "id" + user.uid;
+        //       if (document.getElementById(uuid) == undefined) {
+        //         var div = document.createElement("div");
+        //         div.id = uuid;
+        //         if (that.flag === 0) {
+        //           div.className = "zoomIn"
+        //         } else {
+        //           div.className = "zoomOut"
+        //         }
+        //         that.buttonUID = uuid;
+        //         var button = document.createElement("button");
+        //         if (that.flag === 0) {
+        //           button.innerHTML = "Unpin";
+        //         } else {
+        //           button.innerHTML = "Pin";
+        //         }
+        //         button.className = "zoomButton";
+        //         that.flag = 1;
+        //         button.addEventListener("click", function (oEvent) {
+        //           var a = document.getElementById(uuid).className;
+        //           if (a == "zoomOut") {
+        //             if (document.getElementsByClassName("zoomIn").length > 0) {
+        //               document.getElementsByClassName("zoomIn")[0].className = "zoomOut";
+        //             }
+        //             document.getElementById(uuid).className = "zoomIn";
+        //             oEvent.currentTarget.innerHTML = "Unpin";
+        //             var allButtons = document.getElementsByClassName("zoomOut");
+        //             for (var i = 1; i < allButtons.length; i++) {
+        //               var reqButton = allButtons[i].getElementsByClassName("zoomButton");
+        //               if (reqButton.length > 0) {
+        //                 reqButton[0].style.display = "none";
+        //               }
+        //             }
+        //           } else {
+        //             document.getElementById(uuid).className = "zoomOut";
+        //             oEvent.currentTarget.innerHTML = "Pin";
+        //             var allButtons = document.getElementsByClassName("zoomOut");
+        //             for (var i = 1; i < allButtons.length; i++) {
+        //               var reqButton = allButtons[i].getElementsByClassName("zoomButton");
+        //               if (reqButton.length > 0) {
+        //                 reqButton[0].style.display = "block";
+        //               }
+        //             }
+        //           }
+        //         });
+        //         div.appendChild(button);
+        //         document.getElementById("participant").appendChild(div);
+        //       }
+        //       const remoteVideoTrack = user.videoTrack;
+        //       that.remotePlayerContainer = document.getElementById(uuid);
+        //       remoteVideoTrack.play(that.remotePlayerContainer);
+        //       if (mediaType === "audio") {
+        //         const remoteAudioTrack = user.audioTrack;
+        //         remoteAudioTrack.play();
+        //       }
+        //     });
+        //     document.getElementById("participant").appendChild(div);
+        //     // that.client.setClientRole(options.role);
+        //     await that.client.join(options.appId, options.channel, token, 0);
+        //     that.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        //     that.rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+        //     await that.client.publish([that.rtc.localAudioTrack, that.rtc.localVideoTrack]);
+        //     that.localPlayerContainer = document.getElementById(uid);
+        //     that.rtc.localVideoTrack.play(that.localPlayerContainer);
+        //     // Users joins for the first time
+        //   } catch (error) {
+        //     console.log(error);
+        //     var errorMessage;
+        //     // Handle Errors here.
+        //     if (error && error.message) {
+        //       errorMessage = error.message;
+        //       if (error.code == 'CAN_NOT_GET_GATEWAY_SERVER') {
+        //         errorMessage = "The meeting session is no longer valid. Contact Admin";
+        //       }
+        //     } else {
+        //       errorMessage = "Something went wrong, contact Admin if the error persists";
+        //     }
+        //     MessageBox.error(errorMessage, {
+        //       actions: [MessageBox.Action.CLOSE],
+        //       onClose: function (sAction) {
+        //         if (sAction == 'CLOSE') {
+        //           // Write close operation
+        //         }
+        //       }
+        //     });
+        //   };
+        // },
         // group chat creation
         onOpenGroupChatDialog: function (oEvent) {
           var oButton = oEvent.getSource(),
@@ -913,7 +914,6 @@ sap.ui.define(
             return true;
           });
 
-
           // Set filtered sections to a temporary model
           const oInfoModel = new JSONModel({
             groupInfoSections: aFilteredSections
@@ -942,16 +942,12 @@ sap.ui.define(
 
           const oDetailBox = sap.ui.getCore().byId("infoDetailBox");
           const oHeaderText = sap.ui.getCore().byId("infoDetailHeader");
-          // const oDetailText = sap.ui.getCore().byId("infoDetailText");
-
+          
           // Set header title
           oHeaderText.setText(oSectionData.title);
-
-          // Clear existing items (except header & text placeholders)
           oDetailBox.removeAllItems();
-          oDetailBox.addItem(oHeaderText); // re-add header
-          // oDetailBox.addItem(oDetailText); // re-add placeholder or actual content
-
+          oDetailBox.addItem(oHeaderText); 
+          
           if (oSectionData.title === "Members") {
             const oGroup = this.getView().getModel("chat").getProperty("/selectedGroup");
             const aMembers = oGroup?.Participants || [];
@@ -964,7 +960,17 @@ sap.ui.define(
                 oList.addItem(new sap.m.StandardListItem({
                   title: member.EmployeeName,
                   description: member.Designation || member.EmployeeID,
-                  icon: "sap-icon://employee"
+                  icon: "sap-icon://employee",
+                  type:"Navigation",
+                  press: () => {
+                    this.onPressGoToMaster({
+                      getSource: () => ({
+                        getBindingContext: () => ({
+                          getObject: () => member
+                        })
+                      })
+                    });
+                  }
                 }));
               });
               oDetailBox.addItem(oList);
@@ -974,13 +980,8 @@ sap.ui.define(
             }
           } else {
             oDetailText.setText(oSectionData.content || "No content available.");
-          }
+          } 
         }
-
-
-
-
-
 
         //     onAfterRendering: function () {
         //   Formatter.resetDateTracker(); // Very important!

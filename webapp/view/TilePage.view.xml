@@ -83,6 +83,11 @@
             class="floatingButton"
             type="Emphasized"
         /> -->
+         <Image
+        src="../image/bot-removebg-preview.png"
+        class="floatingButton"
+        press="onFloatingButtonPress"
+      />
         <footer>
             <Bar>
                 <contentLeft>

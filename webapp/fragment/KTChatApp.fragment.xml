@@ -78,6 +78,8 @@
         id="receiverPic"
         src="{path:'chat>/currentReceiverPic' ,formatter: '.Formatter.getImageSrc'}"
        class="sapUiTinyMarginEnd roundIcon"
+       height="2rem"
+       width="2rem"
       />
     <Link id="headerTitle" text="{chat>/currentReceiverName}" class="Receivername customLinkStyle" press="On_OpenOverview" />
 
