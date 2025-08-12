@@ -5,7 +5,7 @@ sap.ui.define([
   "use strict";
 
   return BaseController.extend("sap.kt.com.minihrsolution.controller.App", {
-    TIMEOUT_DURATION: 10 * 60 * 1000,
+    TIMEOUT_DURATION: 15 * 60 * 1000,
     logoutTimer: null,
     onInit: function () {
       // Reset the timer when the app is initialized

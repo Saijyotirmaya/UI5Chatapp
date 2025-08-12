@@ -7,7 +7,7 @@
       id="infoMasterList"
       mode="None"
       items="{/groupInfoSections}"
-      itemPress="onGroupSectionPress"
+      itemPress="onInformationSectionPress"
       growing="true"
       width="100%"
       showSeparators="None"

@@ -143,16 +143,57 @@ sap.ui.define(
           if (this.messagePollInterval) clearInterval(this.messagePollInterval)
         },
 
-        changeName: function (oEvent) {
-          var sName = oEvent.getSource().getValue();
-          if (!sName.trim()) {
-            MessageToast.show("Please enter your name.");
-            return;
+        // changeName: function (oEvent) {
+        //   var sName = oEvent.getSource().getValue();
+        //   if (!sName.trim()) {
+        //     MessageToast.show("Please enter your name.");
+        //     return;
+        //   }
+
+        //   var oChatModel = sap.ui.getCore().getModel("chat");
+        //   oChatModel.setProperty("/username", sName);
+        //   MessageToast.show("Name set to: " + sName);
+        // },
+
+        onFilterName: function (oEvent) {
+          const sQuery = oEvent.getParameter("newValue").trim().toLowerCase();
+          const oChatModel = this.getView().getModel("chat");
+
+          // Original data
+          const aGroups = oChatModel.getProperty("/groups") || [];
+          const aEmployees = oChatModel.getProperty("/filteredEmployees") || [];
+
+          
+          const aGroupsFormatted = aGroups.map(group => ({
+            ...group,
+            isGroup: true,
+            title: group.GroupName,
+            icon: "sap-icon://group"
+          }));
+
+          // Format employees
+          const aEmployeesFormatted = aEmployees.map(emp => ({
+            ...emp,
+            isGroup: false,
+            title: emp.EmployeeName,
+            icon: emp.ProfilePhoto || "sap-icon://employee"
+          }));
+
+          // Merge
+          let aCombined = aGroupsFormatted.concat(aEmployeesFormatted);
+
+          // Apply filter if query is not empty
+          if (sQuery) {
+            aCombined = aCombined.filter(item =>
+              item.title.toLowerCase().includes(sQuery)
+            );
           }
 
-          var oChatModel = sap.ui.getCore().getModel("chat");
-          oChatModel.setProperty("/username", sName);
-          MessageToast.show("Name set to: " + sName);
+          // Update the combined list for the List binding
+          oChatModel.setProperty("/combinedList", aCombined);
+
+
+
         },
 
         // For encoding and decoding base64 strings
@@ -166,100 +207,112 @@ sap.ui.define(
           const bytes = new Uint8Array([...binaryStr].map(char => char.charCodeAt(0)));
           return new TextDecoder().decode(bytes);
         },
+        onAfterRendering: function () {
+          const oTextArea = sap.ui.getCore().byId("messageInput1");
 
-          sendMessage: function () {
-
-            const oInput = sap.ui.getCore().byId("messageInput1");
-            const sText = oInput.getValue().trim();
-
-            const oChatModel = this.getView().getModel("chat");
-            const oLoginModel = this.getView().getModel("LoginModel");
-
-            const sSenderID = oLoginModel.getProperty("/EmployeeID");
-            const sSenderName = oLoginModel.getProperty("/EmployeeName");
-            const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
-            const bIsGroup = oChatModel.getProperty("/isGroupChat");
-
-            const oAttachment = oChatModel.getProperty("/pendingAttachment");
-
-            if (!sText && !oAttachment) {
-              MessageToast.show("Please enter a message or attach a file.");
-              return;
-            }
-
-            if (!sSenderID || !sReceiverID) {
-              MessageToast.show("Please select a recipient first.");
-              return;
-            }
-            if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
-              MessageToast.show("Attachment size must be less than 10MB.");
-              return;
-            }
-
-            //  Build the payload conditionally based on chat type
-            const oPayload = {
-              data: {
-                SenderID: sSenderID,
-                MessageText: sText ? this.utf8ToBase64(sText) : "",
-
-                Attachment: oAttachment ? oAttachment.preview : "",
-                AttachmentName: oAttachment ? oAttachment.name : "",
-                AttachmentType: oAttachment ? oAttachment.type : ""
+          if (oTextArea) {
+            oTextArea.attachBrowserEvent("keydown", (oEvent) => {
+              if (oEvent.key === "Enter" && !oEvent.shiftKey) {
+                oEvent.preventDefault(); // Prevent newline
+                this.sendMessage();     // Call your existing function
               }
-            };
+            });
+          }
+        }
+        ,
 
-            if (bIsGroup) {
-              oPayload.data.GroupID = sReceiverID;
-            } else {
-              oPayload.data.ReceiverID = sReceiverID;
+        sendMessage: function () {
+
+          const oInput = sap.ui.getCore().byId("messageInput1");
+          const sText = oInput.getValue().trim();
+
+          const oChatModel = this.getView().getModel("chat");
+          const oLoginModel = this.getView().getModel("LoginModel");
+
+          const sSenderID = oLoginModel.getProperty("/EmployeeID");
+          const sSenderName = oLoginModel.getProperty("/EmployeeName");
+          const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
+          const bIsGroup = oChatModel.getProperty("/isGroupChat");
+
+          const oAttachment = oChatModel.getProperty("/pendingAttachment");
+
+          if (!sText && !oAttachment) {
+            MessageToast.show("Please enter a message or attach a file.");
+            return;
+          }
+
+          if (!sSenderID || !sReceiverID) {
+            MessageToast.show("Please select a recipient first.");
+            return;
+          }
+          if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
+            MessageToast.show("Attachment size must be less than 10MB.");
+            return;
+          }
+
+          //  Build the payload conditionally based on chat type
+          const oPayload = {
+            data: {
+              SenderID: sSenderID,
+              MessageText: sText ? this.utf8ToBase64(sText) : "",
+
+              Attachment: oAttachment ? oAttachment.preview : "",
+              AttachmentName: oAttachment ? oAttachment.name : "",
+              AttachmentType: oAttachment ? oAttachment.type : ""
             }
+          };
 
-            // Send and update UI
-            this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
-          },
+          if (bIsGroup) {
+            oPayload.data.GroupID = sReceiverID;
+          } else {
+            oPayload.data.ReceiverID = sReceiverID;
+          }
 
+          // Send and update UI
+          this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
+        },
 
-          _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
-            this.ajaxCreateWithJQuery("ChatApplication", oPayload)
-              .then(() => {
-                const aMsgList = oChatModel.getProperty("/messages") || [];
-                const oNewMessage = {
-                  text: sText.trim(),
-                  sender: "me",
-                  time: new Date().toLocaleTimeString()
+        _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
+          this.ajaxCreateWithJQuery("ChatApplication", oPayload)
+            .then(() => {
+              const aMsgList = oChatModel.getProperty("/messages") || [];
+              const oNewMessage = {
+                text: sText.trim(),
+                sender: "me",
+                time: new Date().toLocaleTimeString()
+              };
+
+              // Add attachment if available
+              if (oPayload.data.Attachment) {
+                oNewMessage.attachment = {
+                  preview: oPayload.data.Attachment,
+                  name: oPayload.data.AttachmentName || "Attachment",
+                  type: oPayload.data.AttachmentType || "application/octet-stream"
                 };
+              }
 
-                // Add attachment if available
-                if (oPayload.data.Attachment) {
-                  oNewMessage.attachment = {
-                    preview: oPayload.data.Attachment,
-                    name: oPayload.data.AttachmentName || "Attachment",
-                    type: oPayload.data.AttachmentType || "application/octet-stream"
-                  };
+              aMsgList.push(oNewMessage);
+              oChatModel.setProperty("/messages", aMsgList);
+
+              setTimeout(() => {
+                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+                if (oScrollContainer) {
+                  oScrollContainer.scrollTo(0, 999999, 300);
                 }
+              }, 150);
 
-                aMsgList.push(oNewMessage);
-                oChatModel.setProperty("/messages", aMsgList);
+              // Clear input fields
+              oInput.setValue("");
+              oChatModel.setProperty("/pendingAttachment", null);
 
-                setTimeout(() => {
-                  const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
-                  if (oScrollContainer) {
-                    oScrollContainer.scrollTo(0, 999999, 300);
-                  }
-                }, 150);
-
-                // Clear input fields
-                oInput.setValue("");
-                oChatModel.setProperty("/pendingAttachment", null);
-
-                //  Play sound after sending
-                this._playSentSound();
-              })
-              .catch((err) => {
-                MessageToast.show("Failed to send message.");
-                console.error(err);
-              });
-          },
+              //  Play sound after sending
+              this._playSentSound();
+            })
+            .catch((err) => {
+              MessageToast.show("Failed to send message.");
+              console.error(err);
+            });
+        },
         _playSentSound: function () {
           const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/KT_Message.mp3"));
           oAudio.play().catch((error) => {
@@ -309,7 +362,6 @@ sap.ui.define(
           const sReceiverPic = oSelected.ProfilePhoto?.startsWith("data:")
             ? oSelected.ProfilePhoto
             : `data:image/jpeg;base64,${oSelected.ProfilePhoto}`;
-
 
 
           oChatModel.setProperty("/current_room", sReceiverID);
@@ -887,14 +939,25 @@ sap.ui.define(
 
           fetchGroupMessages();
           if (this.messagePollInterval) clearInterval(this.messagePollInterval);
-          this.messagePollInterval = setInterval(fetchGroupMessages, 12000);
+          this.messagePollInterval = setInterval(fetchGroupMessages, 15000);
         },
 
         On_OpenOverview: function (oEvent) {
           const oChatModel = this.getView().getModel("chat");
-          const bIsGroup = oChatModel.getProperty("/currentReceiverIsGroup"); // assume this boolean is set when selecting a contact
+          const bIsGroup = oChatModel.getProperty("/currentReceiverIsGroup"); // whether the selected user is part of a group
+          const oLoginModel = this.getView().getModel("LoginModel");
+          const sLoginEmployeeID = oLoginModel.getProperty("/EmployeeID");
 
-          // Filter out section based on whether the receiver is a group or not
+          const oSelectedUser = oChatModel.getProperty("/selectedUser"); // Assuming selected user is in the model
+
+          // Example: group information in chat model, modify according to your actual model structure
+          const aUserGroups = oLoginModel.getProperty("/UserGroups") || []; // Groups the login user is part of
+          const aSelectedUserGroups = oSelectedUser?.Groups || []; // Groups the selected user is part of
+
+          // Check if both the login user and selected user share any group
+          const bIsInSameGroup = aUserGroups.some(group => aSelectedUserGroups.includes(group));
+
+          // Add to the "Groups" section if they are in the same group
           const aOriginalSections = [
             { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
             { title: "Members", icon: "sap-icon://collaborate", content: "Member list goes here." },
@@ -902,19 +965,25 @@ sap.ui.define(
             { title: "Files", icon: "sap-icon://document", content: "Files shared in this group." },
             { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
             { title: "Event", icon: "sap-icon://calendar", content: "Group events appear here." },
-            { title: "Groups", icon: "sap-icon://group", content: "Sub-groups or linked groups." }
+            { title: "Groups", icon: "sap-icon://group", content: "Sub-groups or linked groups.", group: bIsInSameGroup ? "Same Group" : "No shared group" }
           ];
 
-          // Apply condition remove "Groups" if user, "Members" if group
-
-
           const aFilteredSections = aOriginalSections.filter(section => {
-            if (!bIsGroup && section.title === "Groups") return false;
-            if (bIsGroup && section.title === "Members") return false;
+            if (!bIsGroup && section.title === "Groups") return false; // Hide "Groups" if it's a single chat
+            if (bIsGroup && section.title === "Members") return false; // Hide "Members" if it's a group chat
             return true;
           });
 
-          // Set filtered sections to a temporary model
+          // Add the "Groups" section data based on the group membership
+          if (bIsInSameGroup) {
+            aFilteredSections.push({
+              title: "Same Group",
+              icon: "sap-icon://group",
+              content: "Both users are in the same group."
+            });
+          }
+
+          // Set filtered sections to the model
           const oInfoModel = new JSONModel({
             groupInfoSections: aFilteredSections
           });
@@ -933,21 +1002,22 @@ sap.ui.define(
           } else {
             this._OverViewPopover.openBy(oEvent.getSource());
           }
-        }
-        ,
-        onGroupSectionPress: function (oEvent) {
+        },
+
+        onInformationSectionPress: function (oEvent) {
           const oSelectedItem = oEvent.getParameter("listItem");
           const oContext = oSelectedItem.getBindingContext();
           const oSectionData = oContext.getObject();
 
           const oDetailBox = sap.ui.getCore().byId("infoDetailBox");
           const oHeaderText = sap.ui.getCore().byId("infoDetailHeader");
-          
+
           // Set header title
           oHeaderText.setText(oSectionData.title);
           oDetailBox.removeAllItems();
-          oDetailBox.addItem(oHeaderText); 
-          
+          oDetailBox.addItem(oHeaderText);
+
+          // Check if the section selected is "Members"
           if (oSectionData.title === "Members") {
             const oGroup = this.getView().getModel("chat").getProperty("/selectedGroup");
             const aMembers = oGroup?.Participants || [];
@@ -961,7 +1031,7 @@ sap.ui.define(
                   title: member.EmployeeName,
                   description: member.Designation || member.EmployeeID,
                   icon: "sap-icon://employee",
-                  type:"Navigation",
+                  type: "Navigation",
                   press: () => {
                     this.onPressGoToMaster({
                       getSource: () => ({
@@ -974,14 +1044,68 @@ sap.ui.define(
                 }));
               });
               oDetailBox.addItem(oList);
-              // oDetailText.setText(""); // Clear fallback text
             } else {
               oDetailText.setText("No members available for this group.");
             }
-          } else {
+          }
+
+          // Check if the section selected is "Groups"
+          else if (oSectionData.title === "Groups") {
+            const oLoginModel = this.getView().getModel("LoginModel");
+            const sLoginEmployeeID = oLoginModel.getProperty("/EmployeeID");
+            const aUserGroups = oLoginModel.getProperty("/UserGroups") || [];
+
+            const oChatModel = this.getView().getModel("chat");
+            const oSelectedGroup = oChatModel.getProperty("/selectedGroup");
+            const aAllGroups = oChatModel.getProperty("/groups");
+
+            const aMatchingGroups = [];
+
+            // Loop through all groups in chat model
+            for (const groupID in aAllGroups) {
+              const oGroup = aAllGroups[groupID];
+              const aParticipants = oGroup.Participants || [];
+
+              const bLoginUserInGroup = aParticipants.some(p => p.EmployeeID === sLoginEmployeeID);
+              const bSelectedUserInGroup = aParticipants.some(p => p.EmployeeID === oSelectedGroup?.EmployeeID);
+
+              if (bLoginUserInGroup && bSelectedUserInGroup) {
+                aMatchingGroups.push(oGroup);
+              }
+            }
+
+            if (aMatchingGroups.length > 0) {
+              const oList = new sap.m.List();
+              aMatchingGroups.forEach(oGroup => {
+                oList.addItem(new sap.m.StandardListItem({
+                  title: oGroup.GroupName,
+                  description: oGroup.GroupDescription || "No description",
+                  icon: "sap-icon://group",
+                  type: "Navigation",
+                  press: () => {
+                    this.onPressGoToMaster({
+                      getSource: () => ({
+                        getBindingContext: () => ({
+                          getObject: () => oGroup
+                        })
+                      })
+                    });
+                  }
+                }));
+              });
+              oDetailBox.addItem(oList);
+            } else {
+              oDetailText.setText("No matching groups found.");
+            }
+          }
+
+
+          // For other sections
+          else {
             oDetailText.setText(oSectionData.content || "No content available.");
-          } 
+          }
         }
+
 
         //     onAfterRendering: function () {
         //   Formatter.resetDateTracker(); // Very important!

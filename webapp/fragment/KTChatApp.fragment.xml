@@ -36,6 +36,7 @@
                                 <Input
                                     placeholder="Search Name's"
                                     submit="changeName"
+                                    liveChange="onFilterName"
                                     width="100%"
                                     class="sapUiTinyMargin Groupclass"
                                 />
@@ -73,17 +74,22 @@
                     <customHeader>
                         <Bar>
                               <contentMiddle>
-                                  <HBox alignItems="Center" renderType="Bare">
-      <Image
-        id="receiverPic"
-        src="{path:'chat>/currentReceiverPic' ,formatter: '.Formatter.getImageSrc'}"
-       class="sapUiTinyMarginEnd roundIcon"
-       height="2rem"
-       width="2rem"
-      />
-    <Link id="headerTitle" text="{chat>/currentReceiverName}" class="Receivername customLinkStyle" press="On_OpenOverview" />
+                                 <HBox alignItems="Center" renderType="Bare"> 
+  <Image
+    id="receiverPic"
+    src="{chat>/currentReceiverPic}"
+    class="sapUiTinyMarginEnd roundIcon"
+    height="2rem"
+    width="2rem"
+  />
+  <Link 
+    id="headerTitle" 
+    text="{chat>/currentReceiverName}" 
+    class="Receivername customLinkStyle" 
+    press="On_OpenOverview" 
+  />
+</HBox>
 
-    </HBox>
                               </contentMiddle>
                             <contentRight>
                                 <Button
