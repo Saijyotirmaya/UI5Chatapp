@@ -1257,7 +1257,31 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
   text-decoration: none !important;
 }
 
+.floatingButtonDown {
+    position: fixed !important;
+    right: 5%;
+    bottom: 20%;
+    z-index: 9999; /* Keep it above everything */
+    background-color: white !important;
+   
 
+    /* Make it circular */
+    border-radius: 50% !important;  
+    width: 50px !important;
+    height: 50px !important;
 
+      /* Center icon inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+        /* Optional styling */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    
+}
+
+.floatingButtonDown:hover {
+  border: none !important;
+  /* background-color: transparent !important; */
+}
 

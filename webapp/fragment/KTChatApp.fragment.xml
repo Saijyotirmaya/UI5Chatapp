@@ -124,7 +124,7 @@
                             horizontal="false"
                             vertical="true"
                             class="sapUiTinyMarginBottom"
-                        >
+                        >   
                             <List
                                 id="chatList"
                                 items="{chat>/messages}"
@@ -266,6 +266,14 @@
                 </Page>
             </detailPages>
         </SplitApp>
-        
+
+         <Button
+            id="scrollDownButton"
+            icon="sap-icon://arrow-bottom"
+            type="Transparent"
+            press=".onScrollToBottom"
+            class="floatingButtonDown"
+        >
+        </Button>
     </Dialog>
 </core:FragmentDefinition>

@@ -129,12 +129,18 @@ sap.ui.define(
                 this.Chatapp = Chatapp;
                 oView.addDependent(this.Chatapp);
                 this.Chatapp.open();
+                 this.addEventListenerDataFunction();
+                  sap.ui.getCore().byId("scrollDownButton").setVisible(false)
               }.bind(this)
             );
           } else {
             this.Chatapp.open();
+            this.addEventListenerDataFunction();       
+             sap.ui.getCore().byId("scrollDownButton").setVisible(false)     
           }
         },
+
+
 
         onCloseDialog: function () {
           if (this.Chatapp) {
@@ -1104,14 +1110,42 @@ sap.ui.define(
           else {
             oDetailText.setText(oSectionData.content || "No content available.");
           }
-        }
+        },
 
-
+          onScrollToBottom:function(){  
+                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+                if (oScrollContainer) {
+                  oScrollContainer.scrollTo(0, 999999, 400);
+                }
+		           },
+        
         //     onAfterRendering: function () {
         //   Formatter.resetDateTracker(); // Very important!
         // }
 
-      }
+addEventListenerDataFunction: function () {
+    var oScroll = sap.ui.getCore().byId("chatScrollContainer");
+    var oDomRef = oScroll.getDomRef();
+   
+    if (oDomRef) {
+        oDomRef.addEventListener("scroll", this._handleChatScroll.bind(this));
+    }
+},
+
+_handleChatScroll: function () {
+    var oScroll = sap.ui.getCore().byId("chatScrollContainer");
+    var oDomRef = oScroll.getDomRef();
+    if (!oDomRef) return;
+
+    var scrollTop = oDomRef.scrollTop;
+    var scrollHeight = oDomRef.scrollHeight;
+    var clientHeight = oDomRef.clientHeight;
+
+    var atBottom = (scrollTop + clientHeight >= scrollHeight - 5);
+    sap.ui.getCore().byId("scrollDownButton").setVisible(!atBottom);
+},
+       
+        }
     );
   }
 );
