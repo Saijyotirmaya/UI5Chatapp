@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Popover
+      id="msgMenuPopover"
+        showHeader="false"
+        placement="Auto"
+        autoClose="true"
+        >
+        
+        <List>
+            <StandardListItem
+            id="id_EditMessage"
+                icon="sap-icon://edit"
+                title="Edit"
+                type="Active"
+                press=".onEditMessage" />
+                
+            <StandardListItem
+               id="id_DeleteMessage"
+                icon="sap-icon://delete"
+                title="Delete"
+                type="Active"
+                press=".onDeleteMessage" />
+                
+            <StandardListItem
+                icon="sap-icon://forward"
+                title="Forward"
+                type="Active"
+                press=".onForwardMessage" />
+        </List>
+    </Popover>
+
+</core:FragmentDefinition>
