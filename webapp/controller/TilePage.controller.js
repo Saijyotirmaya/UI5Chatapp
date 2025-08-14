@@ -48,7 +48,9 @@ sap.ui.define(
             current_room: "",
             username: "",
             filteredEmployees: [],
-            groups: []
+            groups: [],
+            editIndex: null ,
+            editMessageID: ""
           };
 
           var oModel = new JSONModel(oData);
@@ -227,56 +229,86 @@ sap.ui.define(
         }
         ,
 
-        sendMessage: function () {
+           sendMessage: function () {
+    const oInput = sap.ui.getCore().byId("messageInput1");
+    const sText = oInput.getValue().trim();
 
-          const oInput = sap.ui.getCore().byId("messageInput1");
-          const sText = oInput.getValue().trim();
+    const oChatModel = this.getView().getModel("chat");
+    const oLoginModel = this.getView().getModel("LoginModel");
 
-          const oChatModel = this.getView().getModel("chat");
-          const oLoginModel = this.getView().getModel("LoginModel");
+    const sSenderID = oLoginModel.getProperty("/EmployeeID");
+    const sSenderName = oLoginModel.getProperty("/EmployeeName");
+    const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
+    const bIsGroup = oChatModel.getProperty("/isGroupChat");
 
-          const sSenderID = oLoginModel.getProperty("/EmployeeID");
-          const sSenderName = oLoginModel.getProperty("/EmployeeName");
-          const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
-          const bIsGroup = oChatModel.getProperty("/isGroupChat");
+    const oAttachment = oChatModel.getProperty("/pendingAttachment");
 
-          const oAttachment = oChatModel.getProperty("/pendingAttachment");
+    if (!sText && !oAttachment) {
+        MessageToast.show("Please enter a message or attach a file.");
+        return;
+    }
 
-          if (!sText && !oAttachment) {
-            MessageToast.show("Please enter a message or attach a file.");
-            return;
-          }
+    if (!sSenderID || !sReceiverID) {
+        MessageToast.show("Please select a recipient first.");
+        return;
+    }
+    if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
+        MessageToast.show("Attachment size must be less than 10MB.");
+        return;
+    }
 
-          if (!sSenderID || !sReceiverID) {
-            MessageToast.show("Please select a recipient first.");
-            return;
-          }
-          if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
-            MessageToast.show("Attachment size must be less than 10MB.");
-            return;
-          }
-
-          //  Build the payload conditionally based on chat type
-          const oPayload = {
+    // --- EDIT MODE ---
+    const sEditPath = oChatModel.getProperty("/editIndex");
+    const sEditMsgID = oChatModel.getProperty("/editMessageID");
+    if (sEditPath && sEditMsgID) {
+        const oPayload = {
             data: {
-              SenderID: sSenderID,
-              MessageText: sText ? this.utf8ToBase64(sText) : "",
+                MessageID: sEditMsgID,
+                MessageText: sText ? this.utf8ToBase64(sText) : "",
+                Attachment: oAttachment ? oAttachment.preview : "",
+                AttachmentName: oAttachment ? oAttachment.name : "",
+                AttachmentType: oAttachment ? oAttachment.type : ""
+            },
+              filters: {
+                  MessageID: sEditMsgID
+    }
+        };
 
-              Attachment: oAttachment ? oAttachment.preview : "",
-              AttachmentName: oAttachment ? oAttachment.name : "",
-              AttachmentType: oAttachment ? oAttachment.type : ""
-            }
-          };
+        this.ajaxUpdateWithJQuery("ChatApplication", oPayload)
+            .then(() => {
+                // Update UI model instantly
+                oChatModel.setProperty(sEditPath + "/text", sText);
+                oChatModel.setProperty("/editIndex", null);
+                oChatModel.setProperty("/editMessageID", null);
+                oInput.setValue("");
+            })
+            .catch((err) => {
+                console.error(err);
+            });
 
-          if (bIsGroup) {
-            oPayload.data.GroupID = sReceiverID;
-          } else {
-            oPayload.data.ReceiverID = sReceiverID;
-          }
+        return; // Stop here so we don’t send a new message
+    }
 
-          // Send and update UI
-          this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
-        },
+    // --- NEW MESSAGE MODE ---
+    const oPayload = {
+        data: {
+            SenderID: sSenderID,
+            MessageText: sText ? this.utf8ToBase64(sText) : "",
+            Attachment: oAttachment ? oAttachment.preview : "",
+            AttachmentName: oAttachment ? oAttachment.name : "",
+            AttachmentType: oAttachment ? oAttachment.type : ""
+        }
+    };
+
+    if (bIsGroup) {
+        oPayload.data.GroupID = sReceiverID;
+    } else {
+        oPayload.data.ReceiverID = sReceiverID;
+    }
+
+    // Send and update UI
+    this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
+},
 
         _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
           this.ajaxCreateWithJQuery("ChatApplication", oPayload)
@@ -419,6 +451,7 @@ sap.ui.define(
                   text: decodedText,
                   sender: isMine ? "me" : "them",
                   time: new Date(msg.SentAt).toLocaleTimeString(),
+                  MsgId: msg.MessageID,
                   attachment: msg.Attachment ? {
                     preview: sPreview,
                     name: msg.AttachmentName || "Attachment",
@@ -1144,6 +1177,83 @@ _handleChatScroll: function () {
     var atBottom = (scrollTop + clientHeight >= scrollHeight - 5);
     sap.ui.getCore().byId("scrollDownButton").setVisible(!atBottom);
 },
+   onIconPress: function (oEvent) {
+    var oSource = oEvent.getSource(); 
+    var oCtx = oSource.getBindingContext("chat"); 
+
+
+  
+  
+    if (!this._oMsgPopover) {
+        sap.ui.core.Fragment.load({
+            name: "sap.kt.com.minihrsolution.fragment.Texthover",
+            controller: this
+        }).then((oPopover) => {
+            this._oMsgPopover = oPopover;
+            this.getView().addDependent(this._oMsgPopover);
+
+            if(oCtx.getObject().sender==="them"){
+              sap.ui.getCore().byId("id_EditMessage").setVisible(false);
+              sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+
+            }else{
+             sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+              sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+
+            }
+
+            // store the MessageID directly
+            this._oMsgPopover.data("msgID", oCtx);
+
+            this._oMsgPopover.openBy(oSource);
+        });
+    } else {
+       if(oCtx.getObject().sender==="them"){
+              sap.ui.getCore().byId("id_EditMessage").setVisible(false);
+              sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+
+            }else{
+             sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+              sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+
+            }
+        this._oMsgPopover.data("msgID", oCtx);
+        this._oMsgPopover.openBy(oSource);
+    }
+},
+ onEditMessage: function () {
+    var oCtx = this._oMsgPopover.data("msgID"); // retrieve saved context
+    if (oCtx) {
+        var oMsgData = oCtx.getObject();
+        var oChatModel = this.getView().getModel("chat");
+
+        // Save path & message ID in model for edit mode
+        oChatModel.setProperty("/editIndex", oCtx.getPath());
+        oChatModel.setProperty("/editMessageID", oMsgData.MsgId);
+
+        // Set text in input field (decoded if needed)
+        sap.ui.getCore().byId("messageInput1").setValue(oMsgData.text);
+    }
+    this._oMsgPopover.close();
+},
+onDeleteMessage: async function() {
+  var oMsgPopover = this._oMsgPopover;
+  var messageContext = oMsgPopover.data("msgID");
+  var messageId = messageContext.getObject().MsgId;
+
+  try {
+    await this.ajaxDeleteWithJQuery("ChatApplication", {
+      filters:{
+         MessageID: [messageId]
+      }
+    });
+
+    oMsgPopover.close();
+    this.getView().getModel("chat").refresh(true);
+  } catch (error) {
+    console.error("Error deleting message:", error);
+  }
+}
        
         }
     );

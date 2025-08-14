@@ -1285,3 +1285,21 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
   /* background-color: transparent !important; */
 }
 
+.hoverContainer {
+    position: relative;
+    align-items: center;
+}
+
+.hoverIcon {
+    display: none; /* hide by default */
+    margin: 0 8px;  /* gap from bubble */
+    font-size: 1rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.hoverContainer:hover .hoverIcon {
+    display: inline-block; /* show on hover */
+}
+
+

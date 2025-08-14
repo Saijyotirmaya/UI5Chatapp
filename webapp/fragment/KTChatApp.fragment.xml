@@ -132,14 +132,22 @@
                                 width="100%"
                             >
                                 <CustomListItem>
-                                    <VBox
+                                     <VBox
                                         width="100%"
                                         class="sapUiSmallMarginBottom"
                                     >
                                         <HBox
                                             justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
                                             width="100%"
+                                            class="hoverContainer"
                                         >
+                                            <core:Icon
+                                                src="sap-icon://slim-arrow-down"
+                                                class="hoverIcon"
+                                                visible="{= ${chat>sender} === 'me'}"
+
+                                                press="onIconPress"
+                                            />
                                             <VBox
                                                 class="chatBubble "
                                                 alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
@@ -174,13 +182,19 @@
                                                         </customData>
                                                     </Image>
                                                 </HBox>
-                                                <Text text="{chat>text}" />
 
+                                                <Text text="{chat>text}" />
                                                 <Text
                                                     text="{chat>time}"
                                                     class="sapUiTinyMarginTop sapUiSmallText"
                                                 />
                                             </VBox>
+                                        <core:Icon
+                                                src="sap-icon://slim-arrow-down"
+                                                class="hoverIcon"
+                                                visible="{= ${chat>sender} === 'them' }"
+                                                press="onIconPress"
+                                            />
                                         </HBox>
                                     </VBox>
                                 </CustomListItem>
