@@ -14,7 +14,7 @@
         stretch="true"
         draggable="true"
         resizable="true"
-        contentWidth="600px"
+        contentWidth="300px"
         contentHeight="500px"
         showHeader="false"
     >
@@ -28,26 +28,13 @@
                             class="sapUiSmallMargin sapUiResponsiveMargin"
                             width="100%"
                         >
-                            <HBox
-                                class="sapUiSmallMarginBottom"
-                                alignItems="Center"
-                                justifyContent="Start"
-                            >
+                          
                                 <Input
                                     placeholder="Search Name's"
                                     submit="changeName"
                                     liveChange="onFilterName"
                                     width="100%"
-                                    class="sapUiTinyMargin Groupclass"
                                 />
-
-                                <Button
-                                    icon="sap-icon://collaborate"
-                                    text="Group"
-                                    press="onOpenGroupChatDialog"
-                                    class="sapUiTinyMargin"
-                                />
-                            </HBox>
 
                             <List
                                 id="groupsList1"
@@ -56,8 +43,8 @@
                                 showSeparators="None"
                             >
                                 <StandardListItem
-                                    title="{chat>title}"
-                                    icon="{path:'chat>icon' , formatter: '.Formatter.getImageSrc'}"
+                                    title="{chat>title}   ({chat>employeeid})"
+                                    icon="{parts:['chat>icon', 'chat>gender' ], formatter: '.Formatter.getImageSrc'}"
                                     type="Navigation"
                                     press="onListItemPress"
                                     class="roundIcon"
@@ -75,7 +62,7 @@
                         <Bar>
                               <contentMiddle>
                                  <HBox alignItems="Center" renderType="Bare"> 
-  <Image
+                          <Image
     id="receiverPic"
     src="{chat>/currentReceiverPic}"
     class="sapUiTinyMarginEnd roundIcon"
@@ -92,6 +79,12 @@
 
                               </contentMiddle>
                             <contentRight>
+                             <Button
+                                    icon="sap-icon://collaborate"
+                                    text="Group"
+                                    press="onOpenGroupChatDialog"
+                                    class="sapUiTinyMargin"
+                                />
                                 <Button
                                     icon="sap-icon://menu"
                                     press="onMenuPress"
@@ -134,7 +127,7 @@
                                 <CustomListItem>
                                      <VBox
                                         width="100%"
-                                        class="sapUiSmallMarginBottom"
+                                        class="sapUiTinyMarginBottom"
                                     >
                                         <HBox
                                             justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
@@ -182,8 +175,11 @@
                                                         </customData>
                                                     </Image>
                                                 </HBox>
-
-                                                <Text text="{chat>text}" />
+                                                <FormattedText
+                                              htmlText="{path: 'chat>text', formatter: '.Formatter.formatMessageText'}"
+                                               width="100%"
+                                             class="formattedText"
+                                               />
                                                 <Text
                                                     text="{chat>time}"
                                                     class="sapUiTinyMarginTop sapUiSmallText"
@@ -225,6 +221,13 @@
                                 tooltip="Insert Emoji"
                                 press="onEmojiPress"
                             />
+                             <Button
+                                icon="sap-icon://marketing-campaign"
+                                tooltip="Speech to Text"
+                                press="onVoiceMessagePress"
+                                type="Emphasized"
+                            />
+                            
 
                             <TextArea
                                 id="messageInput1"
@@ -248,7 +251,7 @@
                         </Toolbar>
 
                         <!-- Attachment Preview -->
-                        <HBox
+                        <!-- <HBox
                             id="attachmentPreview"
                             visible="{= !!${chat>/pendingAttachment} }"
                             class="sapUiTinyMarginBottom sapUiTinyMarginTop sapUiSmallMargin"
@@ -275,7 +278,7 @@
                                 height="3rem"
                                 class="sapUiTinyMarginEnd sapUiSmallMarginBegin"
                             />
-                        </HBox>
+                        </HBox> -->
                     </content>
                 </Page>
             </detailPages>

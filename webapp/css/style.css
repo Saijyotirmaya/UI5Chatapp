@@ -19,20 +19,20 @@
 
 .chatBubble {
   padding: 10px;
-  background-color: #e0f7fa; /* Light cyan background */
+  background-color: #e0f7fa;
   border-radius: 10px;
   max-width: 60%;
-  margin: 4px;
+ margin: 1rem !important;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.chatBubbleMe {
-  background-color: #bcedea; /* Light green background */
-}
+/* .chatBubbleMe {
+  background-color: #bcedea; 
+} */
 
-.chatBubbleOther {
-  background-color: #f8bbd0; /* Light pink background */
-}
+/* .chatBubblethem {
+  background-color: #f8bbd0; 
+} */
 
 .customRow .formBox {
   width: 32%;
@@ -1141,9 +1141,9 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
 .chatBubble {
   padding: 0.75rem 1rem;
   border-radius: 1.125rem;
-  margin: 0.25rem 0;
+
   max-width: 70%;
-  word-wrap: break-word;
+ 
 }
 
 .myMessage {
@@ -1193,7 +1193,7 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
   border-radius: 0.75rem;
   padding: 0.75rem;
   max-width: 80%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
 }
 
 /* .chatImagePreview {
@@ -1287,11 +1287,13 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
 
 .hoverContainer {
     position: relative;
+    display: flex;
+    
     align-items: center;
 }
 
 .hoverIcon {
-    display: none; /* hide by default */
+   visibility: hidden; /* hide by default */
     margin: 0 8px;  /* gap from bubble */
     font-size: 1rem;
     color: #555;
@@ -1299,7 +1301,21 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
 }
 
 .hoverContainer:hover .hoverIcon {
-    display: inline-block; /* show on hover */
+    visibility: visible; /* show on hover */
 }
+/* .chatBubble a {
+    word-break: break-all;
+    overflow-wrap: break-word;
+} */
+ .formattedText{
+    word-break: break-all;
+    overflow-wrap: break-word;
+ }
+.sapMLIBImgNav{
+    font-size: 0;
+  }
 
+.sapMLIBFocusable:focus {
+    outline: none !important;
+}
 

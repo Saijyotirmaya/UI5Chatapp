@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog
+        id="attachmentPreviewDialog"
+        title="Preview Attachment"
+        contentWidth="700px"
+        contentHeight="500px"
+        class="sapUiContentPadding"
+        stretch="false"
+        closeOnNavigation="true">
+        <Toolbar >
+        <Button text="Close" press="onCancelAttachmentPreview" class="sapUiSmallMarginEnd" >
+        
+        </Button>
+        </Toolbar>
+
+        
+            <!-- Attachment Preview -->
+            <Image
+                id="previewImage"
+                src="{chat>/pendingAttachment/preview}"
+                visible="{= ${chat>/pendingAttachment/type}.startsWith('image/') }"
+                width="500px"
+                height="auto"
+                
+                class="sapUiSmallMarginBottom" />
+
+            <!-- Non-image file icon -->
+            <HBox
+                visible="{= !${chat>/pendingAttachment/type}.startsWith('image/') }"
+                alignItems="Center"
+                class="sapUiSmallMarginBottom">
+                <core:Icon src="sap-icon://attachment" size="2rem" class="sapUiTinyMarginEnd" />
+                <Text text="{chat>/pendingAttachment/name}" />
+            </HBox>
+
+            <!-- Caption/Message -->
+            <TextArea
+                id="attachmentMessageInput"
+                placeholder="Add a message..."
+                rows="3"
+                width="100%"
+                growing="true"
+                value="{chat>/currentMessage}"
+                enabled="{= !!${chat>/current_room}}"
+                growingMaxLines="4"
+                class="sapUiSmallMarginBottom" />
+       
+
+        <beginButton>
+            <Button text="Send" type="Emphasized" press="sendMessage" />
+        </beginButton>
+
+        <endButton>
+            <Button text="Cancel" press="onCancelAttachmentPreview" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

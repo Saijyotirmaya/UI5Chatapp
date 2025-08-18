@@ -49,7 +49,7 @@ sap.ui.define(
             username: "",
             filteredEmployees: [],
             groups: [],
-            editIndex: null ,
+            editIndex: null,
             editMessageID: ""
           };
 
@@ -131,14 +131,14 @@ sap.ui.define(
                 this.Chatapp = Chatapp;
                 oView.addDependent(this.Chatapp);
                 this.Chatapp.open();
-                 this.addEventListenerDataFunction();
-                  sap.ui.getCore().byId("scrollDownButton").setVisible(false)
+                this.addEventListenerDataFunction();
+                sap.ui.getCore().byId("scrollDownButton").setVisible(false)
               }.bind(this)
             );
           } else {
             this.Chatapp.open();
-            this.addEventListenerDataFunction();       
-             sap.ui.getCore().byId("scrollDownButton").setVisible(false)     
+            this.addEventListenerDataFunction();
+            sap.ui.getCore().byId("scrollDownButton").setVisible(false)
           }
         },
 
@@ -171,7 +171,7 @@ sap.ui.define(
           const aGroups = oChatModel.getProperty("/groups") || [];
           const aEmployees = oChatModel.getProperty("/filteredEmployees") || [];
 
-          
+
           const aGroupsFormatted = aGroups.map(group => ({
             ...group,
             isGroup: true,
@@ -184,7 +184,9 @@ sap.ui.define(
             ...emp,
             isGroup: false,
             title: emp.EmployeeName,
-            icon: emp.ProfilePhoto || "sap-icon://employee"
+            employeeid: emp.EmployeeID,
+            icon: emp.ProfilePhoto,
+            gender: emp.Gender
           }));
 
           // Merge
@@ -200,8 +202,6 @@ sap.ui.define(
           // Update the combined list for the List binding
           oChatModel.setProperty("/combinedList", aCombined);
 
-
-
         },
 
         // For encoding and decoding base64 strings
@@ -215,100 +215,104 @@ sap.ui.define(
           const bytes = new Uint8Array([...binaryStr].map(char => char.charCodeAt(0)));
           return new TextDecoder().decode(bytes);
         },
-        onAfterRendering: function () {
-          const oTextArea = sap.ui.getCore().byId("messageInput1");
+        // onAfterRendering: function () {
+        //   const oTextArea = sap.ui.getCore().byId("messageInput1");
 
-          if (oTextArea) {
-            oTextArea.attachBrowserEvent("keydown", (oEvent) => {
-              if (oEvent.key === "Enter" && !oEvent.shiftKey) {
-                oEvent.preventDefault(); // Prevent newline
-                this.sendMessage();     // Call your existing function
-              }
-            });
+        //   if (oTextArea) {
+        //     oTextArea.attachBrowserEvent("keydown", (oEvent) => {
+        //       if (oEvent.key === "Enter" && !oEvent.shiftKey) {
+        //         oEvent.preventDefault(); // Prevent newline
+        //         this.sendMessage();     // Call your existing function
+        //       }
+        //     });
+        //   }
+        // }
+        // ,
+
+        sendMessage: function () {
+          const oInput = sap.ui.getCore().byId("messageInput1");
+          const sText = oInput.getValue().trim();
+
+          const oChatModel = this.getView().getModel("chat");
+          const oLoginModel = this.getView().getModel("LoginModel");
+
+          const sSenderID = oLoginModel.getProperty("/EmployeeID");
+          const sSenderName = oLoginModel.getProperty("/EmployeeName");
+          const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
+          const bIsGroup = oChatModel.getProperty("/isGroupChat");
+
+          const oAttachment = oChatModel.getProperty("/pendingAttachment");
+
+          if (!sText && !oAttachment) {
+            MessageToast.show("Please enter a message or attach a file.");
+            return;
           }
-        }
-        ,
+          if (!sSenderID || !sReceiverID) {
+            MessageToast.show("Please select a recipient first.");
+            return;
+          }
+          if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
+            MessageToast.show("Attachment size must be less than 10MB.");
+            return;
+          }
 
-           sendMessage: function () {
-    const oInput = sap.ui.getCore().byId("messageInput1");
-    const sText = oInput.getValue().trim();
-
-    const oChatModel = this.getView().getModel("chat");
-    const oLoginModel = this.getView().getModel("LoginModel");
-
-    const sSenderID = oLoginModel.getProperty("/EmployeeID");
-    const sSenderName = oLoginModel.getProperty("/EmployeeName");
-    const sReceiverID = oChatModel.getProperty("/current_room"); // Can be EmployeeID or GroupID
-    const bIsGroup = oChatModel.getProperty("/isGroupChat");
-
-    const oAttachment = oChatModel.getProperty("/pendingAttachment");
-
-    if (!sText && !oAttachment) {
-        MessageToast.show("Please enter a message or attach a file.");
-        return;
-    }
-
-    if (!sSenderID || !sReceiverID) {
-        MessageToast.show("Please select a recipient first.");
-        return;
-    }
-    if (oAttachment && oAttachment.file && oAttachment.file.size > 10 * 1024 * 1024) {
-        MessageToast.show("Attachment size must be less than 10MB.");
-        return;
-    }
-
-    // --- EDIT MODE ---
-    const sEditPath = oChatModel.getProperty("/editIndex");
-    const sEditMsgID = oChatModel.getProperty("/editMessageID");
-    if (sEditPath && sEditMsgID) {
-        const oPayload = {
-            data: {
+          // --- EDIT MODE ---
+          const sEditPath = oChatModel.getProperty("/editIndex");
+          const sEditMsgID = oChatModel.getProperty("/editMessageID");
+          if (sEditPath && sEditMsgID) {
+            const oPayload = {
+              data: {
                 MessageID: sEditMsgID,
                 MessageText: sText ? this.utf8ToBase64(sText) : "",
                 Attachment: oAttachment ? oAttachment.preview : "",
                 AttachmentName: oAttachment ? oAttachment.name : "",
                 AttachmentType: oAttachment ? oAttachment.type : ""
-            },
-              filters: {
-                  MessageID: sEditMsgID
-    }
-        };
+              },
+              filters: { MessageID: sEditMsgID }
+            };
 
-        this.ajaxUpdateWithJQuery("ChatApplication", oPayload)
-            .then(() => {
-                // Update UI model instantly
+            this.ajaxUpdateWithJQuery("ChatApplication", oPayload)
+              .then(() => {
                 oChatModel.setProperty(sEditPath + "/text", sText);
+                oChatModel.setProperty(sEditPath + "/attachment", oAttachment || null);
                 oChatModel.setProperty("/editIndex", null);
                 oChatModel.setProperty("/editMessageID", null);
+
                 oInput.setValue("");
-            })
-            .catch((err) => {
+                oChatModel.setProperty("/pendingAttachment", null);
+
+                if (this._oAttachmentDialog) {
+                  this._oAttachmentDialog.close();
+                }
+                this._playSentSound();
+              })
+              .catch((err) => {
+                MessageToast.show("Failed to update message.");
                 console.error(err);
-            });
+              });
 
-        return; // Stop here so we don’t send a new message
-    }
+            return;
+          }
 
-    // --- NEW MESSAGE MODE ---
-    const oPayload = {
-        data: {
-            SenderID: sSenderID,
-            MessageText: sText ? this.utf8ToBase64(sText) : "",
-            Attachment: oAttachment ? oAttachment.preview : "",
-            AttachmentName: oAttachment ? oAttachment.name : "",
-            AttachmentType: oAttachment ? oAttachment.type : ""
-        }
-    };
+          // --- CREATE MODE ---
+          const oPayload = {
+            data: {
+              SenderID: sSenderID,
+              MessageText: sText ? this.utf8ToBase64(sText) : "",
+              Attachment: oAttachment ? oAttachment.preview : "",
+              AttachmentName: oAttachment ? oAttachment.name : "",
+              AttachmentType: oAttachment ? oAttachment.type : ""
+            }
+          };
 
-    if (bIsGroup) {
-        oPayload.data.GroupID = sReceiverID;
-    } else {
-        oPayload.data.ReceiverID = sReceiverID;
-    }
+          if (bIsGroup) {
+            oPayload.data.GroupID = sReceiverID;
+          } else {
+            oPayload.data.ReceiverID = sReceiverID;
+          }
 
-    // Send and update UI
-    this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
-},
+          this._sendPayloadAndUpdateUI(oPayload, sText, oChatModel, oInput);
+        },
 
         _sendPayloadAndUpdateUI: function (oPayload, sText, oChatModel, oInput) {
           this.ajaxCreateWithJQuery("ChatApplication", oPayload)
@@ -320,7 +324,6 @@ sap.ui.define(
                 time: new Date().toLocaleTimeString()
               };
 
-              // Add attachment if available
               if (oPayload.data.Attachment) {
                 oNewMessage.attachment = {
                   preview: oPayload.data.Attachment,
@@ -332,6 +335,13 @@ sap.ui.define(
               aMsgList.push(oNewMessage);
               oChatModel.setProperty("/messages", aMsgList);
 
+              oInput.setValue("");
+              oChatModel.setProperty("/pendingAttachment", null);
+
+              if (this._oAttachmentDialog) {
+                this._oAttachmentDialog.close();
+              }
+
               setTimeout(() => {
                 const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
                 if (oScrollContainer) {
@@ -339,11 +349,6 @@ sap.ui.define(
                 }
               }, 150);
 
-              // Clear input fields
-              oInput.setValue("");
-              oChatModel.setProperty("/pendingAttachment", null);
-
-              //  Play sound after sending
               this._playSentSound();
             })
             .catch((err) => {
@@ -374,18 +379,27 @@ sap.ui.define(
             file: oFile,
             name: oFile.name,
             type: oFile.type,
-            preview: "" // Will be filled by FileReader
+            preview: ""
           };
 
           const reader = new FileReader();
-          reader.onload = function (e) {
-            oAttachmentData.preview = e.target.result; // Always base64 string with Data URI
+          reader.onload = (e) => {
+            oAttachmentData.preview = e.target.result;
             oChatModel.setProperty("/pendingAttachment", oAttachmentData);
-          };
 
-          // Read all files as DataURL, not just images
+            // Open preview dialog
+            if (!this._oAttachmentDialog) {
+              this._oAttachmentDialog = sap.ui.xmlfragment(this.getView().getId(),
+                "sap.kt.com.minihrsolution.fragment.AttachmentPreview",
+                this
+              );
+              this.getView().addDependent(this._oAttachmentDialog);
+            }
+            this._oAttachmentDialog.open();
+          };
           reader.readAsDataURL(oFile);
         },
+
 
         onPressGoToMaster: function (oEvent) {
           const oSelected = oEvent.getSource().getBindingContext("chat").getObject();
@@ -409,7 +423,7 @@ sap.ui.define(
           oChatModel.setProperty("/messages", []);
 
           oChatModel.setProperty("/current_room", sReceiverID);
-          oChatModel.setProperty("/currentReceiverPic", sReceiverPic || "images/default-avatar.png");
+          oChatModel.setProperty("/currentReceiverPic", sReceiverPic);
 
           oChatModel.setProperty("/currentReceiverName", sReceiverName);
           oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
@@ -476,12 +490,12 @@ sap.ui.define(
 
               oChatModel.setProperty("/messages", aMessages);
 
-              setTimeout(() => {
-                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
-                if (oScrollContainer) {
-                  oScrollContainer.scrollTo(0, 999999, 300);
-                }
-              }, 150);
+              // setTimeout(() => {
+              //   const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+              //   if (oScrollContainer) {
+              //     oScrollContainer.scrollTo(0, 999999, 300);
+              //   }
+              // }, 150);
 
               const oTitle = sap.ui.getCore().byId("headerTitle");
               if (oTitle) {
@@ -912,7 +926,9 @@ sap.ui.define(
             ...emp,
             isGroup: false,
             title: emp.EmployeeName,
-            icon: emp.ProfilePhoto || "sap-icon://employee"
+            employeeid: emp.EmployeeID,
+            icon: emp.ProfilePhoto,
+            gender: emp.Gender
           }));
 
           const aCombined = aGroupsFormatted.concat(aEmployeesFormatted);
@@ -1145,117 +1161,163 @@ sap.ui.define(
           }
         },
 
-          onScrollToBottom:function(){  
-                const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
-                if (oScrollContainer) {
-                  oScrollContainer.scrollTo(0, 999999, 400);
-                }
-		           },
-        
+        onScrollToBottom: function () {
+          const oScrollContainer = sap.ui.getCore().byId("chatScrollContainer");
+          if (oScrollContainer) {
+            oScrollContainer.scrollTo(0, 999999, 400);
+          }
+        },
+
         //     onAfterRendering: function () {
         //   Formatter.resetDateTracker(); // Very important!
         // }
 
-addEventListenerDataFunction: function () {
-    var oScroll = sap.ui.getCore().byId("chatScrollContainer");
-    var oDomRef = oScroll.getDomRef();
-   
-    if (oDomRef) {
-        oDomRef.addEventListener("scroll", this._handleChatScroll.bind(this));
-    }
-},
+        addEventListenerDataFunction: function () {
+          var oScroll = sap.ui.getCore().byId("chatScrollContainer");
+          var oDomRef = oScroll.getDomRef();
 
-_handleChatScroll: function () {
-    var oScroll = sap.ui.getCore().byId("chatScrollContainer");
-    var oDomRef = oScroll.getDomRef();
-    if (!oDomRef) return;
+          if (oDomRef) {
+            oDomRef.addEventListener("scroll", this._handleChatScroll.bind(this));
+          }
+        },
 
-    var scrollTop = oDomRef.scrollTop;
-    var scrollHeight = oDomRef.scrollHeight;
-    var clientHeight = oDomRef.clientHeight;
+        _handleChatScroll: function () {
+          var oScroll = sap.ui.getCore().byId("chatScrollContainer");
+          var oDomRef = oScroll.getDomRef();
+          if (!oDomRef) return;
 
-    var atBottom = (scrollTop + clientHeight >= scrollHeight - 5);
-    sap.ui.getCore().byId("scrollDownButton").setVisible(!atBottom);
-},
-   onIconPress: function (oEvent) {
-    var oSource = oEvent.getSource(); 
-    var oCtx = oSource.getBindingContext("chat"); 
+          var scrollTop = oDomRef.scrollTop;
+          var scrollHeight = oDomRef.scrollHeight;
+          var clientHeight = oDomRef.clientHeight;
+
+          var atBottom = (scrollTop + clientHeight >= scrollHeight - 5);
+          sap.ui.getCore().byId("scrollDownButton").setVisible(!atBottom);
+        },
+        onIconPress: function (oEvent) {
+          var oSource = oEvent.getSource();
+          var oCtx = oSource.getBindingContext("chat");
 
 
-  
-  
-    if (!this._oMsgPopover) {
-        sap.ui.core.Fragment.load({
-            name: "sap.kt.com.minihrsolution.fragment.Texthover",
-            controller: this
-        }).then((oPopover) => {
-            this._oMsgPopover = oPopover;
-            this.getView().addDependent(this._oMsgPopover);
 
-            if(oCtx.getObject().sender==="them"){
+
+          if (!this._oMsgPopover) {
+            sap.ui.core.Fragment.load({
+              name: "sap.kt.com.minihrsolution.fragment.Texthover",
+              controller: this
+            }).then((oPopover) => {
+              this._oMsgPopover = oPopover;
+              this.getView().addDependent(this._oMsgPopover);
+
+              if (oCtx.getObject().sender === "them") {
+                sap.ui.getCore().byId("id_EditMessage").setVisible(false);
+                sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+
+              } else {
+                sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+                sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+
+              }
+
+              // store the MessageID directly
+              this._oMsgPopover.data("msgID", oCtx);
+
+              this._oMsgPopover.openBy(oSource);
+            });
+          } else {
+            if (oCtx.getObject().sender === "them") {
               sap.ui.getCore().byId("id_EditMessage").setVisible(false);
               sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
 
-            }else{
-             sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+            } else {
+              sap.ui.getCore().byId("id_EditMessage").setVisible(true);
               sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
 
             }
-
-            // store the MessageID directly
             this._oMsgPopover.data("msgID", oCtx);
-
             this._oMsgPopover.openBy(oSource);
-        });
-    } else {
-       if(oCtx.getObject().sender==="them"){
-              sap.ui.getCore().byId("id_EditMessage").setVisible(false);
-              sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+          }
+        },
+        onEditMessage: function () {
+          var oCtx = this._oMsgPopover.data("msgID"); // retrieve saved context
+          if (oCtx) {
+            var oMsgData = oCtx.getObject();
+            var oChatModel = this.getView().getModel("chat");
 
-            }else{
-             sap.ui.getCore().byId("id_EditMessage").setVisible(true);
-              sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+            // Save path & message ID in model for edit mode
+            oChatModel.setProperty("/editIndex", oCtx.getPath());
+            oChatModel.setProperty("/editMessageID", oMsgData.MsgId);
 
+            // Set text in input field (decoded if needed)
+            sap.ui.getCore().byId("messageInput1").setValue(oMsgData.text);
+          }
+          this._oMsgPopover.close();
+        },
+        onDeleteMessage: async function () {
+          var oMsgPopover = this._oMsgPopover;
+          var messageContext = oMsgPopover.data("msgID");
+          var messageId = messageContext.getObject().MsgId;
+
+          try {
+            await this.ajaxDeleteWithJQuery("ChatApplication", {
+              filters: {
+                MessageID: [messageId]
+              }
+            });
+
+            oMsgPopover.close();
+            this.getView().getModel("chat").refresh(true);
+          } catch (error) {
+            console.error("Error deleting message:", error);
+          }
+        },
+        onVoiceMessagePress: function () {
+          var that = this;
+
+          // Check browser support
+          var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (!SpeechRecognition) {
+            sap.m.MessageToast.show("Speech recognition is not supported in this browser.");
+            return;
+          }
+
+          // Create recognition instance
+          var recognition = new SpeechRecognition();
+          recognition.lang = "en-US"; // Set language
+          recognition.interimResults = false; // Only final results
+
+          recognition.onstart = function () {
+            sap.m.MessageToast.show("Listening...");
+          };
+
+          recognition.onresult = function (event) {
+            var spokenText = event.results[0][0].transcript;
+
+            // Set text in the TextArea
+            sap.ui.getCore().byId("messageInput1").setValue(spokenText);
+
+            // Also update the model binding if needed
+            var oModel = that.getView().getModel("chat");
+            if (oModel) {
+              oModel.setProperty("/currentMessage", spokenText);
             }
-        this._oMsgPopover.data("msgID", oCtx);
-        this._oMsgPopover.openBy(oSource);
-    }
-},
- onEditMessage: function () {
-    var oCtx = this._oMsgPopover.data("msgID"); // retrieve saved context
-    if (oCtx) {
-        var oMsgData = oCtx.getObject();
-        var oChatModel = this.getView().getModel("chat");
+          };
 
-        // Save path & message ID in model for edit mode
-        oChatModel.setProperty("/editIndex", oCtx.getPath());
-        oChatModel.setProperty("/editMessageID", oMsgData.MsgId);
+          recognition.onerror = function (event) {
+            console.error("Speech recognition error", event.error);
+            sap.m.MessageToast.show("Error: " + event.error);
+          };
 
-        // Set text in input field (decoded if needed)
-        sap.ui.getCore().byId("messageInput1").setValue(oMsgData.text);
-    }
-    this._oMsgPopover.close();
-},
-onDeleteMessage: async function() {
-  var oMsgPopover = this._oMsgPopover;
-  var messageContext = oMsgPopover.data("msgID");
-  var messageId = messageContext.getObject().MsgId;
-
-  try {
-    await this.ajaxDeleteWithJQuery("ChatApplication", {
-      filters:{
-         MessageID: [messageId]
-      }
-    });
-
-    oMsgPopover.close();
-    this.getView().getModel("chat").refresh(true);
-  } catch (error) {
-    console.error("Error deleting message:", error);
-  }
-}
-       
+          recognition.start();
+        },
+        onCancelAttachmentPreview: function () {
+          // Close the attachment preview popover
+          if (this._oAttachmentDialog) {
+            this._oAttachmentDialog.close();
+          }
         }
+
+
+      }
     );
   }
 );

@@ -2,40 +2,40 @@ sap.ui.define([
     "sap/ui/core/format/DateFormat"
 ], function (DateFormat) {
     "use strict";
-     let _lastRenderedDate = null;
+    let _lastRenderedDate = null;
     return {
 
-         getDateHeader: function (dateString) {
-      const date = new Date(dateString);
-      const today = new Date();
-      const yesterday = new Date();
-      yesterday.setDate(today.getDate() - 1);
+        getDateHeader: function (dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
 
-      const isToday = date.toDateString() === today.toDateString();
-      const isYesterday = date.toDateString() === yesterday.toDateString();
+            const isToday = date.toDateString() === today.toDateString();
+            const isYesterday = date.toDateString() === yesterday.toDateString();
 
-      if (isToday) return "Today";
-      if (isYesterday) return "Yesterday";
+            if (isToday) return "Today";
+            if (isYesterday) return "Yesterday";
 
-      return date.toLocaleDateString(undefined, {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-      });
-    },
+            return date.toLocaleDateString(undefined, {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+        },
 
-    isDateHeaderVisible: function (dateString) {
-      const date = new Date(dateString).toDateString();
-      if (_lastRenderedDate !== date) {
-        _lastRenderedDate = date;
-        return true;
-      }
-      return false;
-    },
+        isDateHeaderVisible: function (dateString) {
+            const date = new Date(dateString).toDateString();
+            if (_lastRenderedDate !== date) {
+                _lastRenderedDate = date;
+                return true;
+            }
+            return false;
+        },
 
-    resetDateTracker: function () {
-      _lastRenderedDate = null;
-    },
+        resetDateTracker: function () {
+            _lastRenderedDate = null;
+        },
         formatDate: function (sDate) {
 
             if (sDate) {
@@ -294,12 +294,32 @@ sap.ui.define([
             }
         },
 
-        getImageSrc: function (base64Str) {
+        getImageSrc: function (base64Str, gender,group) {
             if (base64Str) {
                 return "data:image/png;base64," + base64Str;
             }
+
+            if (gender === "Male") {
+                return "image/male.jpg"; // put in webapp/images
+            } else if (gender === "Female") {
+                return "image/female.jpg"; // put in webapp/images
+            }
+           
+
             return ""; // fallback
         },
+        formatMessageText: function (sText) {
+            if (!sText) return "";
+
+            // Simple URL regex
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+            // Replace URLs with clickable HTML link
+            return sText.replace(urlRegex, function (url) {
+                return `<a href="${url}" target="_blank" style="color:#0a6ed1;">${url}</a>`;
+            });
+        },
+
 
         statusState: function (Status) {
             if (Status === "Active") {
@@ -388,7 +408,7 @@ sap.ui.define([
             oHeader.addStyleClass(groupClass);
             return oHeader;
         },
-    
+
 
     }
 });

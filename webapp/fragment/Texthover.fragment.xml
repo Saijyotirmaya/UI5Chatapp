@@ -6,7 +6,6 @@
       id="msgMenuPopover"
         showHeader="false"
         placement="Auto"
-        autoClose="true"
         >
         
         <List>
