@@ -3,23 +3,23 @@
    <HBox width="100%" height="100%">
   <!-- Master Section -->
   <VBox width="40%" height="100%">
-    <List
-      id="infoMasterList"
-      mode="None"
-      items="{/groupInfoSections}"
-      itemPress="onInformationSectionPress"
-      growing="true"
-      width="100%"
-      showSeparators="None"
-    >
-     <items>
-      <CustomListItem class="sapUiTinyMarginBottom" type="Active">
-        <VBox  >
-          <StandardListItem title="{title}" icon="{icon}"  />
-        </VBox>
-      </CustomListItem>
-    </items>
-    </List>
+      <List
+        id="infoMasterList"
+        mode="None"
+        items="{/groupInfoSections}"
+        itemPress="onInformationSectionPress"
+        growing="true"
+        width="100%"
+        showSeparators="None"
+      >
+      <items>
+        <CustomListItem class="sapUiTinyMarginBottom" type="Active">
+          <VBox  >
+            <StandardListItem title="{title}" icon="{icon}"  />
+          </VBox>
+        </CustomListItem>
+      </items>
+      </List>
   </VBox>
 
   <!-- Detail Section -->
@@ -52,6 +52,5 @@
   <!-- <Text id="infoDetailText" text="" /> -->
 </VBox>
 </HBox>
-
   </Popover>
 </core:FragmentDefinition>

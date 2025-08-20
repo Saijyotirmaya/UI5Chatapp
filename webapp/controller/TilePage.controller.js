@@ -1020,7 +1020,8 @@ sap.ui.define(
             { title: "Files", icon: "sap-icon://document", content: "Files shared in this group." },
             { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
             { title: "Event", icon: "sap-icon://calendar", content: "Group events appear here." },
-            { title: "Groups", icon: "sap-icon://group", content: "Sub-groups or linked groups.", group: bIsInSameGroup ? "Same Group" : "No shared group" }
+            { title: "Groups", icon: "sap-icon://group", content: "Sub-groups or linked groups.", group: bIsInSameGroup ? "Same Group" : "No shared group" },
+            { title: "C-icon", icon: "sap-icon://calendar", content: "Group events appear here." }
           ];
 
           const aFilteredSections = aOriginalSections.filter(section => {
@@ -1103,6 +1104,11 @@ sap.ui.define(
               oDetailText.setText("No members available for this group.");
             }
           }
+
+          //click for profile picture
+         else if (oSectionData.title === "C-icon") {
+ this._openProfileDialog();
+         }
 
           // Check if the section selected is "Groups"
           else if (oSectionData.title === "Groups") {
@@ -1314,7 +1320,38 @@ sap.ui.define(
           if (this._oAttachmentDialog) {
             this._oAttachmentDialog.close();
           }
-        }
+        },
+        _openProfileDialog: function() {
+    if (!this._oDialog) {
+        this._oDialog = new sap.m.Dialog({
+            title: "Update Profile Picture",
+            content: new sap.ui.unified.FileUploader({
+                fileType: ["jpg", "png"],
+                change: function(oEvent) {
+                    sap.m.MessageToast.show("File selected: " + oEvent.getParameter("newValue"));
+                }
+            }),
+
+            beginButton: new sap.m.Button({
+                text: "Save",
+                press: function() {
+                  
+                    sap.m.MessageToast.show("Profile picture updated!");
+                    this._oDialog.close();
+                }.bind(this)
+            }),
+            endButton: new sap.m.Button({
+                text: "Cancel",
+                press: function() {
+                    this._oDialog.close();
+                }.bind(this)
+            })
+        });
+    }
+    this._oDialog.open();
+    },
+
+
 
 
       }
