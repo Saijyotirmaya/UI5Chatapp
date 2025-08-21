@@ -1357,6 +1357,19 @@ sap.ui.define(
           if (oDomRef) {
             oDomRef.addEventListener("scroll", this._handleChatScroll.bind(this));
           }
+           var oTextArea = sap.ui.getCore().byId("messageInput1");
+          if (oTextArea) {
+            var oInnerDom = oTextArea.getDomRef("inner"); // "inner" = actual textarea element
+            if (oInnerDom && !oInnerDom._listenerAdded) { // prevent double binding
+              oInnerDom.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault(); // stop new line
+                  this.sendMessage();
+                }
+              }.bind(this));
+              oInnerDom._listenerAdded = true;
+            }
+          }
         },
 
         _handleChatScroll: function () {
