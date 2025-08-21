@@ -23,18 +23,16 @@
             <masterPages>
                 <Page id="masterPage1">
                     <content>
-             
                         <VBox
                             class="sapUiSmallMargin sapUiResponsiveMargin"
                             width="100%"
                         >
-                          
-                                <Input
-                                    placeholder="Search Name's"
-                                    submit="changeName"
-                                    liveChange="onFilterName"
-                                    width="100%"
-                                />
+                            <Input
+                                placeholder="Search Name's"
+                                submit="changeName"
+                                liveChange="onFilterName"
+                                width="100%"
+                            />
 
                             <List
                                 id="groupsList1"
@@ -56,30 +54,32 @@
             </masterPages>
 
             <!-- Detail Page -->
-           <detailPages>
+            <detailPages>
                 <Page id="detailPage">
                     <customHeader>
                         <Bar>
-                              <contentMiddle>
-                                 <HBox alignItems="Center" renderType="Bare"> 
-                          <Image
-    id="receiverPic"
-    src="{chat>/currentReceiverPic}"
-    class="sapUiTinyMarginEnd roundIcon"
-    height="2rem"
-    width="2rem"
-  />
-  <Link 
-    id="headerTitle" 
-    text="{chat>/currentReceiverName}" 
-    class="Receivername customLinkStyle" 
-    press="On_OpenOverview" 
-  />
-</HBox>
-
-                              </contentMiddle>
+                            <contentMiddle>
+                                <HBox
+                                    alignItems="Center"
+                                    renderType="Bare"
+                                >
+                                    <Image
+                                        id="receiverPic"
+                                        src="{chat>/currentReceiverPic}"
+                                        class="sapUiTinyMarginEnd roundIcons"
+                                        height="2rem"
+                                        width="2rem"
+                                    />
+                                    <Link
+                                        id="headerTitle"
+                                        text="{chat>/currentReceiverName}"
+                                        class="Receivername customLinkStyle"
+                                        press="On_OpenOverview"
+                                    />
+                                </HBox>
+                            </contentMiddle>
                             <contentRight>
-                             <Button
+                                <Button
                                     icon="sap-icon://collaborate"
                                     text="Group"
                                     press="onOpenGroupChatDialog"
@@ -89,16 +89,6 @@
                                     icon="sap-icon://menu"
                                     press="onMenuPress"
                                     tooltip="Menu"
-                                />
-                                <Button
-                                    icon="sap-icon://video"
-                                    press="onVideoCallPress"
-                                    tooltip="Make a Video call"
-                                />
-                                <Button
-                                    icon="sap-icon://call"
-                                    press="onCallPress"
-                                    tooltip="Make a call"
                                 />
                                 <Button
                                     icon="sap-icon://decline"
@@ -117,7 +107,7 @@
                             horizontal="false"
                             vertical="true"
                             class="sapUiTinyMarginBottom"
-                        >   
+                        >
                             <List
                                 id="chatList"
                                 items="{chat>/messages}"
@@ -125,7 +115,7 @@
                                 width="100%"
                             >
                                 <CustomListItem>
-                                     <VBox
+                                    <VBox
                                         width="100%"
                                         class="sapUiTinyMarginBottom"
                                     >
@@ -160,7 +150,6 @@
                                                         class="chatImagePreview"
                                                         press="onAttachmentPress"
                                                     >
-                                                   
                                                         <customData>
                                                             <core:CustomData
                                                                 key="url"
@@ -175,29 +164,35 @@
                                                         </customData>
                                                     </Image>
                                                     <HBox
-                                 visible="{= ${chat>attachment/type} === 'application/pdf' }"
-                                 class="sapUiSmallMarginBegin"
-                                            >
-                                               <Button
-                                       type="Transparent"
-                                       icon="sap-icon://pdf-attachment"
-                                       text="{chat>attachment/name}"
-                                       press="onAttachmentPress"
-                                       >
-                                       <customData>
-                                           <core:CustomData key="url" value="{chat>attachment/preview}" writeToDom="false" />
-                                           <core:CustomData key="name" value="{chat>attachment/name}" writeToDom="false" />
-                                       </customData>
-                                   </Button>
-                               </HBox>
-
-                                                   
+                                                        visible="{= ${chat>attachment/type} === 'application/pdf' }"
+                                                        class="sapUiSmallMarginBegin"
+                                                    >
+                                                        <Button
+                                                            type="Transparent"
+                                                            icon="sap-icon://pdf-attachment"
+                                                            text="{chat>attachment/name}"
+                                                            press="onAttachmentPress"
+                                                        >
+                                                            <customData>
+                                                                <core:CustomData
+                                                                    key="url"
+                                                                    value="{chat>attachment/preview}"
+                                                                    writeToDom="false"
+                                                                />
+                                                                <core:CustomData
+                                                                    key="name"
+                                                                    value="{chat>attachment/name}"
+                                                                    writeToDom="false"
+                                                                />
+                                                            </customData>
+                                                        </Button>
+                                                    </HBox>
                                                 </HBox>
                                                 <FormattedText
-                                              htmlText="{path: 'chat>text', formatter: '.Formatter.formatMessageText'}"
-                                               width="100%"
-                                             class="formattedText"
-                                               />
+                                                    htmlText="{path: 'chat>text', formatter: '.Formatter.formatMessageText'}"
+                                                    width="100%"
+                                                    class="formattedText"
+                                                />
                                                 <Text
                                                     text="{chat>time}"
                                                     class="sapUiTinyMarginTop sapUiSmallText"
@@ -205,22 +200,26 @@
                                             </VBox>
 
                                             <HBox
-  visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }"
-  justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
-  width="100%">
-  <VBox class="chatBubble"
-        alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
-        width="auto"
-        visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }">
-    <core:HTML
-      content="&lt;audio controls style='height:2.5rem;width:14rem;' preload='none'&gt;
+                                                visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }"
+                                                justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+                                                width="100%"
+                                            >
+                                                <VBox
+                                                    class="chatBubble"
+                                                    alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+                                                    width="auto"
+                                                    visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }"
+                                                >
+                                                    <core:HTML
+                                                        content="&lt;audio controls style='height:2.5rem;width:14rem;' preload='none'&gt;
                  &lt;source src='{chat&gt;attachment/preview}' type='{chat&gt;attachment/type}' /&gt;
                  Your browser does not support the audio element.
-               &lt;/audio&gt; &lt;/video&gt;" />
-  </VBox>
-</HBox>
+               &lt;/audio&gt; &lt;/video&gt;"
+                                                    />
+                                                </VBox>
+                                            </HBox>
 
-                                        <core:Icon
+                                            <core:Icon
                                                 src="sap-icon://slim-arrow-down"
                                                 class="hoverIcon"
                                                 visible="{= ${chat>sender} === 'them' }"
@@ -251,21 +250,19 @@
                                 enabled="{= !!${chat>/current_room}}"
                             />
 
-                          
                             <Button
                                 icon="sap-icon://add"
                                 tooltip="Insert Emoji"
                                 press="onEmojiPress"
                                 enabled="{= !!${chat>/current_room}}"
                             />
-                             <Button
+                            <Button
                                 icon="sap-icon://marketing-campaign"
                                 tooltip="Speech to Text"
                                 press="onVoiceMessagePress"
                                 type="Emphasized"
                                 enabled="{= !!${chat>/current_room}}"
                             />
-                            
 
                             <TextArea
                                 id="messageInput1"
@@ -348,13 +345,12 @@
             </detailPages>
         </SplitApp>
 
-         <Button
+        <Button
             id="scrollDownButton"
             icon="sap-icon://arrow-bottom"
             type="Transparent"
             press=".onScrollToBottom"
             class="floatingButtonDown"
-        >
-        </Button>
+        />
     </Dialog>
 </core:FragmentDefinition>
