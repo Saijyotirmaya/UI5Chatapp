@@ -204,20 +204,22 @@
                                                 />
                                             </VBox>
 
-                                            <HBox  visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }"
-            justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
-            width="100%"
-        >
-                                        <VBox class="chatBubble" alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}" width="auto"  visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }">
-                                            <core:HTML
-                    content="&lt;audio controls style='height:2.5rem;width:14rem;' preload='none'&gt;
-                            &lt;source src='{chat&gt;attachment/preview}' type='{chat&gt;attachment/type}' /&gt;
-                            Your browser does not support the audio element.
-                         &lt;/audio&gt;"
-                    class="sapUiTinyMarginBottom"
-                />
-                                        </VBox>
-                                    </HBox>
+                                            <HBox
+  visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }"
+  justifyContent="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+  width="100%">
+  <VBox class="chatBubble"
+        alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
+        width="auto"
+        visible="{= !!${chat>attachment} &amp;&amp; ${chat>attachment/type} &amp;&amp; ${chat>attachment/type}.startsWith('audio/') }">
+    <core:HTML
+      content="&lt;audio controls style='height:2.5rem;width:14rem;' preload='none'&gt;
+                 &lt;source src='{chat&gt;attachment/preview}' type='{chat&gt;attachment/type}' /&gt;
+                 Your browser does not support the audio element.
+               &lt;/audio&gt;" />
+  </VBox>
+</HBox>
+
                                         <core:Icon
                                                 src="sap-icon://slim-arrow-down"
                                                 class="hoverIcon"
@@ -282,21 +284,23 @@
                                     text="{= ${chat>/isPaused} ? 'Resume' : 'Pause' }"
                                     press=".onTogglePauseRecording"
                                     type="Emphasized"
+                                    icon="sap-icon://pause"
                                 />
                                 <Button
                                     text="Stop"
                                     press=".onStopRecordingPress"
                                     type="Reject"
                                     class="sapUiTinyMarginBegin"
+                                    icon="sap-icon://stop"
                                 />
                             </HBox>
                             <!-- Record -->
                             <Button
-                                text="Record Audio"
+                                text=""
                                 press=".onRecordAudioPress"
                                 visible="{= !${chat>/isRecording} }"
                                 type="Accept"
-                                icon="sap-icon://record"
+                                icon="sap-icon://microphone"
                                 class="sapUiTinyMarginTop"
                             />
 

@@ -325,6 +325,9 @@ sap.ui.define(
                 sender: "me",
                 time: new Date().toLocaleTimeString()
               };
+              if (sText && sText.trim() !== "") {
+                oNewMessage.text = sText.trim();
+              }
 
               if (oPayload.data.Attachment) {
                 oNewMessage.attachment = {
@@ -358,111 +361,117 @@ sap.ui.define(
               console.error(err);
             });
         },
-        onRecordAudioPress: async function() {
-                    try {
-                        var oModel = this.getView().getModel("chat");
-                        oModel.setProperty("/isRecording", true);
-                        oModel.setProperty("/isPaused", false); // start fresh, not paused
-                        // Request microphone access
-                        const stream = await navigator.mediaDevices.getUserMedia({
-                            audio: true
-                        });
-                        this.audioChunks = [];
-                        this.mediaRecorder = new MediaRecorder(stream);
+        onRecordAudioPress: async function () {
+          try {
+            var oModel = this.getView().getModel("chat");
+            oModel.setProperty("/isRecording", true);
+            oModel.setProperty("/isPaused", false); // start fresh, not paused
+            // Request microphone access
+            const stream = await navigator.mediaDevices.getUserMedia({
+              audio: true
+            });
+            this.audioChunks = [];
+            this.mediaRecorder = new MediaRecorder(stream);
 
-                        // Track elapsed recording time
-                        this.recordingStartTime = Date.now();
-                        this.recordingTimer = setInterval(() => {
-                            const elapsed = Math.floor((Date.now() - this.recordingStartTime) / 1000);
-                            if (elapsed >= 15) {
-                                this._stopRecording();
-                            } else {
-                                console.log(`Recording: ${elapsed}s`);
-                            }
-                        }, 500);
+            // Track elapsed recording time
+            this.recordingStartTime = Date.now();
+            this.recordingTimer = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - this.recordingStartTime) / 1000);
+              if (elapsed >= 15) {
+                this._stopRecording();
+              } else {
+                console.log(`Recording: ${elapsed}s`);
+              }
+            }, 500);
 
-                        // Push recorded audio chunks
-                        this.mediaRecorder.ondataavailable = (event) => {
-                            if (event.data.size > 0) {
-                                this.audioChunks.push(event.data);
-                            }
-                        };
+            // Push recorded audio chunks
+            this.mediaRecorder.ondataavailable = (event) => {
+              if (event.data.size > 0) {
+                this.audioChunks.push(event.data);
+              }
+            };
 
-                        // When recording stops
-                        this.mediaRecorder.onstop = async () => {
-                            clearInterval(this.recordingTimer);
+            // When recording stops
+            this.mediaRecorder.onstop = async () => {
+              clearInterval(this.recordingTimer);
 
-                            const audioBlob = new Blob(this.audioChunks, {
-                                type: 'audio/webm'
-                            });
-                            const base64Data = await this._blobToBase64(audioBlob);
+              const audioBlob = new Blob(this.audioChunks, {
+                type: 'audio/webm'
+              });
+              const base64Data = await this._blobToBase64(audioBlob);
 
-                            this.getView().getModel("chat").setProperty("/pendingAttachment", {
-                                preview: base64Data,
-                                name: "recording_" + Date.now() + ".webm",
-                                type: "audio/webm",
-                                file: audioBlob
-                            });
+              this.getView().getModel("chat").setProperty("/pendingAttachment", {
+                preview: base64Data,
+                name: "recording_" + Date.now() + ".webm",
+                type: "audio/webm",
+                file: audioBlob
+              });
 
-                            MessageToast.show("Audio ready to send!");
-                        };
+              MessageToast.show("Audio ready to send!");
+            };
 
-                        // Start recording
-                        this.mediaRecorder.start();
-                        MessageToast.show("Recording started. Max 15s.");
+            // Start recording
+            this.mediaRecorder.start();
+            MessageToast.show("Recording started. Max 15s.");
 
-                        // Store controls in view model for UI buttons
-                        this.getView().getModel("chat").setProperty("/isRecording", true);
-                        this.getView().getModel("chat").setProperty("/isPaused", false);
+            // Store controls in view model for UI buttons
+            this.getView().getModel("chat").setProperty("/isRecording", true);
+            this.getView().getModel("chat").setProperty("/isPaused", false);
 
-                    } catch (err) {
-                        console.error("Mic access error:", err);
-                        MessageToast.show("Microphone access denied.");
-                    }
-                },
+          } catch (err) {
+            console.error("Mic access error:", err);
+            MessageToast.show("Microphone access denied.");
+          }
+        },
 
-                // Pause/Resume recording
-                onTogglePauseRecording: function() {
-                    var oModel = this.getView().getModel("chat");
-                    var bPaused = oModel.getProperty("/isPaused");
-                    oModel.setProperty("/isPaused", !bPaused);
-                    if (!this.mediaRecorder) return;
+        // Pause/Resume recording
+        onTogglePauseRecording: function () {
+          var oModel = this.getView().getModel("chat");
+          var bPaused = oModel.getProperty("/isPaused");
+          oModel.setProperty("/isPaused", !bPaused);
+          if (!this.mediaRecorder) return;
 
-                    if (this.mediaRecorder.state === "recording") {
-                        this.mediaRecorder.pause();
-                        this.getView().getModel("chat").setProperty("/isPaused", true);
-                        MessageToast.show("Recording paused.");
-                    } else if (this.mediaRecorder.state === "paused") {
-                        this.mediaRecorder.resume();
-                        this.getView().getModel("chat").setProperty("/isPaused", false);
-                        MessageToast.show("Recording resumed.");
-                    }
-                },
+          if (this.mediaRecorder.state === "recording") {
+            this.mediaRecorder.pause();
+            this.getView().getModel("chat").setProperty("/isPaused", true);
+            MessageToast.show("Recording paused.");
+          } else if (this.mediaRecorder.state === "paused") {
+            this.mediaRecorder.resume();
+            this.getView().getModel("chat").setProperty("/isPaused", false);
+            MessageToast.show("Recording resumed.");
+          }
+        },
 
-                // Stop recording manually
-                onStopRecordingPress: function() {
-                    var oModel = this.getView().getModel("chat");
-                    oModel.setProperty("/isRecording", false);
-                    oModel.setProperty("/isPaused", false);
-                    this._stopRecording();
-                },
+        // Stop recording manually
+        onStopRecordingPress: function () {
+          var oModel = this.getView().getModel("chat");
+          oModel.setProperty("/isRecording", false);
+          oModel.setProperty("/isPaused", false);
+          this._stopRecording();
+        },
 
-                // Internal stop logic
-                _stopRecording: function() {
-                    if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
-                        this.mediaRecorder.stop();
-                        this.getView().getModel("chat").setProperty("/isRecording", false);
-                    }
-                },
+        // Internal stop logic
+        _stopRecording: function () {
+          if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+            this.mediaRecorder.stop();
+            this.getView().getModel("chat").setProperty("/isRecording", false);
 
-                _blobToBase64: function(blob) {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(blob);
-                    });
-                },
+            //  Stop the microphone stream so mic turns off
+            if (this.mediaRecorder.stream) {
+              this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+          }
+        }
+        ,
+
+        _blobToBase64: function (blob) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        },
         _playSentSound: function () {
           const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/KT_Message.mp3"));
           oAudio.play().catch((error) => {
@@ -635,7 +644,7 @@ sap.ui.define(
             return "";
           } else if (sMimeType === "application/pdf") {
             return "";
-          }else if (sMimeType.startsWith("audio/")) {
+          } else if (sMimeType === "audio/" || sMimeType.startsWith("audio/")) {
             return "";
           }
 
@@ -760,22 +769,22 @@ sap.ui.define(
           }
         }
         ,
-        closeCall: async function (oEvent) {
-          var that = this;
-          var date = new Date();
-          var endTime = date.getTime();
-          if (that.rtc) {
-            that.rtc.localAudioTrack.close();
-            // that.rtc.localVideoTrack.stop();
-            that.rtc.localVideoTrack.close();
-            // Traverse all remote users.
-            // Destroy the dynamically created DIV containers.
-            const playerContainer = document.getElementById('div2');
-            playerContainer && playerContainer.remove();
-            // Leave the channel.
-            await that.client.leave();
-          }
-        },
+        // closeCall: async function (oEvent) {
+        //   var that = this;
+        //   var date = new Date();
+        //   var endTime = date.getTime();
+        //   if (that.rtc) {
+        //     that.rtc.localAudioTrack.close();
+        //     // that.rtc.localVideoTrack.stop();
+        //     that.rtc.localVideoTrack.close();
+        //     // Traverse all remote users.
+        //     // Destroy the dynamically created DIV containers.
+        //     const playerContainer = document.getElementById('div2');
+        //     playerContainer && playerContainer.remove();
+        //     // Leave the channel.
+        //     await that.client.leave();
+        //   }
+        // },
         // alertFunc: function () {
         //   var that = this;
         //   var countDownDate = that.appointmentURL.startTime;
@@ -1278,9 +1287,9 @@ sap.ui.define(
           }
 
           //click for profile picture
-         else if (oSectionData.title === "C-icon") {
- this._openProfileDialog();
-         }
+          else if (oSectionData.title === "C-icon") {
+            this._openProfileDialog();
+          }
 
           // Check if the section selected is "Groups"
           else if (oSectionData.title === "Groups") {
@@ -1357,7 +1366,7 @@ sap.ui.define(
           if (oDomRef) {
             oDomRef.addEventListener("scroll", this._handleChatScroll.bind(this));
           }
-           var oTextArea = sap.ui.getCore().byId("messageInput1");
+          var oTextArea = sap.ui.getCore().byId("messageInput1");
           if (oTextArea) {
             var oInnerDom = oTextArea.getDomRef("inner"); // "inner" = actual textarea element
             if (oInnerDom && !oInnerDom._listenerAdded) { // prevent double binding
@@ -1506,35 +1515,35 @@ sap.ui.define(
             this._oAttachmentDialog.close();
           }
         },
-        _openProfileDialog: function() {
-    if (!this._oDialog) {
-        this._oDialog = new sap.m.Dialog({
-            title: "Update Profile Picture",
-            content: new sap.ui.unified.FileUploader({
+        _openProfileDialog: function () {
+          if (!this._oDialog) {
+            this._oDialog = new sap.m.Dialog({
+              title: "Update Profile Picture",
+              content: new sap.ui.unified.FileUploader({
                 fileType: ["jpg", "png"],
-                change: function(oEvent) {
-                    sap.m.MessageToast.show("File selected: " + oEvent.getParameter("newValue"));
+                change: function (oEvent) {
+                  sap.m.MessageToast.show("File selected: " + oEvent.getParameter("newValue"));
                 }
-            }),
+              }),
 
-            beginButton: new sap.m.Button({
+              beginButton: new sap.m.Button({
                 text: "Save",
-                press: function() {
-                  
-                    sap.m.MessageToast.show("Profile picture updated!");
-                    this._oDialog.close();
+                press: function () {
+
+                  sap.m.MessageToast.show("Profile picture updated!");
+                  this._oDialog.close();
                 }.bind(this)
-            }),
-            endButton: new sap.m.Button({
+              }),
+              endButton: new sap.m.Button({
                 text: "Cancel",
-                press: function() {
-                    this._oDialog.close();
+                press: function () {
+                  this._oDialog.close();
                 }.bind(this)
-            })
-        });
-    }
-    this._oDialog.open();
-    },
+              })
+            });
+          }
+          this._oDialog.open();
+        },
 
 
 
