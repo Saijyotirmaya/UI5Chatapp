@@ -76,18 +76,7 @@ sap.ui.define(
             const aGroups = response.groups || [];
             this.getView().getModel("chat").setProperty("/groups", aGroups);
 
-            // const oModel = new JSONModel({
-            //   groupInfoSections: [
-            //     { title: "Overview", icon: "sap-icon://hint", content: "This is the group overview." },
-            //     { title: "Members", icon: "sap-icon://group", content: "Member list goes here." },
-            //     { title: "Media", icon: "sap-icon://media-pause", content: "Media shared in this group." },
-            //     { title: "Files", icon: "sap-icon://course-program", content: "Files shared in this group." },
-            //     { title: "Links", icon: "sap-icon://chain-link", content: "Links shared in this group." },
-            //     { title: "Event", icon: "sap-icon://appointment-2", content: "Group events appear here." },
-            //     { title: "Groups", icon: "sap-icon://company-view", content: "Sub-groups or linked groups." }
-            //   ]
-            // });
-            // this.getView().setModel(oModel);
+
 
           } catch (err) {
             this.closeBusyDialog();
@@ -639,27 +628,42 @@ sap.ui.define(
           const sName = oAttachment.name || "Attachment";
           const sMimeType = oAttachment.type;
 
-          // If it's an image, don't render download link here
+          //  Image → handled separately
           if (sMimeType.startsWith("image/")) {
             return "";
-          } else if (sMimeType === "application/pdf") {
-            return "";
-          } else if (sMimeType === "audio/" || sMimeType.startsWith("audio/")) {
+          }
+          //  PDF → handled separately
+          else if (sMimeType === "application/pdf") {
             return "";
           }
+          //  Audio → handled separately
+          else if (sMimeType.startsWith("audio/")) {
+            return "";
+          }
+          //  Video → return embedded player
+          else if (sMimeType.startsWith("video/")) {
+            return `
+      <video 
+        controls 
+        style="max-width: 16rem; max-height: 10rem; border-radius: 0.5rem; outline: none;">
+        <source src="${sPreview}" type="${sMimeType}" />
+        Your browser does not support the video tag.
+      </video>
+    `;
+          }
 
-          // Render HTML download link for non-image files
+          // Default: non-image/audio/pdf/video → download link
           return `
-          <a 
-            href="${sPreview}" 
-            download="${sName}" 
-            target="_blank"
-            style="color: #0a6ed1; text-decoration: underline;">
-            📎 ${sName}
-          </a>
-        `;
-        }
-        ,
+    <a 
+      href="${sPreview}" 
+      download="${sName}" 
+      target="_blank"
+      style="color: #0a6ed1; text-decoration: underline;">
+      📎 ${sName}
+    </a>
+  `;
+        },
+
         onAttachmentPress: function (oEvent) {
           const oSource = oEvent.getSource();
           const sUrl = oSource.data("url");
@@ -1510,6 +1514,8 @@ sap.ui.define(
           recognition.start();
         },
         onCancelAttachmentPreview: function () {
+          const oChatModel = this.getView().getModel("chat");
+          oChatModel.getProperty("/pendingAttachment", null);
           // Close the attachment preview popover
           if (this._oAttachmentDialog) {
             this._oAttachmentDialog.close();

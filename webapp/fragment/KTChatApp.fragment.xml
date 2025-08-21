@@ -216,7 +216,7 @@
       content="&lt;audio controls style='height:2.5rem;width:14rem;' preload='none'&gt;
                  &lt;source src='{chat&gt;attachment/preview}' type='{chat&gt;attachment/type}' /&gt;
                  Your browser does not support the audio element.
-               &lt;/audio&gt;" />
+               &lt;/audio&gt; &lt;/video&gt;" />
   </VBox>
 </HBox>
 
