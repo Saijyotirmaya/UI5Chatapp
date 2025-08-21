@@ -7,11 +7,11 @@
         class="sapUiContentPadding"
         stretch="false"
         closeOnNavigation="true">
-        <Toolbar >
+        <!-- <Toolbar >
         <Button text="Close" press="onCancelAttachmentPreview" class="sapUiSmallMarginEnd" >
         
         </Button>
-        </Toolbar>
+        </Toolbar> -->
 
         
             <!-- Attachment Preview -->
@@ -21,7 +21,6 @@
                 visible="{= ${chat>/pendingAttachment/type}.startsWith('image/') }"
                 width="500px"
                 height="auto"
-                
                 class="sapUiSmallMarginBottom" />
 
             <!-- Non-image file icon -->
@@ -47,11 +46,12 @@
        
 
         <beginButton>
-            <Button text="Send" type="Emphasized" press="sendMessage" />
+            
+            <Button text="Cancel" press="onCancelAttachmentPreview" />
         </beginButton>
 
         <endButton>
-            <Button text="Cancel" press="onCancelAttachmentPreview" />
+            <Button text="Share" icon="sap-icon://home-share" type="Emphasized" press="sendMessage" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>

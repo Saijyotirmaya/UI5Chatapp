@@ -305,7 +305,6 @@ sap.ui.define([
                 return "image/female.jpg"; // put in webapp/images
             }
            
-
             return ""; // fallback
         },
         formatMessageText: function (sText) {
@@ -315,9 +314,12 @@ sap.ui.define([
             const urlRegex = /(https?:\/\/[^\s]+)/g;
 
             // Replace URLs with clickable HTML link
-            return sText.replace(urlRegex, function (url) {
+            let  format =  sText.replace(urlRegex, function (url) {
                 return `<a href="${url}" target="_blank" style="color:#0a6ed1;">${url}</a>`;
             });
+
+            format = format.replace(/\n/g, "<br>");
+            return format;
         },
 
 

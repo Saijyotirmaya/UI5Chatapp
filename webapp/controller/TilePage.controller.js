@@ -50,7 +50,9 @@ sap.ui.define(
             filteredEmployees: [],
             groups: [],
             editIndex: null,
-            editMessageID: ""
+            editMessageID: "",
+            isRecording: false,
+            isPaused: false,
           };
 
           var oModel = new JSONModel(oData);
@@ -356,6 +358,111 @@ sap.ui.define(
               console.error(err);
             });
         },
+        onRecordAudioPress: async function() {
+                    try {
+                        var oModel = this.getView().getModel("chat");
+                        oModel.setProperty("/isRecording", true);
+                        oModel.setProperty("/isPaused", false); // start fresh, not paused
+                        // Request microphone access
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            audio: true
+                        });
+                        this.audioChunks = [];
+                        this.mediaRecorder = new MediaRecorder(stream);
+
+                        // Track elapsed recording time
+                        this.recordingStartTime = Date.now();
+                        this.recordingTimer = setInterval(() => {
+                            const elapsed = Math.floor((Date.now() - this.recordingStartTime) / 1000);
+                            if (elapsed >= 15) {
+                                this._stopRecording();
+                            } else {
+                                console.log(`Recording: ${elapsed}s`);
+                            }
+                        }, 500);
+
+                        // Push recorded audio chunks
+                        this.mediaRecorder.ondataavailable = (event) => {
+                            if (event.data.size > 0) {
+                                this.audioChunks.push(event.data);
+                            }
+                        };
+
+                        // When recording stops
+                        this.mediaRecorder.onstop = async () => {
+                            clearInterval(this.recordingTimer);
+
+                            const audioBlob = new Blob(this.audioChunks, {
+                                type: 'audio/webm'
+                            });
+                            const base64Data = await this._blobToBase64(audioBlob);
+
+                            this.getView().getModel("chat").setProperty("/pendingAttachment", {
+                                preview: base64Data,
+                                name: "recording_" + Date.now() + ".webm",
+                                type: "audio/webm",
+                                file: audioBlob
+                            });
+
+                            MessageToast.show("Audio ready to send!");
+                        };
+
+                        // Start recording
+                        this.mediaRecorder.start();
+                        MessageToast.show("Recording started. Max 15s.");
+
+                        // Store controls in view model for UI buttons
+                        this.getView().getModel("chat").setProperty("/isRecording", true);
+                        this.getView().getModel("chat").setProperty("/isPaused", false);
+
+                    } catch (err) {
+                        console.error("Mic access error:", err);
+                        MessageToast.show("Microphone access denied.");
+                    }
+                },
+
+                // Pause/Resume recording
+                onTogglePauseRecording: function() {
+                    var oModel = this.getView().getModel("chat");
+                    var bPaused = oModel.getProperty("/isPaused");
+                    oModel.setProperty("/isPaused", !bPaused);
+                    if (!this.mediaRecorder) return;
+
+                    if (this.mediaRecorder.state === "recording") {
+                        this.mediaRecorder.pause();
+                        this.getView().getModel("chat").setProperty("/isPaused", true);
+                        MessageToast.show("Recording paused.");
+                    } else if (this.mediaRecorder.state === "paused") {
+                        this.mediaRecorder.resume();
+                        this.getView().getModel("chat").setProperty("/isPaused", false);
+                        MessageToast.show("Recording resumed.");
+                    }
+                },
+
+                // Stop recording manually
+                onStopRecordingPress: function() {
+                    var oModel = this.getView().getModel("chat");
+                    oModel.setProperty("/isRecording", false);
+                    oModel.setProperty("/isPaused", false);
+                    this._stopRecording();
+                },
+
+                // Internal stop logic
+                _stopRecording: function() {
+                    if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+                        this.mediaRecorder.stop();
+                        this.getView().getModel("chat").setProperty("/isRecording", false);
+                    }
+                },
+
+                _blobToBase64: function(blob) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    });
+                },
         _playSentSound: function () {
           const oAudio = new Audio(jQuery.sap.getModulePath("sap.kt.com.minihrsolution", "/Audio/KT_Message.mp3"));
           oAudio.play().catch((error) => {
@@ -526,6 +633,10 @@ sap.ui.define(
           // If it's an image, don't render download link here
           if (sMimeType.startsWith("image/")) {
             return "";
+          } else if (sMimeType === "application/pdf") {
+            return "";
+          }else if (sMimeType.startsWith("audio/")) {
+            return "";
           }
 
           // Render HTML download link for non-image files
@@ -543,9 +654,63 @@ sap.ui.define(
         onAttachmentPress: function (oEvent) {
           const oSource = oEvent.getSource();
           const sUrl = oSource.data("url");
-          const sName = oSource.data("name") || "image.jpg";
+          const sName = oSource.data("name") || "attachment";
+          const sType = oSource.getBindingContext("chat").getProperty("attachment/type");
 
-          // Create an invisible download link and trigger it
+          if (!this._oAttachmentPreview) {
+            this._oAttachmentPreview = sap.ui.xmlfragment(
+              "sap.kt.com.minihrsolution.fragment.ImagePreview",
+              this
+            );
+            this.getView().addDependent(this._oAttachmentPreview);
+          }
+
+          const oImage = sap.ui.getCore().byId("idPreviewImage");
+          const oPdf = sap.ui.getCore().byId("idPreviewPdf");
+
+          // Reset visibility
+          oImage.setVisible(false);
+          oPdf.setVisible(false);
+
+          if (sType && sType.startsWith("image/")) {
+            // Show image preview
+            oImage.setSrc(sUrl);
+            oImage.setVisible(true);
+          } else if (sType === "application/pdf") {
+            let pdfSrc = "";
+
+            if (sUrl.startsWith("data:application/pdf")) {
+              pdfSrc = sUrl;
+            } else if (sUrl.startsWith("http") || sUrl.startsWith("/")) {
+              pdfSrc = sUrl;
+            } else {
+              pdfSrc = "data:application/pdf;base64," + sUrl;
+            }
+
+            oPdf.setSource(pdfSrc);
+            oPdf.setVisible(true);
+          } else {
+            // Direct download for others (Excel, Word, PPT)
+            const link = document.createElement("a");
+            link.href = sUrl;
+            link.download = sName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return; // no preview dialog
+          }
+
+          // Store download data
+          this._oAttachmentPreview.data("downloadUrl", sUrl);
+          this._oAttachmentPreview.data("downloadName", sName);
+
+          this._oAttachmentPreview.open();
+        },
+
+        onDownloadAttachment: function () {
+          const sUrl = this._oAttachmentPreview.data("downloadUrl");
+          const sName = this._oAttachmentPreview.data("downloadName");
+
           const link = document.createElement("a");
           link.href = sUrl;
           link.download = sName;
@@ -553,6 +718,13 @@ sap.ui.define(
           link.click();
           document.body.removeChild(link);
         },
+
+        onClosePreview: function () {
+          if (this._oAttachmentPreview) {
+            this._oAttachmentPreview.close();
+          }
+        }
+        ,
 
 
         onRemoveAttachment: function () {
