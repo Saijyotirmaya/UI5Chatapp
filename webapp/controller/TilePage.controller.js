@@ -109,14 +109,12 @@ sap.ui.define(
         },
 
         onFloatingButtonPress: function () {
-          // this.getRouter().navTo("RouteKTChat");
           var oView = this.getView();
           // Ensure user selection is reset before opening
           if (!this.Chatapp) {
             sap.ui.core.Fragment.load({
               name: "sap.kt.com.minihrsolution.fragment.KTChatApp",
               controller: this,
-
             }).then(
               function (Chatapp) {
                 this.Chatapp = Chatapp;
@@ -504,7 +502,6 @@ sap.ui.define(
           };
           reader.readAsDataURL(oFile);
         },
-
 
         onPressGoToMaster: function (oEvent) {
           const oSelected = oEvent.getSource().getBindingContext("chat").getObject();
@@ -1120,67 +1117,67 @@ sap.ui.define(
           oChatModel.setProperty("/combinedList", aCombined);
         }
         ,
-        _openGroupChat: function (oGroup) {
-          const oChatModel = this.getView().getModel("chat");
-          const oLoginModel = this.getView().getModel("LoginModel");
-          const sSenderID = oLoginModel.getProperty("/EmployeeID");
-          oChatModel.setProperty("/isGroupChat", true);
-          oChatModel.setProperty("/currentReceiverIsGroup", oGroup.IsGroup === true);
-          // flipped
-          // true if it's a group
+        // _openGroupChat: function (oGroup) {
+        //   const oChatModel = this.getView().getModel("chat");
+        //   const oLoginModel = this.getView().getModel("LoginModel");
+        //   const sSenderID = oLoginModel.getProperty("/EmployeeID");
+        //   oChatModel.setProperty("/isGroupChat", true);
+        //   oChatModel.setProperty("/currentReceiverIsGroup", oGroup.IsGroup === true);
+        //   // flipped
+        //   // true if it's a group
 
-          oChatModel.setProperty("/current_room", oGroup.GroupID);
-          oChatModel.setProperty("/currentReceiverName", oGroup.GroupName);
-          oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
-          oChatModel.setProperty("/messages", []);
+        //   oChatModel.setProperty("/current_room", oGroup.GroupID);
+        //   oChatModel.setProperty("/currentReceiverName", oGroup.GroupName);
+        //   oChatModel.setProperty("/username", oLoginModel.getProperty("/EmployeeName"));
+        //   oChatModel.setProperty("/messages", []);
 
-          oChatModel.setProperty("/selectedGroup", oGroup);
+        //   oChatModel.setProperty("/selectedGroup", oGroup);
 
-          const fetchGroupMessages = () => {
-            this.ajaxReadWithJQuery("Groups", {
-              EmployeeID: sSenderID
-            }).then((response) => {
-              const aMessages = (response.results || []).map(msg => {
-                const decodedText = atob(msg.MessageText || "");
-                const isMine = msg.Sender === oLoginModel.getProperty("/EmployeeName");
+        //   const fetchGroupMessages = () => {
+        //     this.ajaxReadWithJQuery("Groups", {
+        //       EmployeeID: sSenderID
+        //     }).then((response) => {
+        //       const aMessages = (response.results || []).map(msg => {
+        //         const decodedText = atob(msg.MessageText || "");
+        //         const isMine = msg.Sender === oLoginModel.getProperty("/EmployeeName");
 
-                const base64Decoded = atob(msg.Attachment || "");
-                const isFullDataURL = base64Decoded.startsWith("data:");
-                const sMimeType = msg.AttachmentType || "image/jpeg";
+        //         const base64Decoded = atob(msg.Attachment || "");
+        //         const isFullDataURL = base64Decoded.startsWith("data:");
+        //         const sMimeType = msg.AttachmentType || "image/jpeg";
 
-                const sPreview = msg.Attachment
-                  ? (isFullDataURL
-                    ? base64Decoded
-                    : `data:${sMimeType};base64,${msg.Attachment}`)
-                  : "";
+        //         const sPreview = msg.Attachment
+        //           ? (isFullDataURL
+        //             ? base64Decoded
+        //             : `data:${sMimeType};base64,${msg.Attachment}`)
+        //           : "";
 
-                return {
-                  text: decodedText,
-                  sender: isMine ? "me" : "them",
-                  time: new Date(msg.SentAt).toLocaleTimeString(),
-                  attachment: msg.Attachment ? {
-                    preview: sPreview,
-                    name: msg.AttachmentName || "Attachment",
-                    type: sMimeType
-                  } : null
-                };
-              });
+        //         return {
+        //           text: decodedText,
+        //           sender: isMine ? "me" : "them",
+        //           time: new Date(msg.SentAt).toLocaleTimeString(),
+        //           attachment: msg.Attachment ? {
+        //             preview: sPreview,
+        //             name: msg.AttachmentName || "Attachment",
+        //             type: sMimeType
+        //           } : null
+        //         };
+        //       });
 
-              oChatModel.setProperty("/messages", aMessages);
-              const oTitle = sap.ui.getCore().byId("headerTitle");
-              if (oTitle) {
-                oTitle.setText(oGroup.GroupName);
-              }
-            }).catch(err => {
-              sap.m.MessageToast.show("Failed to load group messages");
-              console.error(err);
-            });
-          };
+        //       oChatModel.setProperty("/messages", aMessages);
+        //       const oTitle = sap.ui.getCore().byId("headerTitle");
+        //       if (oTitle) {
+        //         oTitle.setText(oGroup.GroupName);
+        //       }
+        //     }).catch(err => {
+        //       sap.m.MessageToast.show("Failed to load group messages");
+        //       console.error(err);
+        //     });
+        //   };
 
-          fetchGroupMessages();
-          if (this.messagePollInterval) clearInterval(this.messagePollInterval);
-          this.messagePollInterval = setInterval(fetchGroupMessages, 15000);
-        },
+        //   fetchGroupMessages();
+        //   if (this.messagePollInterval) clearInterval(this.messagePollInterval);
+        //   this.messagePollInterval = setInterval(fetchGroupMessages, 15000);
+        // },
 
         On_OpenOverview: function (oEvent) {
           const oChatModel = this.getView().getModel("chat");
@@ -1190,7 +1187,7 @@ sap.ui.define(
 
           const oSelectedUser = oChatModel.getProperty("/selectedUser"); // Assuming selected user is in the model
 
-          // Example: group information in chat model, modify according to your actual model structure
+          //  group information in chat model, modify according to your actual model structure
           const aUserGroups = oLoginModel.getProperty("/UserGroups") || []; // Groups the login user is part of
           const aSelectedUserGroups = oSelectedUser?.Groups || []; // Groups the selected user is part of
 
@@ -1397,83 +1394,80 @@ sap.ui.define(
           var atBottom = (scrollTop + clientHeight >= scrollHeight - 5);
           sap.ui.getCore().byId("scrollDownButton").setVisible(!atBottom);
         },
-        onIconPress: function (oEvent) {
-          var oSource = oEvent.getSource();
-          var oCtx = oSource.getBindingContext("chat");
+        // onIconPress: function (oEvent) {
+        //   var oSource = oEvent.getSource();
+        //   var oCtx = oSource.getBindingContext("chat");
 
+        //   if (!this._oMsgPopover) {
+        //     sap.ui.core.Fragment.load({
+        //       name: "sap.kt.com.minihrsolution.fragment.Texthover",
+        //       controller: this
+        //     }).then((oPopover) => {
+        //       this._oMsgPopover = oPopover;
+        //       this.getView().addDependent(this._oMsgPopover);
 
+        //       if (oCtx.getObject().sender === "them") {
+        //         sap.ui.getCore().byId("id_EditMessage").setVisible(false);
+        //         sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
 
+        //       } else {
+        //         sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+        //         sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
 
-          if (!this._oMsgPopover) {
-            sap.ui.core.Fragment.load({
-              name: "sap.kt.com.minihrsolution.fragment.Texthover",
-              controller: this
-            }).then((oPopover) => {
-              this._oMsgPopover = oPopover;
-              this.getView().addDependent(this._oMsgPopover);
+        //       }
 
-              if (oCtx.getObject().sender === "them") {
-                sap.ui.getCore().byId("id_EditMessage").setVisible(false);
-                sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+        //       // store the MessageID directly
+        //       this._oMsgPopover.data("msgID", oCtx);
 
-              } else {
-                sap.ui.getCore().byId("id_EditMessage").setVisible(true);
-                sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+        //       this._oMsgPopover.openBy(oSource);
+        //     });
+        //   } else {
+        //     if (oCtx.getObject().sender === "them") {
+        //       sap.ui.getCore().byId("id_EditMessage").setVisible(false);
+        //       sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
 
-              }
+        //     } else {
+        //       sap.ui.getCore().byId("id_EditMessage").setVisible(true);
+        //       sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
 
-              // store the MessageID directly
-              this._oMsgPopover.data("msgID", oCtx);
+        //     }
+        //     this._oMsgPopover.data("msgID", oCtx);
+        //     this._oMsgPopover.openBy(oSource);
+        //   }
+        // },
+        // onEditMessage: function () {
+        //   var oCtx = this._oMsgPopover.data("msgID"); // retrieve saved context
+        //   if (oCtx) {
+        //     var oMsgData = oCtx.getObject();
+        //     var oChatModel = this.getView().getModel("chat");
 
-              this._oMsgPopover.openBy(oSource);
-            });
-          } else {
-            if (oCtx.getObject().sender === "them") {
-              sap.ui.getCore().byId("id_EditMessage").setVisible(false);
-              sap.ui.getCore().byId("id_DeleteMessage").setVisible(false);
+        //     // Save path & message ID in model for edit mode
+        //     oChatModel.setProperty("/editIndex", oCtx.getPath());
+        //     oChatModel.setProperty("/editMessageID", oMsgData.MsgId);
 
-            } else {
-              sap.ui.getCore().byId("id_EditMessage").setVisible(true);
-              sap.ui.getCore().byId("id_DeleteMessage").setVisible(true);
+        //     // Set text in input field (decoded if needed)
+        //     sap.ui.getCore().byId("messageInput1").setValue(oMsgData.text);
+        //   }
+        //   this._oMsgPopover.close();
+        // },
+        // onDeleteMessage: async function () {
+        //   var oMsgPopover = this._oMsgPopover;
+        //   var messageContext = oMsgPopover.data("msgID");
+        //   var messageId = messageContext.getObject().MsgId;
 
-            }
-            this._oMsgPopover.data("msgID", oCtx);
-            this._oMsgPopover.openBy(oSource);
-          }
-        },
-        onEditMessage: function () {
-          var oCtx = this._oMsgPopover.data("msgID"); // retrieve saved context
-          if (oCtx) {
-            var oMsgData = oCtx.getObject();
-            var oChatModel = this.getView().getModel("chat");
+        //   try {
+        //     await this.ajaxDeleteWithJQuery("ChatApplication", {
+        //       filters: {
+        //         MessageID: [messageId]
+        //       }
+        //     });
 
-            // Save path & message ID in model for edit mode
-            oChatModel.setProperty("/editIndex", oCtx.getPath());
-            oChatModel.setProperty("/editMessageID", oMsgData.MsgId);
-
-            // Set text in input field (decoded if needed)
-            sap.ui.getCore().byId("messageInput1").setValue(oMsgData.text);
-          }
-          this._oMsgPopover.close();
-        },
-        onDeleteMessage: async function () {
-          var oMsgPopover = this._oMsgPopover;
-          var messageContext = oMsgPopover.data("msgID");
-          var messageId = messageContext.getObject().MsgId;
-
-          try {
-            await this.ajaxDeleteWithJQuery("ChatApplication", {
-              filters: {
-                MessageID: [messageId]
-              }
-            });
-
-            oMsgPopover.close();
-            this.getView().getModel("chat").refresh(true);
-          } catch (error) {
-            console.error("Error deleting message:", error);
-          }
-        },
+        //     oMsgPopover.close();
+        //     this.getView().getModel("chat").refresh(true);
+        //   } catch (error) {
+        //     console.error("Error deleting message:", error);
+        //   }
+        // },
         onVoiceMessagePress: function () {
           var that = this;
 

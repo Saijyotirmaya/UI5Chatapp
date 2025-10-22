@@ -41,7 +41,7 @@
                                 showSeparators="None"
                             >
                                 <StandardListItem
-                                    title="{chat>title}   ({chat>employeeid})"
+                                    title="{chat>title} {chat>employeeid}"
                                     icon="{parts:['chat>icon', 'chat>gender' ], formatter: '.Formatter.getImageSrc'}"
                                     type="Navigation"
                                     press="onListItemPress"
@@ -124,12 +124,12 @@
                                             width="100%"
                                             class="hoverContainer"
                                         >
-                                            <core:Icon
+                                            <!-- <core:Icon
                                                 src="sap-icon://slim-arrow-down"
                                                 class="hoverIcon"
                                                 visible="{= ${chat>sender} === 'me'}"
                                                 press="onIconPress"
-                                            />
+                                            /> -->
                                             <VBox
                                                 class="chatBubble "
                                                 alignItems="{= ${chat>sender} === 'me' ? 'End' : 'Start'}"
@@ -219,12 +219,12 @@
                                                 </VBox>
                                             </HBox>
 
-                                            <core:Icon
+                                            <!-- <core:Icon
                                                 src="sap-icon://slim-arrow-down"
                                                 class="hoverIcon"
                                                 visible="{= ${chat>sender} === 'them' }"
                                                 press="onIconPress"
-                                            />
+                                            /> -->
                                         </HBox>
                                     </VBox>
                                 </CustomListItem>

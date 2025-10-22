@@ -767,10 +767,7 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
     rgb(170, 212, 237),
     rgb(173, 166, 249)
   );
-  /* background-image: url("../image/Filter.jpg") !important; 
-     background-size: cover; 
-     background-position: center;
-     background-repeat: no-repeat; */
+ 
 }
 .sapFDynamicPageTitle {
   z-index: 4;
@@ -788,26 +785,11 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
     rgb(173, 166, 249)
   ) !important;
 }
-/* .sapMGHLI {
-  background-image: linear-gradient(
-    to bottom right,
-    rgb(170, 212, 237),
-    rgb(173, 166, 249)
-  ) !important;
-  font-weight: bold;
-  color: #006064;
-} */
 
 .rightMarginCustom {
   margin-right: 40px;
 }
 
-/* .sapMPopover .sapMPopoverScroll {
-  background-image: url("../image/career1.jpg") !important;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-} */
 .floatingButton {
   position: fixed;
   bottom: 100px;
@@ -1038,7 +1020,7 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
 /* Links */
 .myFormattedText a {
   color: #007bff;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .myFormattedText a:hover {
@@ -1218,36 +1200,7 @@ h2.sapUxAPObjectPageHeaderIdentifierTitleForce {
 
 /* Group header styles */
 /* Group Header Styling */
-.group-active {
-    background-color: #e8f5e9 !important;
-    color: #1b5e20 !important;
-    font-weight: bold !important;
-}
-.group-inactive {
-    background-color: #f3e5f5 !important;
-    color: #4a148c !important;
-    font-weight: bold !important;
-}
-.group-onboarded {
-    background-color: #3c9eab !important;
-    color: #006064 !important;
-    font-weight: bold !important;
-}
-.group-rejected {
-    background-color: #ffebee !important;
-    color: #c62828 !important;
-    font-weight: bold !important;
-}
-.group-new {
-    background-color: #e3f2fd !important;
-    color: #1565c0 !important;
-    font-weight: bold !important;
-}
-.group-default {
-    background-color: #eeeeee !important;
-    color: #424242 !important;
-    font-weight: bold !important;
-}
+
 
 .customLinkStyle:focus,
 .customLinkStyle:active {
